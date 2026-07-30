@@ -6,7 +6,7 @@
   <title>Book Movie Tickets — English Dept, Pazhassiraja College</title>
   <meta name="description" content="Book tickets for the movie screening organised by the English Department, Pazhassiraja College." />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -204,6 +204,7 @@
     .meta-chip.rating { background: #fff3cd; color: #856404; }
     .meta-chip.lang { background: #e8f4fd; color: #0056b3; }
     .meta-chip.genre { background: #f0e6ff; color: #6f42c1; }
+    .meta-chip i { color: inherit; }
 
     .movie-price-row {
       display: flex;
@@ -217,11 +218,15 @@
       font-size: 28px;
       font-weight: 800;
       color: var(--primary);
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
     }
     .movie-price small {
       font-size: 14px;
       font-weight: 500;
       color: var(--text-secondary);
+      white-space: nowrap;
     }
     .btn-book-now {
       padding: 12px 32px;
@@ -291,6 +296,13 @@
     .venue-date-time .dt-item .dt-val {
       font-weight: 700;
       font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .venue-date-time .dt-item .dt-val i {
+      color: var(--text);
+      font-size: 15px;
     }
     .venue-date-time .dt-item .dt-lbl {
       font-size: 10px;
@@ -315,6 +327,7 @@
       align-items: center;
       gap: 8px;
     }
+    .section-title i { color: var(--primary); }
     .info-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -1042,11 +1055,11 @@
         <p class="movie-tagline" id="movie-tagline">Department of English — Special Screening</p>
 
         <div class="movie-meta">
-          <span class="meta-chip rating"><span id="movie-rating">—</span></span>
-          <span class="meta-chip lang"><span id="movie-language">English</span></span>
-          <span class="meta-chip genre"><span id="movie-genre">—</span></span>
-          <span class="meta-chip"><span id="movie-duration">—</span></span>
-          <span class="meta-chip"><span id="movie-format">2D</span></span>
+          <span class="meta-chip rating"><i class="fas fa-star"></i> <span id="movie-rating">—</span></span>
+          <span class="meta-chip lang"><i class="fas fa-language"></i> <span id="movie-language">English</span></span>
+          <span class="meta-chip genre"><i class="fas fa-tag"></i> <span id="movie-genre">—</span></span>
+          <span class="meta-chip"><i class="fas fa-clock"></i> <span id="movie-duration">—</span></span>
+          <span class="meta-chip"><i class="fas fa-film"></i> <span id="movie-format">2D</span></span>
         </div>
 
         <div class="movie-price-row">
@@ -1065,16 +1078,16 @@
           <div class="addr" id="venue-addr">Pazhassiraja College, Pulpally, Wayanad</div>
         </div>
       </div>
-      <div class="venue-date-time">
-        <div class="dt-item">
-          <div class="dt-val" id="show-date">TBD</div>
-          <div class="dt-lbl">Date</div>
+        <div class="venue-date-time">
+          <div class="dt-item">
+            <div class="dt-val"><i class="fas fa-calendar-alt"></i> <span id="show-date">TBD</span></div>
+            <div class="dt-lbl">Date</div>
+          </div>
+          <div class="dt-item">
+            <div class="dt-val"><i class="fas fa-clock"></i> <span id="show-time">TBD</span></div>
+            <div class="dt-lbl">Time</div>
+          </div>
         </div>
-        <div class="dt-item">
-          <div class="dt-val" id="show-time">TBD</div>
-          <div class="dt-lbl">Time</div>
-        </div>
-      </div>
     </div>
 
     <!-- INFO SECTION -->
@@ -1257,10 +1270,10 @@
       venueAddress: 'Pazhassiraja College, Pulpally, Wayanad',
       totalSeats: 100,
       ticketPrice: 15,
-      rating: '—',
+      rating: 'U/A',
       language: 'English',
-      genre: '—',
-      duration: '—',
+      genre: 'Film Fest',
+      duration: '2h 30m',
       format: '2D',
       upiId: 'arshinmrelju@okicici',
       upiName: 'English Dept',
