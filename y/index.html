@@ -1,0 +1,1789 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Book Movie Tickets — English Dept, Pazhassiraja College</title>
+  <meta name="description" content="Book tickets for the movie screening organised by the English Department, Pazhassiraja College." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #f5f5f5;
+      --card: #ffffff;
+      --primary: #e50914;
+      --primary-dark: #b2070f;
+      --accent: #f5c518;
+      --text: #1a1a2e;
+      --text-secondary: #666;
+      --text-light: #999;
+      --border: #e0e0e0;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER / NAVBAR */
+    .navbar {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .navbar-inner {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-brand .brand-text {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text);
+    }
+    .nav-brand .brand-sub {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-outline-nav {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text);
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+    .btn-outline-nav:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+
+    /* MOVIE CARD */
+    .movie-hero {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 768px) {
+      .movie-hero { flex-direction: row; }
+    }
+    .movie-poster {
+      width: 100%;
+      min-height: 280px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .movie-poster::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(255,255,255,0.02) 20px,
+        rgba(255,255,255,0.02) 40px
+      );
+    }
+    @media (min-width: 768px) {
+      .movie-poster { width: 320px; min-height: 420px; flex-shrink: 0; }
+    }
+    .poster-placeholder {
+      text-align: center;
+      z-index: 1;
+    }
+    .poster-placeholder .icon {
+      font-size: 64px;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .poster-placeholder .label {
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .movie-info {
+      padding: 28px 30px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .movie-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent);
+      color: #1a1a2e;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      width: fit-content;
+    }
+    .movie-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .movie-tagline {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+    .movie-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #f0f0f0;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .meta-chip.rating { background: #fff3cd; color: #856404; }
+    .meta-chip.lang { background: #e8f4fd; color: #0056b3; }
+    .meta-chip.genre { background: #f0e6ff; color: #6f42c1; }
+
+    .movie-price-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .movie-price {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .movie-price small {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+    .btn-book-now {
+      padding: 12px 32px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-book-now:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+    }
+
+    /* VENUE INFO CARD */
+    .venue-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 24px;
+      margin-bottom: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+    .venue-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .venue-icon {
+      width: 44px;
+      height: 44px;
+      background: #f0f0f0;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .venue-detail .name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .venue-detail .addr {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .venue-date-time {
+      display: flex;
+      gap: 20px;
+    }
+    .venue-date-time .dt-item {
+      text-align: center;
+    }
+    .venue-date-time .dt-item .dt-val {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .venue-date-time .dt-item .dt-lbl {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: var(--text-light);
+      letter-spacing: 0.5px;
+    }
+
+    /* SECTION */
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+    }
+    .info-box {
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+    .info-box .num {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .info-box .lbl {
+      font-size: 11px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    /* MODAL */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .overlay.active {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      width: min(520px, 94vw);
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      padding: 24px 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .modal-header .modal-title {
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .modal-header .modal-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: #f0f0f0;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .modal-close:hover { background: #e0e0e0; }
+    .modal-body { padding: 20px 28px; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font);
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.08);
+    }
+    .form-group select {
+      width: 100%;
+      padding: 12px 38px 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font);
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+      transition: all 0.2s;
+      appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      color: inherit;
+      cursor: pointer;
+    }
+    .form-group select:hover {
+      border-color: #bbb;
+      background-color: #fafafa;
+    }
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.08);
+      background-color: #fff;
+    }
+
+    .ticket-qty-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fafafa;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      width: fit-content;
+    }
+    .ticket-qty-selector button {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ticket-qty-selector button:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .ticket-qty-selector .qty-val {
+      font-size: 20px;
+      font-weight: 700;
+      min-width: 32px;
+      text-align: center;
+    }
+
+    .booking-summary {
+      background: #fafafa;
+      border-radius: 10px;
+      padding: 16px;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 14px;
+    }
+    .summary-row.total {
+      font-weight: 700;
+      font-size: 16px;
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      margin-top: 6px;
+    }
+
+    /* UPI Payment Section */
+    .payment-box {
+      background: #f9f9f9;
+      border: 2px dashed #d4a017;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 16px 0;
+      text-align: center;
+    }
+    .payment-box .pay-amt {
+      font-size: 30px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .payment-box .pay-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    #upi-qr-container {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0;
+    }
+    #upi-qr-container canvas, #upi-qr-container img {
+      border-radius: 10px;
+      background: #fff;
+      padding: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .upi-id-display {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-family: monospace;
+      margin-top: 8px;
+    }
+    .upi-app-links {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+    .upi-app-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .upi-app-btn:hover { border-color: var(--primary); }
+
+    .ticket-row {
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+    .ticket-row-header {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .ticket-row input.tr-name {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: var(--font);
+      margin-bottom: 8px;
+      box-sizing: border-box;
+    }
+    .ticket-row input.tr-name:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .tr-inline {
+      display: flex;
+      gap: 8px;
+    }
+    .tr-inline select {
+      flex: 1;
+      padding: 10px 30px 10px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: var(--font);
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+      appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      color: inherit;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tr-inline select:hover {
+      border-color: #bbb;
+      background-color: #fafafa;
+    }
+    .tr-inline select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.06);
+    }
+    .btn-sm {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font);
+    }
+
+    .mini-ticket {
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+    }
+    .mini-ticket .mt-info { flex: 1; min-width: 0; }
+    .mini-ticket .mt-name { font-weight: 700; font-size: 14px; color: var(--text); }
+    .mini-ticket .mt-dept { font-size: 11px; color: var(--text-secondary); }
+    .mini-ticket .mt-code { font-size: 12px; font-family: monospace; color: var(--primary); font-weight: 600; margin-top: 2px; }
+    .mini-ticket .mt-barcode { width: 110px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .mini-ticket .mt-barcode svg { max-width: 100%; height: 40px; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-gold {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f5c518, #d4a017);
+      color: #1a1a2e;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(212, 160, 23, 0.3); }
+
+    .btn-link {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      font-family: var(--font);
+    }
+    .btn-link:hover { color: var(--primary); }
+
+    .divider-text {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-light);
+      margin: 12px 0;
+      position: relative;
+    }
+    .divider-text::before,
+    .divider-text::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: var(--border);
+    }
+    .divider-text::before { left: 0; }
+    .divider-text::after { right: 0; }
+
+    /* TICKET */
+    .ticket-card {
+      width: min(420px, 94vw);
+      background: #1a1a2e;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      overflow: hidden;
+      position: relative;
+    }
+    .ticket-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(90deg, var(--primary) 0px, var(--primary) 20px, #f5c518 20px, #f5c518 40px);
+    }
+    .ticket-inner {
+      display: flex;
+      background: #fff;
+      margin-top: 6px;
+    }
+    .ticket-main {
+      flex: 1;
+      padding: 24px 20px 20px;
+      position: relative;
+    }
+    .ticket-stub {
+      width: 100px;
+      flex-shrink: 0;
+      background: #f8f4ec;
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-left: 2px dashed #ccc;
+      position: relative;
+    }
+    .ticket-stub::before, .ticket-stub::after {
+      content: '';
+      position: absolute;
+      left: -11px;
+      width: 20px; height: 20px;
+      background: #1a1a2e;
+      border-radius: 50%;
+    }
+    .ticket-stub::before { top: -10px; }
+    .ticket-stub::after { bottom: -10px; }
+    .ticket-brand {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .ticket-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--text);
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+    .ticket-venue-line {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+    .ticket-divider {
+      border: none;
+      border-top: 1px dashed #ddd;
+      margin: 10px 0;
+    }
+    .ticket-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 16px;
+      text-align: left;
+      margin: 10px 0;
+    }
+    .ticket-info-item .tilbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      color: #999;
+      letter-spacing: 0.5px;
+    }
+    .ticket-info-item .tival {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .ticket-guest {
+      margin: 8px 0;
+      text-align: left;
+    }
+    .ticket-guest .tglbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      color: #999;
+      letter-spacing: 0.5px;
+    }
+    .ticket-guest .tgval {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .ticket-barcode-area {
+      margin: 10px 0 6px;
+    }
+    .ticket-barcode-area svg {
+      max-width: 100%;
+    }
+    .ticket-code-text {
+      font-size: 10px;
+      color: #999;
+      font-family: monospace;
+      letter-spacing: 1px;
+    }
+
+    /* Stub content */
+    .stub-barcode svg {
+      max-width: 100%;
+      height: 50px;
+    }
+    .stub-code {
+      font-size: 9px;
+      font-family: monospace;
+      color: #666;
+      margin: 8px 0;
+      text-align: center;
+      word-break: break-all;
+    }
+    .stub-label {
+      font-size: 8px;
+      text-transform: uppercase;
+      color: #999;
+      letter-spacing: 1px;
+    }
+    .stub-price {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 4px 0;
+    }
+
+    @media (max-width: 600px) {
+      .ticket-stub { width: 70px; padding: 14px 8px; }
+      .ticket-info-grid { grid-template-columns: 1fr; }
+      .ticket-title { font-size: 20px; }
+      .tr-inline { flex-direction: column; gap: 6px; }
+      .tr-inline select { width: 100%; }
+    }
+
+    .ticket-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 16px 0 8px;
+    }
+    .act-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font);
+      color: #fff;
+    }
+    .act-btn.save { background: #2e7d32; }
+    .act-btn.share { background: #1976d2; }
+    .act-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+    .ticket-chip-list {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 8px 28px;
+    }
+    .ticket-chip {
+      background: rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 11px;
+      transition: all 0.15s;
+    }
+    .ticket-chip.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .ticket-chip:hover { transform: translateY(-1px); }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-light);
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    /* Custom Select */
+    .cs-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .cs-trigger {
+      width: 100%;
+      padding: 12px 38px 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font);
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+      color: inherit;
+      cursor: pointer;
+      text-align: left;
+      box-sizing: border-box;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .cs-trigger:hover { border-color: #bbb; background-color: #fafafa; }
+    .cs-trigger.open { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(229,9,20,0.08); background-color: #fff; }
+    .cs-trigger .cs-placeholder { color: #999; }
+    .cs-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      z-index: 999;
+      max-height: 260px;
+      overflow-y: auto;
+      display: none;
+      padding: 4px;
+    }
+    .cs-dropdown.open { display: block; }
+    .cs-group-label {
+      padding: 6px 12px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      pointer-events: none;
+    }
+    .cs-option {
+      padding: 9px 12px;
+      font-size: 13px;
+      font-family: var(--font);
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.1s;
+      color: var(--text);
+    }
+    .cs-option:hover { background: #f5f5f5; }
+    .cs-option.selected { background: var(--primary); color: #fff; font-weight: 600; }
+    .cs-option.selected:hover { background: #c00812; }
+    .tr-inline .cs-trigger {
+      padding: 10px 30px 10px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      background-size: 10px 7px;
+    }
+    .tr-inline .cs-trigger.open { box-shadow: 0 0 0 2px rgba(229,9,20,0.06); }
+    .tr-inline .cs-option { font-size: 12px; padding: 7px 10px; }
+    .tr-inline .cs-group-label { font-size: 10px; padding: 4px 10px 2px; }
+    .tr-inline .cs-dropdown { max-height: 200px; }
+
+    @media (max-width: 768px) {
+      .movie-title { font-size: 1.8rem; }
+      .movie-info { padding: 20px; }
+      .venue-card { flex-direction: column; align-items: flex-start; }
+      .venue-date-time { width: 100%; justify-content: space-around; }
+      .modal-header { padding: 20px 20px 0; }
+      .modal-body { padding: 16px 20px; }
+      .ticket-card { width: 94vw; }
+      .ticket-details { min-width: auto; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">
+        <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="College Logo" style="height:36px;width:auto;border-radius:6px;" onerror="this.style.display='none'">
+        <div>
+          <div class="brand-text">Pazhassiraja College</div>
+          <div class="brand-sub">Pulpally</div>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-outline-nav" onclick="openModal('find-modal')"><i class="fas fa-ticket-alt"></i> My Ticket</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- MOVIE HERO -->
+    <div class="movie-hero">
+      <div class="movie-poster">
+        <div class="poster-placeholder">
+          <div style="text-align:center;z-index:1;">
+          <i class="fas fa-film" style="font-size:72px;color:rgba(255,255,255,0.3);display:block;margin-bottom:8px;"></i>
+          <div style="color:rgba(255,255,255,0.5);font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;">CeniNova Poster</div>
+        </div>
+          <div class="label" id="poster-label">Movie Poster</div>
+        </div>
+      </div>
+      <div class="movie-info">
+        <div class="movie-badge">LIT - FEST</div>
+        <h1 class="movie-title" id="movie-title">Movie Night</h1>
+        <p class="movie-tagline" id="movie-tagline">Department of English — Special Screening</p>
+
+        <div class="movie-meta">
+          <span class="meta-chip rating"><span id="movie-rating">—</span></span>
+          <span class="meta-chip lang"><span id="movie-language">English</span></span>
+          <span class="meta-chip genre"><span id="movie-genre">—</span></span>
+          <span class="meta-chip"><span id="movie-duration">—</span></span>
+          <span class="meta-chip"><span id="movie-format">2D</span></span>
+        </div>
+
+        <div class="movie-price-row">
+          <div class="movie-price">₹<span id="ticket-price">15</span> <small>per ticket</small></div>
+          <button class="btn-book-now" id="btn-book"><i class="fas fa-ticket-alt"></i> Book Tickets</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VENUE CARD -->
+    <div class="venue-card">
+      <div class="venue-info">
+        <div class="venue-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div class="venue-detail">
+          <div class="name" id="venue-name">Chithrashala</div>
+          <div class="addr" id="venue-addr">Pazhassiraja College, Pulpally, Wayanad</div>
+        </div>
+      </div>
+      <div class="venue-date-time">
+        <div class="dt-item">
+          <div class="dt-val" id="show-date">TBD</div>
+          <div class="dt-lbl">Date</div>
+        </div>
+        <div class="dt-item">
+          <div class="dt-val" id="show-time">TBD</div>
+          <div class="dt-lbl">Time</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFO SECTION -->
+    <div class="section">
+      <div class="section-title"><i class="fas fa-info-circle"></i> About the Event</div>
+      <div class="info-grid">
+        <div class="info-box">
+          <div class="num" id="total-seats">—</div>
+          <div class="lbl">Total Seats</div>
+        </div>
+        <div class="info-box">
+          <div class="num" id="seats-available">—</div>
+          <div class="lbl">Seats Available</div>
+        </div>
+        <div class="info-box">
+          <div class="num">₹<span id="price-per-ticket">15</span></div>
+          <div class="lbl">Ticket Price</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Pazhassiraja College, Pulpally &mdash; CeniNova
+    </footer>
+  </div>
+
+  <!-- BOOKING MODAL -->
+  <div id="booking-modal" class="overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Book Tickets</div>
+          <div class="modal-sub" id="modal-movie-name">Movie Night</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('booking-modal')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="booking-form">
+          <div class="form-group">
+            <label>Phone Number (shared for all tickets)</label>
+            <input type="tel" id="user-phone" placeholder="Phone number" required>
+          </div>
+
+          <div class="form-group">
+            <label>Tickets <span style="font-weight:400;color:#999;font-size:12px;">(each person needs their own details)</span></label>
+            <div id="ticket-rows"></div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <button type="button" class="btn-sm" onclick="addTicketRow()"><i class="fas fa-plus"></i> Add Person</button>
+              <button type="button" class="btn-sm" onclick="removeTicketRow()" style="background:#e53935;"><i class="fas fa-minus"></i> Remove</button>
+            </div>
+          </div>
+
+          <!-- Booking Summary -->
+          <div class="booking-summary" id="booking-summary">
+            <div class="summary-row">
+              <span>Tickets</span>
+              <span><span id="summary-qty">1</span> x ₹<span id="summary-unit-price">15</span></span>
+            </div>
+            <div class="summary-row total">
+              <span>Total</span>
+              <span>₹<span id="summary-total">15</span></span>
+            </div>
+          </div>
+
+          <!-- PAYMENT -->
+          <div class="payment-box" id="payment-box">
+            <div style="display:flex;gap:10px;justify-content:center;margin-bottom:12px;">
+              <label style="cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--border);font-size:13px;font-weight:600;transition:all 0.2s;background:var(--primary);color:#fff;border-color:var(--primary);" id="pay-cash-lbl">
+                <input type="radio" name="payMethod" value="cash" checked onchange="togglePayMethod()" style="display:none;"> Cash
+              </label>
+              <label style="cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--border);font-size:13px;font-weight:600;transition:all 0.2s;" id="pay-upi-lbl">
+                <input type="radio" name="payMethod" value="upi" onchange="togglePayMethod()" style="display:none;"> UPI
+              </label>
+            </div>
+            <div class="pay-amt">₹<span id="pay-amount">15</span></div>
+            <div id="upi-section" style="display:none;">
+              <div id="upi-qr-container"></div>
+              <div class="upi-id-display" id="upi-id-display">Pay to: <strong id="upi-id-text">—</strong></div>
+              <div class="upi-app-links" id="upi-app-links"></div>
+              <div style="font-size:12px;color:var(--text-secondary);margin:8px 0;">
+                After paying, enter the UPI Transaction ID / UTR below
+              </div>
+              <div class="form-group" style="margin:0;">
+                <input type="text" id="upi-trans-id" placeholder="UPI Transaction ID / UTR">
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="btn-confirm">Confirm &amp; Generate Ticket</button>
+        </form>
+        <button class="btn-link" onclick="closeModal('booking-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TICKET MODAL -->
+  <div id="ticket-modal" class="overlay">
+    <div>
+      <div style="background:#1a1a2e;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.5);overflow:hidden;width:min(460px,94vw);">
+        <div style="background:repeating-linear-gradient(90deg,var(--primary) 0px,var(--primary) 20px,#f5c518 20px,#f5c518 40px);height:6px;"></div>
+        <div style="background:#fff;padding:20px;">
+          <div style="text-align:center;position:relative;">
+            <div style="position:absolute;top:0;right:0;background:linear-gradient(135deg,#f5c518,#d4a017);color:#1a1a2e;font-size:8px;font-weight:800;padding:3px 8px;border-radius:4px;letter-spacing:0.5px;">LIT-FEST</div>
+            <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" style="height:36px;margin-bottom:2px;" alt="College Logo">
+            <div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--primary);font-weight:700;">CeniNova &bull; Dept of English</div>
+            <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--text);line-height:1.2;">CeniNova Film Fest</div>
+            <div style="font-size:10px;color:var(--text-secondary);margin-bottom:8px;"><i class="fas fa-map-marker-alt"></i> Pazhassiraja College, Pulpally</div>
+            <div style="font-size:11px;color:#666;"><i class="fas fa-phone"></i> <span id="tkt-phone">—</span></div>
+          </div>
+
+          <hr style="border:none;border-top:1px dashed #ddd;margin:12px 0;">
+
+          <div id="multi-ticket-list" style="display:flex;flex-direction:column;gap:10px;max-height:55vh;overflow-y:auto;"></div>
+
+          <hr style="border:none;border-top:1px dashed #ddd;margin:12px 0;">
+
+          <div id="ticket-list" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:8px;"></div>
+
+          <div style="display:flex;gap:8px;">
+            <button class="act-btn save" onclick="saveTicket()" style="flex:1;"><i class="fas fa-download"></i> Save All</button>
+            <button class="act-btn share" onclick="shareTicket()" style="flex:1;"><i class="fas fa-share-alt"></i> Share</button>
+            <button class="btn-link" onclick="closeModal('ticket-modal')" style="flex:1;margin:0;">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIND TICKET MODAL -->
+  <div id="find-modal" class="overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Find Your Ticket</div>
+          <div class="modal-sub">Search by code or by name &amp; phone</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('find-modal')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="find-form">
+          <div class="form-group">
+            <label>Ticket Code</label>
+            <input type="text" id="find-code" placeholder="e.g. ABC-1234">
+          </div>
+          <div class="divider-text">OR</div>
+          <div class="form-group">
+            <label>Department</label>
+            <select id="find-dept"><option value="">Select Department</option></select>
+          </div>
+          <div class="form-group">
+            <label>Year of Study</label>
+            <select id="find-year"><option value="">Year of Study</option></select>
+          </div>
+          <div class="form-group">
+            <label>Roll Number</label>
+            <select id="find-roll"><option value="">Roll No</option></select>
+          </div>
+          <button type="submit" class="btn-primary">Search</button>
+        </form>
+        <button class="btn-link" onclick="closeModal('find-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+
+
+  <script>
+    // ========== CONFIG — Edit these to match your event ==========
+    const CONFIG = {
+      eventName: 'CeniNova',
+      eventTagline: 'Pazhassiraja College, Pulpally',
+      eventDate: 'August 4, 2026',
+      eventTime: '2:00 PM',
+      venueName: 'Chithrashala',
+      venueAddress: 'Pazhassiraja College, Pulpally, Wayanad',
+      totalSeats: 100,
+      ticketPrice: 15,
+      rating: '—',
+      language: 'English',
+      genre: '—',
+      duration: '—',
+      format: '2D',
+      upiId: 'arshinmrelju@okicici',
+      upiName: 'English Dept',
+      adminEmail: 'jesusyouthprc@gmail.com',
+      firebase: {
+        apiKey: "AIzaSyCj0JINS_OP68aMRXEXTIEeqbjbcGOXH58",
+        authDomain: "ceninovaprc.firebaseapp.com",
+        databaseURL: "https://ceninovaprc-default-rtdb.firebaseio.com",
+        projectId: "ceninovaprc",
+        storageBucket: "ceninovaprc.firebasestorage.app",
+        messagingSenderId: "491724769824",
+        appId: "1:491724769824:web:7aa6550c1f72db1b68ca45"
+      }
+    };
+    // ============================================================
+
+    // Apply config
+    document.getElementById('movie-title').textContent = CONFIG.eventName;
+    document.getElementById('movie-tagline').textContent = CONFIG.eventTagline;
+    document.getElementById('movie-rating').textContent = CONFIG.rating;
+    document.getElementById('movie-language').textContent = CONFIG.language;
+    document.getElementById('movie-genre').textContent = CONFIG.genre;
+    document.getElementById('movie-duration').textContent = CONFIG.duration;
+    document.getElementById('movie-format').textContent = CONFIG.format;
+    document.getElementById('ticket-price').textContent = CONFIG.ticketPrice;
+    document.getElementById('price-per-ticket').textContent = CONFIG.ticketPrice;
+    document.getElementById('summary-unit-price').textContent = CONFIG.ticketPrice;
+    document.getElementById('modal-movie-name').textContent = CONFIG.eventName;
+    document.getElementById('venue-name').textContent = CONFIG.venueName;
+    document.getElementById('venue-addr').textContent = CONFIG.venueAddress;
+    document.getElementById('show-date').textContent = CONFIG.eventDate;
+    document.getElementById('show-time').textContent = CONFIG.eventTime;
+    document.getElementById('total-seats').textContent = CONFIG.totalSeats;
+    document.getElementById('upi-id-text').textContent = CONFIG.upiId;
+    if (CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
+      document.getElementById('upi-id-display').style.display = 'block';
+    } else {
+      document.getElementById('upi-id-display').style.display = 'none';
+    }
+
+    // Firebase
+    firebase.initializeApp(CONFIG.firebase);
+    const db = firebase.database();
+    const auth = firebase.auth();
+    const bookingsRef = db.ref('movie_bookings');
+
+    auth.signInAnonymously().catch(() => {});
+
+    let currentBooking = null;
+    let myTickets = [];
+    let activeCode = null;
+
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    const DEPARTMENTS = [
+      { group: 'Undergraduate', items: ['B.A Economics','B.A Econometrics and Data Management','B.A English Language and Literature','B.A History','B.Sc Microbiology','Bachelor of Travel and Tourism Management (BTTM)','B.A Journalism and Mass Communication','B.Sc Biochemistry'] },
+      { group: 'Postgraduate', items: ['M.A Journalism & Mass Communication','M Com','M.A Economics','Master of Travel and Tourism Management (MTTM)','M.Sc Microbiology','M.Sc Biochemistry'] }
+    ];
+    let ticketRows = 1;
+
+    function makeDeptHTML(selected) {
+      let h = '<option value="">Select Department</option>';
+      DEPARTMENTS.forEach(g => {
+        h += '<optgroup label="' + g.group + '">';
+        g.items.forEach(d => { h += '<option value="' + d + '"' + (d === selected ? ' selected' : '') + '>' + d + '</option>'; });
+        h += '</optgroup>';
+      });
+      return h;
+    }
+
+    function makeYearHTML(selected) {
+      let h = '<option value="">Year of Study</option>';
+      for (let i = 1; i <= 4; i++) h += '<option value="' + i + '"' + (i === selected ? ' selected' : '') + '>' + i + '</option>';
+      return h;
+    }
+
+    function makeRollHTML(selected) {
+      let h = '<option value="">Roll No</option>';
+      for (let i = 1; i <= 100; i++) h += '<option value="' + i + '"' + (i === selected ? ' selected' : '') + '>' + i + '</option>';
+      return h;
+    }
+
+    function renderTicketRows() {
+      // Preserve existing values before rebuilding
+      const existing = document.querySelectorAll('.ticket-row');
+      const saved = [];
+      existing.forEach(r => {
+        saved.push({
+          name: r.querySelector('.tr-name')?.value || '',
+          dept: r.querySelector('.tr-dept')?.value || '',
+          year: r.querySelector('.tr-year')?.value || '',
+          roll: parseInt(r.querySelector('.tr-roll')?.value) || ''
+        });
+      });
+
+      const container = document.getElementById('ticket-rows');
+      container.innerHTML = '';
+      for (let i = 0; i < ticketRows; i++) {
+        const prev = saved[i] || {};
+        const row = document.createElement('div');
+        row.className = 'ticket-row';
+        row.innerHTML =
+          '<div class="ticket-row-header">Person ' + (i + 1) + '</div>' +
+          '<input type="text" class="tr-name" placeholder="Full Name" value="' + (prev.name || '').replace(/"/g, '&quot;') + '" required>' +
+          '<div class="tr-inline">' +
+            '<select class="tr-dept" required>' + makeDeptHTML(prev.dept) + '</select>' +
+            '<select class="tr-year" required>' + makeYearHTML(prev.year) + '</select>' +
+            '<select class="tr-roll" required>' + makeRollHTML(prev.roll) + '</select>' +
+          '</div>';
+        container.appendChild(row);
+        row.querySelectorAll('select').forEach(customSelect);
+      }
+      updateSummary();
+    }
+
+    function addTicketRow() {
+      if (ticketRows >= 10) return alert('Max 10 tickets.');
+      ticketRows++;
+      renderTicketRows();
+    }
+
+    function removeTicketRow() {
+      if (ticketRows <= 1) return alert('Need at least 1 ticket.');
+      ticketRows--;
+      renderTicketRows();
+    }
+
+    function getRowData() {
+      const rows = document.querySelectorAll('.ticket-row');
+      const data = [];
+      for (const r of rows) {
+        const name = r.querySelector('.tr-name').value.trim();
+        const dept = r.querySelector('.tr-dept').value;
+        const year = r.querySelector('.tr-year').value;
+        const roll = r.querySelector('.tr-roll').value;
+        if (!name || !dept || !year || !roll) return null;
+        data.push({ name, dept, year: Number(year), roll: Number(roll) });
+      }
+      return data;
+    }
+
+    function togglePayMethod() {
+      const isUpi = document.querySelector('input[name="payMethod"]:checked').value === 'upi';
+      document.getElementById('upi-section').style.display = isUpi ? 'block' : 'none';
+      document.getElementById('pay-cash-lbl').style.cssText = isUpi
+        ? 'cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--border);font-size:13px;font-weight:600;transition:all 0.2s;'
+        : 'cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--primary);font-size:13px;font-weight:600;transition:all 0.2s;background:var(--primary);color:#fff;';
+      document.getElementById('pay-upi-lbl').style.cssText = isUpi
+        ? 'cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--primary);font-size:13px;font-weight:600;transition:all 0.2s;background:var(--primary);color:#fff;'
+        : 'cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--border);font-size:13px;font-weight:600;transition:all 0.2s;';
+      if (isUpi && CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
+        const total = ticketRows * CONFIG.ticketPrice;
+        generateUPIQR(total, 'TKT-' + Date.now());
+      }
+    }
+
+    function updateSummary() {
+      const total = ticketRows * CONFIG.ticketPrice;
+      document.getElementById('summary-qty').textContent = ticketRows;
+      document.getElementById('summary-total').textContent = total;
+      document.getElementById('pay-amount').textContent = total;
+      if (document.querySelector('input[name="payMethod"]:checked')?.value === 'upi' && CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
+        generateUPIQR(total, 'TKT-' + Date.now());
+      }
+    }
+
+    // UPI QR
+    function generateUPIQR(amount, refId) {
+      const container = document.getElementById('upi-qr-container');
+      const apps = document.getElementById('upi-app-links');
+      container.innerHTML = '';
+      apps.innerHTML = '';
+
+      if (!CONFIG.upiId || CONFIG.upiId === 'example@upi') {
+        container.innerHTML = '<p style="color:#999;font-size:13px;">Set your UPI ID in settings.</p>';
+        return;
+      }
+
+      const upiUrl = 'upi://pay?pa=' + encodeURIComponent(CONFIG.upiId) +
+        '&pn=' + encodeURIComponent(CONFIG.upiName) +
+        '&am=' + amount.toFixed(2) +
+        '&cu=INR&tr=' + encodeURIComponent(refId);
+
+      // QR code via QR Server API (reliable, no library needed)
+      const qrImg = document.createElement('img');
+      qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(upiUrl);
+      qrImg.alt = 'UPI QR Code';
+      qrImg.style.cssText = 'border-radius:10px;background:#fff;padding:8px;box-shadow:0 2px 10px rgba(0,0,0,0.08);width:180px;height:180px;';
+      container.appendChild(qrImg);
+
+      // UPI app links
+      [
+        { name: 'Google Pay' },
+        { name: 'PhonePe' },
+        { name: 'Paytm' },
+        { name: 'BHIM' }
+      ].forEach(a => {
+        const el = document.createElement('a');
+        el.className = 'upi-app-btn';
+        el.href = upiUrl;
+        el.target = '_blank';
+        el.textContent = a.name;
+        apps.appendChild(el);
+      });
+    }
+
+    function generateCode() {
+      const prefix = 'ED';
+      return prefix + '-' + Math.floor(1000 + Math.random() * 9000);
+    }
+
+    // Booking
+    document.getElementById('btn-book').addEventListener('click', () => {
+      ticketRows = 1;
+      document.getElementById('upi-trans-id').value = '';
+      // Reset to Cash
+      document.querySelector('input[name="payMethod"][value="cash"]').checked = true;
+      togglePayMethod();
+      renderTicketRows();
+      openModal('booking-modal');
+    });
+
+    document.getElementById('booking-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-confirm');
+      const phone = document.getElementById('user-phone').value.trim();
+      const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+      const upiTransId = document.getElementById('upi-trans-id').value.trim();
+      const rows = getRowData();
+
+      if (!phone) { alert('Enter phone number.'); return; }
+      if (!rows) { alert('Fill all fields for each person.'); return; }
+      if (payMethod === 'upi' && !upiTransId) { alert('Enter UPI Transaction ID for UPI payment.'); return; }
+
+      const paymentStatus = payMethod === 'cash' ? 'pending' : 'paid';
+
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+
+      const total = ticketRows * CONFIG.ticketPrice;
+      const codes = rows.map(() => generateCode());
+      const timestamp = Date.now();
+      const ticketHolders = rows.map((r, i) => ({ ...r, code: codes[i] }));
+
+      // Save locally
+      try {
+        localStorage.setItem('my_ticket', JSON.stringify({ ticketHolders, phone, qty: ticketRows, amount: total, code: codes[0], paymentStatus, timestamp }));
+        const arr = JSON.parse(localStorage.getItem('my_tickets') || '[]');
+        arr.unshift({ ticketHolders, phone, qty: ticketRows, amount: total, code: codes[0], paymentStatus, timestamp });
+        localStorage.setItem('my_tickets', JSON.stringify(arr.slice(0, 50)));
+      } catch(e) {}
+
+      // Try saving to Firebase with a timeout
+      const saveToFirebase = () => {
+        return new Promise((resolve) => {
+          const timer = setTimeout(() => { console.warn('Firebase save timed out'); resolve(false); }, 8000);
+          const doSave = () => {
+            const p = auth.currentUser ? Promise.resolve() : auth.signInAnonymously();
+            p.then(() => {
+              const newRef = bookingsRef.push();
+              return newRef.set({
+                ticketHolders, phone, tickets: ticketRows, amount: total,
+                ticketCodes: codes, primaryCode: codes[0],
+                payMethod, upiTransId: payMethod === 'upi' ? upiTransId : '',
+                paymentStatus,
+                timestamp, createdAt: new Date(timestamp).toISOString(),
+                attended: false
+              });
+            }).then(() => { clearTimeout(timer); resolve(true); })
+              .catch(err => { clearTimeout(timer); console.warn('Firebase save error:', err); resolve(false); });
+          };
+          doSave();
+        });
+      };
+
+      saveToFirebase().then(() => {
+        closeModal('booking-modal');
+        showTicket(ticketHolders, phone, ticketRows, total, codes, paymentStatus);
+        btn.disabled = false;
+        btn.textContent = 'Confirm & Generate Ticket';
+      });
+    });
+
+    function showTicket(ticketHolders, phone, tktQty, amount, codes, paymentStatus) {
+      document.getElementById('tkt-phone').textContent = phone;
+      const container = document.getElementById('multi-ticket-list');
+      container.innerHTML = ticketHolders.map((t, i) => {
+        const code = codes[i] || t.code;
+        const barcodeId = 'bc-' + i + '-' + Date.now();
+        setTimeout(() => {
+          try {
+            JsBarcode('#' + barcodeId, code, {
+              format: "CODE128", lineColor: "#333", width: 1.5, height: 35,
+              displayValue: false, background: "transparent", margin: 0
+            });
+          } catch(e) {}
+        }, 50);
+        return '<div class="mini-ticket">' +
+          '<div class="mt-info">' +
+            '<div class="mt-name">' + t.name + '</div>' +
+            '<div class="mt-dept">' + t.dept + ' &bull; Year ' + t.year + ' &bull; Roll ' + t.roll + '</div>' +
+            '<div class="mt-code">' + code + '</div>' +
+          '</div>' +
+          '<div class="mt-barcode"><svg id="' + barcodeId + '"></svg></div>' +
+        '</div>';
+      }).join('');
+
+      currentBooking = { ticketHolders, phone, qty: tktQty, amount, code: codes[0], paymentStatus };
+
+      // history chips
+      try { myTickets = JSON.parse(localStorage.getItem('my_tickets') || '[]'); } catch(e) { myTickets = []; }
+      activeCode = codes[0];
+      const listEl = document.getElementById('ticket-list');
+      listEl.innerHTML = myTickets.map((t, idx) =>
+        '<div class="ticket-chip ' + (t.code === activeCode ? 'active' : '') + '" data-idx="' + idx + '">' +
+          ((t.ticketHolders ? t.ticketHolders[0].name : t.name) + ' &bull; ' + t.code) +
+        '</div>'
+      ).join('');
+      listEl.querySelectorAll('.ticket-chip').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = parseInt(el.getAttribute('data-idx'));
+          const t = myTickets[idx];
+          if (!t) return;
+          if (t.ticketHolders) {
+            showTicket(t.ticketHolders, t.phone, t.qty, t.amount, t.ticketHolders.map(h => h.code), t.paymentStatus);
+          } else {
+            showTicket([{name:t.name, dept:t.dept||'—', year:t.year||'—', roll:t.roll||'—'}], t.phone, t.qty, t.amount, [t.code], t.paymentStatus);
+          }
+        });
+      });
+
+      openModal('ticket-modal');
+      createConfetti();
+    }
+
+    // Populate find-form dropdowns
+    document.getElementById('find-dept').innerHTML = makeDeptHTML();
+    document.getElementById('find-year').innerHTML = makeYearHTML();
+    document.getElementById('find-roll').innerHTML = makeRollHTML();
+
+    // Find ticket
+    document.getElementById('find-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = document.getElementById('find-code').value.trim().toUpperCase();
+      const fdept = document.getElementById('find-dept').value;
+      const fyear = document.getElementById('find-year').value;
+      const froll = document.getElementById('find-roll').value;
+
+      if (!code && (!fdept || !fyear || !froll)) return alert('Enter Code OR Department, Year & Roll.');
+
+      const btn = e.target.querySelector('.btn-primary');
+      btn.disabled = true; btn.textContent = 'Searching...';
+
+      const byCode = () =>
+        bookingsRef.orderByChild('primaryCode').equalTo(code).once('value').then(s => {
+          if (s.exists()) {
+            const v = Object.values(s.val())[0];
+            showTicket(v.ticketHolders || [{name:v.name,dept:v.dept||'—',year:v.year||'—',roll:v.roll||'—'}], v.phone, v.tickets, v.amount, v.ticketCodes || [v.primaryCode], v.paymentStatus);
+            closeModal('find-modal'); return true;
+          }
+          return false;
+        });
+
+      const byDeptRoll = () =>
+        bookingsRef.once('value').then(s => {
+          if (!s.exists()) return false;
+          const vals = Object.values(s.val());
+          const m = vals.find(v => {
+            const holders = v.ticketHolders || [{name:v.name,dept:v.dept,year:v.year,roll:v.roll}];
+            return holders.some(h => h.dept === fdept && String(h.year) === fyear && String(h.roll) === String(froll));
+          });
+          if (m) { showTicket(m.ticketHolders || [{name:m.name,dept:m.dept||'—',year:m.year||'—',roll:m.roll||'—'}], m.phone, m.tickets, m.amount, m.ticketCodes || [m.primaryCode], m.paymentStatus); closeModal('find-modal'); return true; }
+          return false;
+        });
+
+      let search;
+      if (code) search = byCode();
+      else search = byDeptRoll();
+
+      search.then(found => {
+        if (!found) alert('Ticket not found.');
+      }).catch(() => alert('Error searching.')).finally(() => {
+        btn.disabled = false; btn.textContent = 'Search';
+      });
+    });
+
+    function saveTicket() {
+      const el = document.getElementById('ticket-modal').querySelector('div > div');
+      html2canvas(el, { backgroundColor: null, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Tickets-' + (currentBooking?.code || 'ticket') + '.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    function shareTicket() {
+      const el = document.getElementById('ticket-modal').querySelector('div > div');
+      const btn = document.querySelector('.act-btn.share');
+      const orig = btn.innerHTML;
+      btn.innerHTML = 'Loading...';
+      html2canvas(el, { backgroundColor: null, scale: 2 }).then(canvas => {
+        canvas.toBlob(blob => {
+          const file = new File([blob], 'tickets.png', { type: 'image/png' });
+          if (navigator.share) {
+            navigator.share({ title: 'Movie Tickets', text: 'Booked our tickets!', files: [file] }).catch(() => {});
+          } else { saveTicket(); }
+          btn.innerHTML = orig;
+        });
+      });
+    }
+
+    function createConfetti() {
+      const colors = ['#e50914', '#f5c518', '#2e7d32', '#1976d2', '#fff'];
+      for (let i = 0; i < 40; i++) {
+        const c = document.createElement('div');
+        c.style.cssText = 'position:fixed;left:50%;top:50%;width:8px;height:8px;z-index:2001;border-radius:2px;pointer-events:none;';
+        c.style.background = colors[i % colors.length];
+        document.body.appendChild(c);
+        const a = Math.random() * Math.PI * 2;
+        const v = 3 + Math.random() * 5;
+        c.animate([
+          { transform: 'translate(0,0) scale(1) rotate(0deg)', opacity: 1 },
+          { transform: `translate(${Math.cos(a)*100*v}px,${Math.sin(a)*100*v}px) scale(0) rotate(720deg)`, opacity: 0 }
+        ], { duration: 1200 + Math.random() * 800, easing: 'cubic-bezier(0,.9,.57,1)', fill: 'forwards' }).onfinish = () => c.remove();
+      }
+    }
+
+
+
+    // Close on overlay click
+    document.querySelectorAll('.overlay').forEach(el => {
+      el.addEventListener('click', (e) => { if (e.target === el) el.classList.remove('active'); });
+    });
+
+    // Custom Select
+    function customSelect(sel) {
+      if (sel.dataset.cs) return;
+      sel.dataset.cs = '1';
+      sel.style.display = 'none';
+
+      const wrap = document.createElement('div');
+      wrap.className = 'cs-wrap';
+
+      const trigger = document.createElement('div');
+      trigger.className = 'cs-trigger';
+
+      const dd = document.createElement('div');
+      dd.className = 'cs-dropdown';
+
+      wrap.appendChild(trigger);
+      wrap.appendChild(dd);
+
+      function build() {
+        const val = sel.value;
+        trigger.innerHTML = '';
+        const span = document.createElement('span');
+        const selOpt = sel.options[sel.selectedIndex];
+        if (selOpt && selOpt.value) {
+          span.textContent = selOpt.textContent;
+        } else {
+          span.className = 'cs-placeholder';
+          span.textContent = sel.options[0]?.textContent || 'Select';
+        }
+        trigger.appendChild(span);
+
+        dd.innerHTML = '';
+        let group = null;
+        for (let i = 0; i < sel.options.length; i++) {
+          const opt = sel.options[i];
+          if (opt.parentElement.tagName === 'OPTGROUP' && opt.parentElement !== group) {
+            group = opt.parentElement;
+            const gl = document.createElement('div');
+            gl.className = 'cs-group-label';
+            gl.textContent = group.label;
+            dd.appendChild(gl);
+          }
+          const el = document.createElement('div');
+          el.className = 'cs-option';
+          if (opt.value === val) el.classList.add('selected');
+          el.textContent = opt.textContent;
+          el.dataset.value = opt.value;
+          el.addEventListener('click', () => {
+            sel.value = opt.value;
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+            closeAll();
+            build();
+          });
+          dd.appendChild(el);
+        }
+      }
+
+      function closeAll() {
+        document.querySelectorAll('.cs-dropdown.open').forEach(d => d.classList.remove('open'));
+        document.querySelectorAll('.cs-trigger.open').forEach(t => t.classList.remove('open'));
+      }
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dd.classList.contains('open');
+        closeAll();
+        if (!isOpen) {
+          dd.classList.add('open');
+          trigger.classList.add('open');
+        }
+      });
+
+      sel.addEventListener('change', build);
+
+      sel.parentNode.insertBefore(wrap, sel.nextSibling);
+      build();
+    }
+
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.cs-dropdown.open').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.cs-trigger.open').forEach(t => t.classList.remove('open'));
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('select:not([data-cs])').forEach(customSelect);
+    });
+    setTimeout(() => { document.querySelectorAll('select:not([data-cs])').forEach(customSelect); }, 200);
+  </script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</body>
+</html>
