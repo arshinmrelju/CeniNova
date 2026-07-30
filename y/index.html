@@ -561,6 +561,131 @@
       color: var(--primary);
     }
 
+    /* Upload Area */
+    .upload-area {
+      margin: 8px 0;
+    }
+    .upload-area .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      position: relative;
+    }
+    .upload-area .drop-zone:hover {
+      border-color: var(--primary);
+      background: rgba(229, 9, 20, 0.03);
+    }
+    .upload-area .drop-zone.dragover {
+      border-color: var(--primary);
+      background: rgba(229, 9, 20, 0.06);
+    }
+    .upload-area .preview-wrap {
+      position: relative;
+      display: none;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .upload-area .preview-wrap img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      display: block;
+    }
+    .upload-area .preview-wrap .remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .upload-area .preview-wrap .remove-btn:hover {
+      background: rgba(0,0,0,0.8);
+    }
+    .verify-status {
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .verify-status .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ocr-result-box {
+      margin-top: 8px;
+      padding: 10px;
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      font-size: 12px;
+      display: none;
+    }
+    .ocr-result-box.fail {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+    .ocr-result-box .info-row {
+      margin: 2px 0;
+    }
+    .ocr-result-box .info-row strong {
+      color: #166534;
+    }
+    .ocr-result-box.fail .info-row strong {
+      color: #991b1b;
+    }
+    .ocr-actions {
+      margin-top: 6px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .ocr-actions .btn-ok {
+      padding: 5px 14px;
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .ocr-actions .btn-ok:hover { background: #15803d; }
+    .ocr-actions .btn-ok:disabled { background: #86efac; cursor: default; }
+    .ocr-actions .btn-retry {
+      padding: 5px 14px;
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .ocr-actions .btn-retry:hover { background: #e5e7eb; }
+
     #upi-qr-container {
       display: flex;
       justify-content: center;
@@ -606,10 +731,18 @@
       background: #fff;
       border: 1.5px solid var(--border);
       border-radius: 10px;
-      padding: 12px 14px;
+      padding: 12px 14px 12px 18px;
       margin-bottom: 10px;
       transition: border-color 0.2s, box-shadow 0.2s;
-      border-left: 3px solid var(--primary);
+      position: relative;
+    }
+    .ticket-row::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 6px;
+      border-radius: 10px 0 0 10px;
+      background: repeating-linear-gradient(180deg, var(--primary) 0px, var(--primary) 10px, #f5c518 10px, #f5c518 20px);
     }
     .ticket-row:focus-within {
       border-color: var(--primary);
@@ -1225,11 +1358,34 @@
               <div class="upi-id-display" id="upi-id-display">Pay to: <strong id="upi-id-text">—</strong> <button type="button" onclick="copyUPIId()" style="margin-left:6px;padding:3px 8px;border-radius:4px;border:1px solid #ccc;background:#f9f9f9;font-size:11px;cursor:pointer;"><i class="fas fa-copy"></i> Copy</button></div>
               <div class="upi-app-links" id="upi-app-links"></div>
               <div style="font-size:12px;color:var(--text-secondary);margin:8px 0;">
-                After paying, enter the UPI Transaction ID / UTR below
+                After paying, upload a screenshot of your payment confirmation below
               </div>
-              <div class="form-group" style="margin:0;">
-                <input type="text" id="upi-trans-id" placeholder="UPI Transaction ID / UTR">
+              <div class="upload-area" id="upload-area">
+                <input type="file" id="screenshot-input" accept="image/*" style="display:none">
+                <div class="drop-zone" id="drop-zone">
+                  <i class="fas fa-cloud-upload-alt" style="font-size:28px;color:var(--primary);"></i>
+                  <div style="font-size:13px;color:var(--text-secondary);margin-top:6px;">Tap to upload payment screenshot</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:4px;">PNG, JPG or WEBP</div>
+                </div>
+                <div class="preview-wrap" id="preview-wrap">
+                  <img id="screenshot-preview" alt="Payment screenshot preview">
+                  <button type="button" class="remove-btn" id="btn-remove-screenshot" title="Remove"><i class="fas fa-times"></i></button>
+                </div>
               </div>
+              <div class="verify-status" id="verify-status"></div>
+              <div class="ocr-result-box" id="ocr-result">
+                <div style="font-weight:600;color:#166534;margin-bottom:4px;"><i class="fas fa-check-circle"></i> <span id="ocr-heading">Transaction ID Verified ✓</span></div>
+                <div class="info-row">UPI Ref: <strong id="ocr-ref-id">—</strong></div>
+                <div class="info-row" id="ocr-upi-row" style="display:none;color:#166534;font-weight:600;"><i class="fas fa-check-circle"></i> UPI ID: <strong id="ocr-upi-val"></strong> ✓</div>
+                <div style="font-size:10px;color:#666;margin-top:4px;" id="ocr-hint">Transaction ID detected successfully. Click confirm to proceed.</div>
+                <div class="ocr-actions">
+                  <button type="button" class="btn-ok" id="btn-confirm-payment">Confirm &amp; Proceed</button>
+                  <button type="button" class="btn-retry" id="btn-retry-ocr">Retry</button>
+                </div>
+              </div>
+              <input type="hidden" id="upi-trans-id" value="">
+              <input type="hidden" id="screenshot-b64" value="">
+              <input type="hidden" id="ocr-verified" value="false">
             </div>
           </div>
 
@@ -1315,6 +1471,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 
   <script>
@@ -1535,12 +1692,24 @@
     function togglePayMethod() {
       const isUpi = document.querySelector('input[name="payMethod"]:checked').value === 'upi';
       document.getElementById('upi-section').style.display = isUpi ? 'block' : 'none';
+      if (!isUpi) resetUploadUI();
       document.getElementById('pay-cash-lbl').style.cssText = isUpi
         ? 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;background:transparent;color:var(--text-secondary);'
         : 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--primary);font-size:13px;font-weight:600;background:var(--primary);color:#fff;';
       document.getElementById('pay-upi-lbl').style.cssText = isUpi
         ? 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--primary);font-size:13px;font-weight:600;background:var(--primary);color:#fff;'
         : 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;background:transparent;color:var(--text-secondary);';
+      
+      const ocrVerified = document.getElementById('ocr-verified').value === 'true';
+      const btnConfirm = document.getElementById('btn-confirm');
+      if (isUpi && !ocrVerified) {
+        btnConfirm.disabled = true;
+        btnConfirm.title = 'Please upload and verify your UPI payment screenshot to activate';
+      } else {
+        btnConfirm.disabled = false;
+        btnConfirm.title = '';
+      }
+
       if (isUpi && CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
         const total = ticketRows * CONFIG.ticketPrice;
         generateUPIQR(total, 'TKT-' + Date.now());
@@ -1597,6 +1766,317 @@
       });
     }
 
+    // ========== SCREENSHOT UPLOAD & OCR ==========
+    let currentScreenshotFile = null;
+
+    function resetUploadUI() {
+      currentScreenshotFile = null;
+      document.getElementById('screenshot-input').value = '';
+      document.getElementById('drop-zone').style.display = '';
+      document.getElementById('preview-wrap').style.display = 'none';
+      document.getElementById('screenshot-preview').src = '';
+      document.getElementById('verify-status').style.display = 'none';
+      document.getElementById('verify-status').innerHTML = '';
+      document.getElementById('ocr-result').style.display = 'none';
+      document.getElementById('ocr-result').className = 'ocr-result-box';
+      document.getElementById('ocr-verified').value = 'false';
+      document.getElementById('upi-trans-id').value = '';
+      document.getElementById('screenshot-b64').value = '';
+      document.getElementById('btn-retry-ocr').style.display = '';
+
+      const isUpi = document.querySelector('input[name="payMethod"]:checked')?.value === 'upi';
+      if (isUpi) {
+        const btnConfirm = document.getElementById('btn-confirm');
+        btnConfirm.disabled = true;
+        btnConfirm.title = 'Please upload and verify your UPI payment screenshot to activate';
+      }
+    }
+
+    function compressImage(file, maxW, quality) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            if (w > maxW) { h = h * maxW / w; w = maxW; }
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(c.toDataURL('image/jpeg', quality));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Preprocess image for OCR: higher res + grayscale for better text recognition
+    function preprocessForOCR(file, maxW) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            if (w > maxW) { h = h * maxW / w; w = maxW; }
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            // Convert to grayscale — Tesseract performs better on grayscale images
+            const imageData = ctx.getImageData(0, 0, w, h);
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+              const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+              data[i] = gray;
+              data[i + 1] = gray;
+              data[i + 2] = gray;
+            }
+            ctx.putImageData(imageData, 0, 0);
+            resolve(c.toDataURL('image/jpeg', 0.95));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById('drop-zone').addEventListener('click', () => {
+      document.getElementById('screenshot-input').click();
+    });
+
+    document.getElementById('drop-zone').addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.currentTarget.classList.add('dragover');
+    });
+    document.getElementById('drop-zone').addEventListener('dragleave', (e) => {
+      e.currentTarget.classList.remove('dragover');
+    });
+    document.getElementById('drop-zone').addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.currentTarget.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length) handleScreenshotFile(files[0]);
+    });
+
+    document.getElementById('screenshot-input').addEventListener('change', (e) => {
+      if (e.target.files.length) handleScreenshotFile(e.target.files[0]);
+    });
+
+    document.getElementById('btn-remove-screenshot').addEventListener('click', resetUploadUI);
+
+    function handleScreenshotFile(file) {
+      if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
+      if (file.size > 10 * 1024 * 1024) { alert('Image too large. Max 10 MB.'); return; }
+      currentScreenshotFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('screenshot-preview').src = e.target.result;
+        document.getElementById('drop-zone').style.display = 'none';
+        document.getElementById('preview-wrap').style.display = 'block';
+        document.getElementById('ocr-result').style.display = 'none';
+        document.getElementById('ocr-verified').value = 'false';
+        document.getElementById('upi-trans-id').value = '';
+        startVerification();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function startVerification() {
+      if (!currentScreenshotFile) return;
+      const statusEl = document.getElementById('verify-status');
+      statusEl.style.display = 'block';
+      if (typeof Tesseract === 'undefined') {
+        statusEl.innerHTML = '<span style="color:#e53935;">OCR library not available. You can enter the transaction ID manually.</span>';
+        setTimeout(() => showManualEntry(), 500);
+        return;
+      }
+      statusEl.innerHTML = '<span class="spinner"></span> Compressing image...';
+      let manualLinkShown = false;
+      const showManualLink = () => {
+        if (manualLinkShown) return;
+        manualLinkShown = true;
+        statusEl.innerHTML += '<div style="margin-top:8px;font-size:12px;"><button type="button" id="btn-manual-upi" style="background:none;border:none;color:var(--primary);text-decoration:underline;cursor:pointer;font-size:12px;">Enter UPI Transaction ID manually instead</button></div>';
+        document.getElementById('btn-manual-upi')?.addEventListener('click', () => {
+          showManualEntry();
+        });
+      };
+      setTimeout(showManualLink, 8000);
+      try {
+        const b64 = await compressImage(currentScreenshotFile, 1200, 0.92);
+        document.getElementById('screenshot-b64').value = b64;
+        statusEl.innerHTML = '<span class="spinner"></span> Preprocessing image for OCR...';
+        // Use grayscale + higher res image for OCR to improve text detection
+        const ocrB64 = await preprocessForOCR(currentScreenshotFile, 2000);
+        const text = await runOCR(ocrB64);
+        statusEl.innerHTML = '';
+        const result = parsePaymentText(text);
+        // Debug: see exact OCR output in browser console (F12 → Console)
+        console.log('%c[OCR Raw Text]', 'color:#e50914;font-weight:bold;', text);
+        console.log('%c[OCR Parsed]', 'color:#1a8a1a;font-weight:bold;', result);
+        showOcrResult(result);
+      } catch (err) {
+        console.error('Verification error:', err);
+        statusEl.innerHTML = '<span style="color:#e53935;">Error: ' + err.message + '</span>';
+        const refId = document.getElementById('upi-trans-id').value;
+        if (!refId) {
+          showOcrResult({ refId: null, amount: null, rawText: '' });
+        }
+      }
+    }
+    function showManualEntry() {
+      const manual = prompt('Enter your UPI Transaction ID / UTR manually:');
+      if (!manual || !manual.trim()) return;
+      document.getElementById('upi-trans-id').value = manual.trim();
+      document.getElementById('ocr-verified').value = 'true';
+      document.getElementById('verify-status').style.display = 'none';
+      const box = document.getElementById('ocr-result');
+      box.className = 'ocr-result-box';
+      box.style.display = 'block';
+      document.getElementById('ocr-heading').textContent = 'Manually Entered';
+      document.getElementById('ocr-ref-id').textContent = manual.trim();
+      document.getElementById('ocr-hint').textContent = 'Admin will verify the payment. Keep your screenshot as proof.';
+      document.getElementById('btn-confirm-payment').textContent = '✓ Confirmed';
+      document.getElementById('btn-confirm-payment').disabled = true;
+      document.getElementById('btn-retry-ocr').style.display = 'none';
+      const btnConfirm = document.getElementById('btn-confirm');
+      btnConfirm.disabled = false;
+      btnConfirm.title = '';
+      showToast('Transaction ID saved');
+    }
+
+    async function runOCR(imageB64) {
+      const statusEl = document.getElementById('verify-status');
+      statusEl.innerHTML = '<span class="spinner"></span> Loading OCR engine (first time downloads ~5MB, please wait)...';
+
+      const worker = await Tesseract.createWorker('eng', 1, {
+        logger: (m) => {
+          if (m.status === 'loading language traineddata') {
+            const pct = Math.round((m.progress || 0) * 100);
+            statusEl.innerHTML = '<span class="spinner"></span> Downloading OCR data ' + pct + '%...';
+          } else if (m.status === 'initializing api') {
+            statusEl.innerHTML = '<span class="spinner"></span> Initializing OCR engine...';
+          } else if (m.status === 'recognizing text') {
+            const pct = Math.round((m.progress || 0) * 100);
+            statusEl.innerHTML = '<span class="spinner"></span> Analyzing screenshot ' + pct + '%...';
+          }
+        }
+      });
+
+      const ocrPromise = worker.recognize(imageB64);
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('OCR timed out after 60s')), 60000));
+      const { data } = await Promise.race([ocrPromise, timeout]);
+      await worker.terminate();
+      return data.text;
+    }
+
+    function parsePaymentText(text) {
+      const upper = text.toUpperCase();
+
+      // ── Extract Transaction / Reference ID ──────────────────────────
+      const refPatterns = [
+        /\b(?:UTR|REF|REFERENCE|TRANSACTION|TXN|PAYMENT)\s*(?:ID|NO|NUMBER|#|REF)?\s*[:.\s]*([A-Z0-9]{6,25})/gi,
+        /\b(HDFC\d{6,20}|SBIN\d{6,20}|ICICI\d{6,20}|AXIS\d{6,20}|YESB\d{6,20}|PAYTM\d{6,20}|PHONEPE\d{6,20}|GOOGLEPAY\d{6,20}|BHIM\d{6,20})\b/gi,
+        /\bTXN[#\s]*(\w{6,20})\b/gi,
+        /\bREF[#\s]*(\w{6,20})\b/gi,
+        /\b([A-Z0-9]{12,20})\b/g
+      ];
+      let refId = null;
+      for (const pat of refPatterns) {
+        let m;
+        while ((m = pat.exec(upper)) !== null) {
+          const candidate = (m[1] || m[0]).replace(/[^A-Z0-9]/g, '');
+          if (candidate.length >= 6 && candidate.length <= 25) {
+            if (/^\d{12,20}$/.test(candidate) || /[A-Z]/.test(candidate)) {
+              refId = candidate; break;
+            }
+          }
+        }
+        if (refId) break;
+      }
+
+      // ── Extract UPI IDs & verify recipient ─────────────────────────────
+      const upiIds = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+/g) || [];
+      const upiVerified = upiIds.some(id => id.toLowerCase() === CONFIG.upiId.toLowerCase());
+
+      return { refId, rawText: text, upiVerified };
+    }
+
+    function showOcrResult(result) {
+      const box = document.getElementById('ocr-result');
+
+      // ── Show Reference ID ──────────────────────────────────────────
+      if (result.refId) {
+        document.getElementById('ocr-ref-id').textContent = result.refId;
+        document.getElementById('upi-trans-id').value = result.refId;
+      } else {
+        document.getElementById('ocr-ref-id').textContent = 'Not found';
+      }
+
+      // ── Show UPI ID Verification ───────────────────────────────────
+      const upiRow = document.getElementById('ocr-upi-row');
+      if (result.upiVerified) {
+        upiRow.style.display = '';
+        document.getElementById('ocr-upi-val').textContent = CONFIG.upiId;
+      } else {
+        upiRow.style.display = 'none';
+      }
+
+      // ── Overall status ─────────────────────────────────────────────
+      const ok = result.upiVerified || !!result.refId;
+
+      if (ok) {
+        box.className = 'ocr-result-box';
+        if (result.upiVerified && result.refId) {
+          document.getElementById('ocr-heading').textContent = 'Payment Verified ✓';
+          document.getElementById('ocr-hint').textContent = 'Recipient UPI ID & transaction ID confirmed.';
+        } else if (result.upiVerified) {
+          document.getElementById('ocr-heading').textContent = 'Recipient Verified ✓';
+          document.getElementById('ocr-hint').textContent = 'Recipient UPI ID (' + CONFIG.upiId + ') confirmed in screenshot.';
+        } else {
+          document.getElementById('ocr-heading').textContent = 'Transaction ID Detected ✓';
+          document.getElementById('ocr-hint').textContent = 'Transaction ID confirmed.';
+        }
+        document.getElementById('btn-confirm-payment').disabled = false;
+      } else {
+        box.className = 'ocr-result-box fail';
+        document.getElementById('ocr-heading').textContent = 'Verification Failed';
+        document.getElementById('ocr-hint').textContent = 'Could not verify payment. Enter transaction ID manually or retry with a clearer screenshot.';
+        document.getElementById('btn-confirm-payment').disabled = false;
+      }
+
+      box.style.display = 'block';
+    }
+
+    document.getElementById('btn-confirm-payment').addEventListener('click', () => {
+      let refId = document.getElementById('ocr-ref-id').textContent;
+
+      // No transaction ID found — ask for manual entry
+      if (!refId || refId === 'Not found' || refId === '—') {
+        const manual = prompt('No transaction ID was detected.\nPlease enter your UPI Transaction ID / UTR manually:');
+        if (!manual || !manual.trim()) return;
+        document.getElementById('upi-trans-id').value = manual.trim();
+        document.getElementById('ocr-ref-id').textContent = manual.trim();
+        refId = manual.trim();
+      }
+
+      document.getElementById('ocr-verified').value = 'true';
+      document.getElementById('btn-confirm-payment').textContent = '✓ Verified';
+      document.getElementById('btn-confirm-payment').disabled = true;
+      document.getElementById('ocr-hint').textContent = 'Payment verified. You can now generate your ticket below.';
+      const btnConfirm = document.getElementById('btn-confirm');
+      btnConfirm.disabled = false;
+      btnConfirm.title = '';
+      showToast('Payment verified ✓ — Ref: ' + refId);
+    });
+
+    document.getElementById('btn-retry-ocr').addEventListener('click', () => {
+      if (currentScreenshotFile) startVerification();
+      else resetUploadUI();
+    });
+
     function generateCode() {
       const prefix = 'ED';
       return prefix + '-' + Math.floor(1000 + Math.random() * 9000);
@@ -1606,6 +2086,9 @@
     document.getElementById('btn-book').addEventListener('click', () => {
       ticketRows = 1;
       document.getElementById('upi-trans-id').value = '';
+      document.getElementById('screenshot-b64').value = '';
+      document.getElementById('ocr-verified').value = 'false';
+      resetUploadUI();
       // Reset to Cash
       document.querySelector('input[name="payMethod"][value="cash"]').checked = true;
       togglePayMethod();
@@ -1618,12 +2101,17 @@
       const btn = document.getElementById('btn-confirm');
       const phone = document.getElementById('user-phone').value.trim();
       const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
-      const upiTransId = document.getElementById('upi-trans-id').value.trim();
+      const upiTransId = document.getElementById('upi-trans-id').value;
+      const screenshotB64 = document.getElementById('screenshot-b64').value;
+      const ocrVerified = document.getElementById('ocr-verified').value === 'true';
       const rows = getRowData();
 
       if (!phone) { alert('Enter phone number.'); return; }
       if (!rows) { alert('Fill all fields for each person.'); return; }
-      if (payMethod === 'upi' && !upiTransId) { alert('Enter UPI Transaction ID for UPI payment.'); return; }
+      if (payMethod === 'upi') {
+        if (!ocrVerified) { alert('Please upload and verify your UPI payment screenshot before proceeding.'); return; }
+        if (!upiTransId) { alert('Payment verification failed — no transaction ID detected. Please retry.'); return; }
+      }
 
       const paymentStatus = payMethod === 'cash' ? 'pending' : 'paid';
 
@@ -1655,6 +2143,8 @@
                 ticketHolders, phone, tickets: ticketRows, amount: total,
                 ticketCodes: codes, primaryCode: codes[0],
                 payMethod, upiTransId: payMethod === 'upi' ? upiTransId : '',
+                paymentScreenshot: payMethod === 'upi' ? screenshotB64 : '',
+                verifiedTransId: payMethod === 'upi' ? upiTransId : '',
                 paymentStatus,
                 timestamp, createdAt: new Date(timestamp).toISOString(),
                 attended: false

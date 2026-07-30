@@ -356,6 +356,21 @@
       box-shadow: var(--shadow-lg);
     }
     .scan-video { width: 100%; border-radius: var(--radius); background: #000; }
+
+    /* Screenshot Lightbox */
+    #screenshotModal .active { opacity: 1; pointer-events: auto; display: flex; }
+    #screenshotModal > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    #screenshotModal img {
+      max-width: 100%;
+      max-height: 90vh;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -489,12 +504,23 @@
               <div class="tkt-row"><i class="fas fa-rupee-sign" style="width:18px;"></i><div><div class="lbl">Amount</div><div class="val" id="tkt-amount">—</div></div></div>
               <div class="tkt-row"><i class="fas fa-key" style="width:18px;"></i><div><div class="lbl">Code</div><div class="val" id="tkt-code" style="font-family:monospace;">—</div></div></div>
               <div class="tkt-row"><i class="fas fa-check-circle" style="width:18px;"></i><div><div class="lbl">Payment</div><div class="val" id="tkt-pay">—</div></div></div>
+              <div class="tkt-row" id="screenshot-row" style="display:none;"><i class="fas fa-image" style="width:18px;"></i><div><div class="lbl">Screenshot</div><div class="val"><a href="#" id="tkt-screenshot-link" onclick="viewScreenshot(this.href);return false;" style="color:var(--primary);font-size:12px;">View Payment Screenshot</a></div></div></div>
             </div>
             <svg id="tkt-barcode" style="max-width:100%;"></svg>
           </div>
           <div class="tkt-strip"><span>ADMIT ONE</span><span id="tkt-code-short">—</span></div>
         </div>
         <button class="close-btn" onclick="closeTicketModal()">Close</button>
+      </div>
+    </div>
+
+    <!-- SCREENSHOT LIGHTBOX -->
+    <div class="overlay" id="screenshotModal" onclick="if(event.target===this)this.classList.remove('active');">
+      <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;">
+        <div style="max-width:90vw;max-height:90vh;background:#111;border-radius:12px;overflow:hidden;position:relative;">
+          <button onclick="document.getElementById('screenshotModal').classList.remove('active');" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;z-index:10;"><i class="fas fa-times"></i></button>
+          <img id="screenshot-full" src="" style="max-width:100%;max-height:90vh;display:block;" alt="Payment screenshot">
+        </div>
       </div>
     </div>
 
@@ -513,6 +539,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
   <script>
     const CONFIG = {
@@ -665,6 +692,7 @@
           <td>
             <div class="actions">
               <button class="btn-icon" onclick="viewTicket('${d.id}')" title="View"><i class="fas fa-eye"></i></button>
+              ${d.paymentScreenshot ? '<button class="btn-icon" onclick="openScreenshot(\'' + d.id + '\')" title="View Screenshot"><i class="fas fa-image"></i></button>' : ''}
               <button class="btn-label" onclick="markPaid('${d.id}')" title="Mark Paid"><i class="fas fa-money-bill-wave"></i> Paid</button>
               <button class="btn-label" onclick="verifyPayment('${d.id}')" title="Verify"><i class="fas fa-check"></i> Verify</button>
               <button class="btn-icon" onclick="toggleAttended('${d.id}')" title="${d.attended ? 'Unmark' : 'Mark'} Entry"><i class="fas ${d.attended ? 'fa-times-circle' : 'fa-check-circle'}"></i></button>
@@ -687,6 +715,7 @@
           </div>
           <div class="m-actions">
             <button class="btn-icon" onclick="viewTicket('${d.id}')" title="View"><i class="fas fa-eye"></i></button>
+            ${d.paymentScreenshot ? '<button class="btn-icon" onclick="openScreenshot(\'' + d.id + '\')" title="View Screenshot"><i class="fas fa-image"></i></button>' : ''}
             <button class="btn-label" onclick="markPaid('${d.id}')"><i class="fas fa-money-bill-wave"></i></button>
             <button class="btn-label" onclick="verifyPayment('${d.id}')"><i class="fas fa-check"></i></button>
             <button class="btn-icon" onclick="toggleAttended('${d.id}')" title="Toggle Entry"><i class="fas ${d.attended ? 'fa-times-circle' : 'fa-check-circle'}"></i></button>
@@ -713,10 +742,28 @@
       document.getElementById('tkt-code-short').textContent = d.primaryCode;
       const ps = d.paymentStatus||'pending';
       document.getElementById('tkt-pay').textContent = ps === 'verified' ? '[Verified]' : ps === 'paid' ? '[Paid]' : '[Pending]';
+      const sRow = document.getElementById('screenshot-row');
+      if (d.paymentScreenshot) {
+        sRow.style.display = '';
+        document.getElementById('tkt-screenshot-link').href = d.paymentScreenshot;
+      } else {
+        sRow.style.display = 'none';
+      }
       try { JsBarcode("#tkt-barcode", d.primaryCode, { format:"CODE128", lineColor:"#333", width:2, height:35, displayValue:false, background:"transparent", margin:0 }); } catch(e) {}
       ticketModal.classList.add('active');
     }
     function closeTicketModal() { ticketModal.classList.remove('active'); }
+
+    function openScreenshot(key) {
+      const d = allData.find(x => x.id === key);
+      if (!d || !d.paymentScreenshot) return;
+      document.getElementById('screenshot-full').src = d.paymentScreenshot;
+      document.getElementById('screenshotModal').classList.add('active');
+    }
+    function viewScreenshot(url) {
+      document.getElementById('screenshot-full').src = url;
+      document.getElementById('screenshotModal').classList.add('active');
+    }
 
     function markPaid(key) {
       const d = allData.find(x => x.id === key);
@@ -843,10 +890,10 @@
     // CSV
     document.getElementById('exportBtn').addEventListener('click', () => {
       if (allData.length === 0) return alert('No data');
-      let csv = 'data:text/csv;charset=utf-8,Name,Phone,Tickets,Amount,Code,Payment Status,UPI Trans ID,Registered At,Attended\n';
+      let csv = 'data:text/csv;charset=utf-8,Name,Phone,Tickets,Amount,Code,Payment Status,UPI Trans ID,Verified Trans ID,Has Screenshot,Registered At,Attended\n';
       allData.forEach(r => {
         const names = getNames(r);
-        csv += `"${names}","${r.phone||''}",${r.tickets||1},${r.amount||((r.tickets||1)*15)},"${r.primaryCode}","${r.paymentStatus||'pending'}","${r.upiTransId||''}","${new Date(r.timestamp).toLocaleString()}",${r.attended ? 'Yes' : 'No'}\r\n`;
+        csv += `"${names}","${r.phone||''}",${r.tickets||1},${r.amount||((r.tickets||1)*15)},"${r.primaryCode}","${r.paymentStatus||'pending'}","${r.upiTransId||''}","${r.verifiedTransId||''}","${r.paymentScreenshot ? 'Yes' : 'No'}","${new Date(r.timestamp).toLocaleString()}",${r.attended ? 'Yes' : 'No'}\r\n`;
       });
       const link = document.createElement('a');
       link.setAttribute('href', encodeURI(csv));
