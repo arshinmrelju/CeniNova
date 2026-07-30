@@ -413,11 +413,13 @@
     .modal-header .modal-title {
       font-size: 22px;
       font-weight: 700;
+      line-height: 1.2;
     }
     .modal-header .modal-sub {
       font-size: 13px;
-      color: var(--text-secondary);
-      margin-top: 4px;
+      color: var(--primary);
+      font-weight: 600;
+      margin-top: 6px;
     }
     .modal-close {
       width: 32px;
@@ -435,7 +437,7 @@
       flex-shrink: 0;
     }
     .modal-close:hover { background: #e0e0e0; }
-    .modal-body { padding: 20px 28px; }
+    .modal-body { padding: 28px 28px 20px; }
 
     .form-group { margin-bottom: 18px; }
     .form-group label {
@@ -521,45 +523,42 @@
     }
 
     .booking-summary {
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 16px;
-      margin: 16px 0;
-      border: 1px solid var(--border);
+      background: linear-gradient(135deg, #fef9ef, #fafafa);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 14px 0;
+      border: 1px solid #f0e6d0;
     }
     .summary-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 6px 0;
+      padding: 4px 0;
       font-size: 14px;
+      color: var(--text-secondary);
     }
     .summary-row.total {
       font-weight: 700;
       font-size: 16px;
-      border-top: 1px solid var(--border);
+      color: var(--text);
+      border-top: 1px solid #e8dcc8;
       padding-top: 10px;
       margin-top: 6px;
     }
 
-    /* UPI Payment Section */
+    /* Payment Section */
     .payment-box {
-      background: #f9f9f9;
-      border: 2px dashed #d4a017;
-      border-radius: 12px;
-      padding: 20px;
-      margin: 16px 0;
+      margin: 14px 0;
       text-align: center;
+      background: linear-gradient(135deg, #fafafa, #f5f5f5);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--border);
     }
     .payment-box .pay-amt {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 800;
-      color: var(--text);
-    }
-    .payment-box .pay-label {
-      font-size: 12px;
-      color: var(--text-secondary);
-      margin-bottom: 12px;
+      color: var(--primary);
     }
 
     #upi-qr-container {
@@ -568,23 +567,23 @@
       margin: 12px 0;
     }
     #upi-qr-container canvas, #upi-qr-container img {
-      border-radius: 10px;
+      border-radius: 12px;
       background: #fff;
-      padding: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      padding: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
     .upi-id-display {
       font-size: 13px;
       color: var(--text-secondary);
       font-family: monospace;
-      margin-top: 8px;
+      margin-top: 10px;
     }
     .upi-app-links {
       display: flex;
       gap: 8px;
       justify-content: center;
       flex-wrap: wrap;
-      margin: 12px 0;
+      margin: 10px 0;
     }
     .upi-app-btn {
       display: inline-flex;
@@ -601,74 +600,94 @@
       color: var(--text);
       transition: all 0.15s;
     }
-    .upi-app-btn:hover { border-color: var(--primary); }
+    .upi-app-btn:hover { border-color: var(--primary); transform: translateY(-1px); }
 
     .ticket-row {
-      background: #f9f9f9;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 12px;
-      margin-bottom: 8px;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      border-left: 3px solid var(--primary);
+    }
+    .ticket-row:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.06);
     }
     .ticket-row-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
       font-size: 11px;
       font-weight: 700;
-      text-transform: uppercase;
       color: var(--primary);
-      letter-spacing: 0.5px;
       margin-bottom: 8px;
+    }
+    .ticket-row-header::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: inline-block;
     }
     .ticket-row input.tr-name {
       width: 100%;
       padding: 10px 12px;
       border: 1.5px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 13px;
       font-family: var(--font);
       margin-bottom: 8px;
       box-sizing: border-box;
+      background: #fafafa;
+      transition: all 0.2s;
     }
     .ticket-row input.tr-name:focus {
       outline: none;
       border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.06);
+    }
+    .ticket-row input.tr-name::placeholder {
+      color: #bbb;
     }
     .tr-inline {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr;
-      gap: 8px;
+      gap: 6px;
     }
     .tr-inline .tr-dept { grid-column: 1 / 2; }
     .tr-inline .tr-year { grid-column: 2 / 3; }
     .tr-inline .tr-roll { grid-column: 3 / 4; }
     .tr-inline select {
       width: 100%;
-      padding: 9px 28px 9px 10px;
+      padding: 8px 24px 8px 10px;
       border: 1.5px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 12px;
       font-family: var(--font);
-      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;
+      background: #fafafa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center;
       appearance: none;
       -webkit-tap-highlight-color: transparent;
       color: inherit;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s;
       box-sizing: border-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
     .tr-inline select:hover {
-      border-color: #bbb;
-      background-color: #fafafa;
+      border-color: var(--primary);
+      background-color: #fff;
     }
     .tr-inline select:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.06);
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.06);
+      background: #fff;
     }
     .btn-sm {
-      padding: 8px 16px;
+      padding: 8px 14px;
       border: none;
       border-radius: 6px;
       font-size: 12px;
@@ -1153,6 +1172,7 @@
   <!-- BOOKING MODAL -->
   <div id="booking-modal" class="overlay">
     <div class="modal-card">
+      <div style="height:4px;background:repeating-linear-gradient(90deg,var(--primary) 0px,var(--primary) 20px,var(--accent) 20px,var(--accent) 40px);border-radius:20px 20px 0 0;"></div>
       <div class="modal-header">
         <div>
           <div class="modal-title">Book Tickets</div>
@@ -1191,11 +1211,11 @@
 
           <!-- PAYMENT -->
           <div class="payment-box" id="payment-box">
-            <div style="display:flex;gap:10px;justify-content:center;margin-bottom:12px;">
-              <label style="cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--border);font-size:13px;font-weight:600;transition:all 0.2s;background:var(--primary);color:#fff;border-color:var(--primary);" id="pay-cash-lbl">
+            <div style="display:flex;gap:8px;justify-content:center;margin-bottom:10px;">
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--primary);font-size:13px;font-weight:600;background:var(--primary);color:#fff;" id="pay-cash-lbl">
                 <input type="radio" name="payMethod" value="cash" checked onchange="togglePayMethod()" style="display:none;"> Cash
               </label>
-              <label style="cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--border);font-size:13px;font-weight:600;transition:all 0.2s;" id="pay-upi-lbl">
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;background:transparent;color:var(--text-secondary);" id="pay-upi-lbl">
                 <input type="radio" name="payMethod" value="upi" onchange="togglePayMethod()" style="display:none;"> UPI
               </label>
             </div>
@@ -1217,6 +1237,7 @@
         </form>
         <button class="btn-link" onclick="closeModal('booking-modal')">Cancel</button>
       </div>
+      <div style="height:4px;background:repeating-linear-gradient(90deg,var(--primary) 0px,var(--primary) 20px,var(--accent) 20px,var(--accent) 40px);border-radius:0 0 20px 20px;"></div>
     </div>
   </div>
 
@@ -1515,11 +1536,11 @@
       const isUpi = document.querySelector('input[name="payMethod"]:checked').value === 'upi';
       document.getElementById('upi-section').style.display = isUpi ? 'block' : 'none';
       document.getElementById('pay-cash-lbl').style.cssText = isUpi
-        ? 'cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--border);font-size:13px;font-weight:600;transition:all 0.2s;'
-        : 'cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--primary);font-size:13px;font-weight:600;transition:all 0.2s;background:var(--primary);color:#fff;';
+        ? 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;background:transparent;color:var(--text-secondary);'
+        : 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--primary);font-size:13px;font-weight:600;background:var(--primary);color:#fff;';
       document.getElementById('pay-upi-lbl').style.cssText = isUpi
-        ? 'cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--primary);font-size:13px;font-weight:600;transition:all 0.2s;background:var(--primary);color:#fff;'
-        : 'cursor:pointer;padding:8px 20px;border-radius:8px;border:2px solid var(--border);font-size:13px;font-weight:600;transition:all 0.2s;';
+        ? 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--primary);font-size:13px;font-weight:600;background:var(--primary);color:#fff;'
+        : 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;background:transparent;color:var(--text-secondary);';
       if (isUpi && CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
         const total = ticketRows * CONFIG.ticketPrice;
         generateUPIQR(total, 'TKT-' + Date.now());
