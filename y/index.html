@@ -32,6 +32,22 @@
       min-height: 100vh;
     }
 
+    /* ENTRANCE ANIMATIONS */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .anim-1 { animation: fadeSlideUp 0.5s ease both; }
+    .anim-2 { animation: fadeSlideUp 0.5s 0.1s ease both; }
+    .anim-3 { animation: fadeSlideUp 0.5s 0.2s ease both; }
+    .anim-4 { animation: fadeSlideUp 0.5s 0.3s ease both; }
+    .anim-5 { animation: fadeSlideUp 0.5s 0.4s ease both; }
+    .navbar  { animation: fadeIn 0.4s ease both; }
+
     /* HEADER / NAVBAR */
     .navbar {
       background: var(--card);
@@ -110,28 +126,17 @@
     }
     .movie-poster {
       width: 100%;
-      min-height: 280px;
+      min-height: 200px;
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-    }
-    .movie-poster::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 20px,
-        rgba(255,255,255,0.02) 20px,
-        rgba(255,255,255,0.02) 40px
-      );
+      flex-shrink: 0;
     }
     @media (min-width: 768px) {
-      .movie-poster { width: 320px; min-height: 420px; flex-shrink: 0; }
+      .movie-poster { width: 300px; min-width: 300px; min-height: 380px; }
     }
     .poster-placeholder {
       text-align: center;
@@ -150,11 +155,14 @@
       text-transform: uppercase;
     }
     .movie-info {
-      padding: 28px 30px;
+      padding: 16px 18px;
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      min-width: 0;
+    }
+    @media (min-width: 768px) {
+      .movie-info { padding: 28px 30px; }
     }
     .movie-badge {
       display: inline-flex;
@@ -173,33 +181,41 @@
     }
     .movie-title {
       font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: var(--text);
       line-height: 1.2;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+    }
+    @media (min-width: 768px) {
+      .movie-title { font-size: 2.4rem; margin-bottom: 6px; }
     }
     .movie-tagline {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-secondary);
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
     .movie-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 18px;
+      gap: 5px;
+      margin-bottom: 0;
     }
     .meta-chip {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       background: #f0f0f0;
-      padding: 5px 12px;
+      padding: 3px 8px;
       border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 10px;
+      font-weight: 600;
       color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    @media (min-width: 768px) {
+      .meta-chip { font-size: 12px; padding: 5px 12px; gap: 4px; }
+      .movie-meta { gap: 8px; }
     }
     .meta-chip.rating { background: #fff3cd; color: #856404; }
     .meta-chip.lang { background: #e8f4fd; color: #0056b3; }
@@ -209,40 +225,47 @@
     .movie-price-row {
       display: flex;
       align-items: center;
-      gap: 20px;
-      margin-top: auto;
-      padding-top: 18px;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 16px;
+      padding-top: 16px;
       border-top: 1px solid var(--border);
     }
     .movie-price {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       color: var(--primary);
       display: flex;
       align-items: baseline;
       gap: 6px;
+      white-space: nowrap;
     }
     .movie-price small {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       color: var(--text-secondary);
       white-space: nowrap;
     }
     .btn-book-now {
-      padding: 12px 32px;
+      padding: 11px 24px;
       background: var(--primary);
       color: #fff;
       border: none;
       border-radius: 8px;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       font-family: var(--font);
       transition: all 0.2s;
       letter-spacing: 0.3px;
-      display: inline-flex;
+      display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
+      width: 100%;
+    }
+    @media (min-width: 768px) {
+      .btn-book-now { width: auto; flex: 1; min-width: 160px; }
     }
     .btn-book-now:hover {
       background: var(--primary-dark);
@@ -378,6 +401,8 @@
       box-shadow: var(--shadow-lg);
       max-height: 92vh;
       overflow-y: auto;
+      overflow-x: hidden;
+      box-sizing: border-box;
     }
     .modal-header {
       padding: 24px 28px 0;
@@ -608,22 +633,30 @@
       border-color: var(--primary);
     }
     .tr-inline {
-      display: flex;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
       gap: 8px;
     }
+    .tr-inline .tr-dept { grid-column: 1 / 2; }
+    .tr-inline .tr-year { grid-column: 2 / 3; }
+    .tr-inline .tr-roll { grid-column: 3 / 4; }
     .tr-inline select {
-      flex: 1;
-      padding: 10px 30px 10px 10px;
+      width: 100%;
+      padding: 9px 28px 9px 10px;
       border: 1.5px solid var(--border);
       border-radius: 6px;
       font-size: 12px;
       font-family: var(--font);
-      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;
       appearance: none;
       -webkit-tap-highlight-color: transparent;
       color: inherit;
       cursor: pointer;
       transition: all 0.15s;
+      box-sizing: border-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .tr-inline select:hover {
       border-color: #bbb;
@@ -873,7 +906,7 @@
       .ticket-stub { width: 70px; padding: 14px 8px; }
       .ticket-info-grid { grid-template-columns: 1fr; }
       .ticket-title { font-size: 20px; }
-      .tr-inline { flex-direction: column; gap: 6px; }
+      .tr-inline { display: flex; flex-direction: column; gap: 6px; }
       .tr-inline select { width: 100%; }
     }
 
@@ -1011,10 +1044,13 @@
       .movie-info { padding: 20px; }
       .venue-card { flex-direction: column; align-items: flex-start; }
       .venue-date-time { width: 100%; justify-content: space-around; }
-      .modal-header { padding: 20px 20px 0; }
-      .modal-body { padding: 16px 20px; }
       .ticket-card { width: 94vw; }
       .ticket-details { min-width: auto; width: 100%; }
+      .movie-price-row { flex-direction: column; align-items: stretch; gap: 10px; }
+      .btn-book-now { width: 100%; justify-content: center; }
+      .modal-body { padding: 14px 16px; }
+      .modal-header { padding: 18px 16px 0; }
+      .tr-inline { grid-template-columns: 1fr 1fr 1fr; }
     }
   </style>
 </head>
@@ -1134,9 +1170,10 @@
           <div class="form-group">
             <label>Tickets <span style="font-weight:400;color:#999;font-size:12px;">(each person needs their own details)</span></label>
             <div id="ticket-rows"></div>
-            <div style="display:flex;gap:8px;margin-top:8px;">
+            <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
               <button type="button" class="btn-sm" onclick="addTicketRow()"><i class="fas fa-plus"></i> Add Person</button>
               <button type="button" class="btn-sm" onclick="removeTicketRow()" style="background:#e53935;"><i class="fas fa-minus"></i> Remove</button>
+              <button type="button" class="btn-sm" id="btn-copy-p1" onclick="copyPerson1Details()" style="background:#4b5563;color:#fff;display:none;"><i class="fas fa-copy"></i> Auto-fill Dept &amp; Year</button>
             </div>
           </div>
 
@@ -1165,7 +1202,7 @@
             <div class="pay-amt">₹<span id="pay-amount">15</span></div>
             <div id="upi-section" style="display:none;">
               <div id="upi-qr-container"></div>
-              <div class="upi-id-display" id="upi-id-display">Pay to: <strong id="upi-id-text">—</strong></div>
+              <div class="upi-id-display" id="upi-id-display">Pay to: <strong id="upi-id-text">—</strong> <button type="button" onclick="copyUPIId()" style="margin-left:6px;padding:3px 8px;border-radius:4px;border:1px solid #ccc;background:#f9f9f9;font-size:11px;cursor:pointer;"><i class="fas fa-copy"></i> Copy</button></div>
               <div class="upi-app-links" id="upi-app-links"></div>
               <div style="font-size:12px;color:var(--text-secondary);margin:8px 0;">
                 After paying, enter the UPI Transaction ID / UTR below
@@ -1322,6 +1359,19 @@
 
     auth.signInAnonymously().catch(() => {});
 
+    // Live Seats Availability
+    bookingsRef.on('value', snap => {
+      let totalSold = 0;
+      if (snap.exists()) {
+        Object.values(snap.val()).forEach(b => {
+          totalSold += Number(b.tickets || (b.ticketHolders ? b.ticketHolders.length : 1));
+        });
+      }
+      const avail = Math.max(0, CONFIG.totalSeats - totalSold);
+      const el = document.getElementById('seats-available');
+      if (el) el.textContent = avail;
+    });
+
     let currentBooking = null;
     let myTickets = [];
     let activeCode = null;
@@ -1387,7 +1437,52 @@
         container.appendChild(row);
         row.querySelectorAll('select').forEach(customSelect);
       }
+      const btnCopy = document.getElementById('btn-copy-p1');
+      if (btnCopy) btnCopy.style.display = ticketRows > 1 ? 'inline-block' : 'none';
       updateSummary();
+    }
+
+    function copyPerson1Details() {
+      const rows = document.querySelectorAll('.ticket-row');
+      if (rows.length < 2) return;
+      const dept = rows[0].querySelector('.tr-dept')?.value;
+      const year = rows[0].querySelector('.tr-year')?.value;
+      if (!dept || !year) return showToast('Fill Department & Year for Person 1 first.');
+      for (let i = 1; i < rows.length; i++) {
+        const d = rows[i].querySelector('.tr-dept');
+        const y = rows[i].querySelector('.tr-year');
+        if (d) { d.value = dept; d.dispatchEvent(new Event('change', { bubbles: true })); }
+        if (y) { y.value = year; y.dispatchEvent(new Event('change', { bubbles: true })); }
+      }
+      showToast('Copied Department & Year to all persons!');
+    }
+
+    function copyUPIId() {
+      if (CONFIG.upiId) {
+        navigator.clipboard.writeText(CONFIG.upiId);
+        showToast('UPI ID copied to clipboard!');
+      }
+    }
+
+    function shareWhatsAppTicket() {
+      if (!currentBooking) return;
+      const code = currentBooking.code || (currentBooking.ticketHolders ? currentBooking.ticketHolders[0].code : '');
+      const name = currentBooking.ticketHolders ? currentBooking.ticketHolders[0].name : '';
+      const text = `🎟️ *CeniNova Movie Ticket*\nName: ${name}\nTicket Code: ${code}\nDate: ${CONFIG.eventDate} at ${CONFIG.eventTime}\nVenue: ${CONFIG.venueName}, ${CONFIG.venueAddress}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function showToast(msg) {
+      let t = document.getElementById('toast-msg');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'toast-msg';
+        t.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#10b981;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.15);transition:all 0.3s;';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.style.opacity = '1';
+      setTimeout(() => { if (t) t.style.opacity = '0'; }, 3000);
     }
 
     function addTicketRow() {

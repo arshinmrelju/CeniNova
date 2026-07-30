@@ -141,16 +141,28 @@
     .table-card .tc-inner { padding: 20px; }
 
     .filter-bar {
-      display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 10px;
+      margin-bottom: 12px;
+      align-items: center;
     }
-    .filter-bar input, .filter-bar select {
-      padding: 10px 14px;
+    .filter-bar-row2 {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-bar input, .filter-bar select, .filter-bar-row2 input {
+      padding: 9px 13px;
       border: 1.5px solid var(--border);
       border-radius: 8px;
       font-size: 13px;
       font-family: var(--font);
       background: var(--card);
       transition: all 0.15s;
+      box-sizing: border-box;
     }
     .filter-bar select {
       appearance: none;
@@ -158,16 +170,21 @@
       color: inherit;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 12px center;
-      padding-right: 36px;
+      background-position: right 10px center;
+      padding-right: 30px;
       cursor: pointer;
     }
-    .filter-bar select:hover {
+    .filter-bar select:hover, .filter-bar input:hover, .filter-bar-row2 input:hover {
       border-color: #bbb;
-      background-color: #f0f0f0;
     }
-    #yearFilter { min-width: 100px; }
-    .filter-bar input:focus, .filter-bar select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(229,9,20,0.06); }
+    #yearFilter { width: 100px; }
+    #paymentFilter { width: 140px; }
+    #attendanceFilter { width: 150px; }
+    .filter-bar input:focus, .filter-bar select:focus, .filter-bar-row2 input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(229,9,20,0.06);
+    }
 
     /* Custom Select */
     .cs-wrap { position: relative; width: 100%; }
@@ -197,10 +214,10 @@
     .cs-option:hover { background: #f5f5f5; }
     .cs-option.selected { background: var(--primary); color: #fff; font-weight: 600; }
     .cs-option.selected:hover { background: #c00812; }
-    .filter-bar .cs-wrap { min-width: 140px; }
-    .filter-bar input { flex: 1; min-width: 180px; }
-    .filter-bar .btn {
-      padding: 10px 18px;
+    .filter-bar input { min-width: 0; }
+    .filter-bar-row2 input { flex: 1; min-width: 180px; }
+    .filter-bar .btn, .filter-bar-row2 .btn {
+      padding: 9px 16px;
       border-radius: 8px;
       border: none;
       font-weight: 600;
@@ -208,10 +225,11 @@
       cursor: pointer;
       font-family: var(--font);
       transition: all 0.15s;
+      white-space: nowrap;
     }
-    .filter-bar .btn-primary { background: var(--primary); color: #fff; }
-    .filter-bar .btn-primary:hover { background: var(--primary-dark); }
-    .filter-bar .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+    .filter-bar .btn-primary, .filter-bar-row2 .btn-primary { background: var(--primary); color: #fff; }
+    .filter-bar .btn-primary:hover, .filter-bar-row2 .btn-primary:hover { background: var(--primary-dark); }
+    .filter-bar .btn-outline, .filter-bar-row2 .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
 
     .scan-status { font-size: 12px; color: #2e7d32; margin-left: 4px; display: flex; align-items: center; }
 
@@ -423,6 +441,8 @@
               <option value="3">3</option>
               <option value="4">4</option>
             </select>
+          </div>
+          <div class="filter-bar-row2">
             <input type="text" id="scanInput" placeholder="Type ticket code & Enter for entry">
             <button class="btn btn-primary" id="scanCamBtn"><i class="fas fa-camera"></i> Camera Scan</button>
             <span class="scan-status" id="scanStatus"></span>
