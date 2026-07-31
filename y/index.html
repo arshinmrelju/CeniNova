@@ -30,6 +30,7 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     /* ENTRANCE ANIMATIONS */
@@ -40,6 +41,17 @@
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
+    }
+    .float-el { position:fixed; font-size:38px; opacity:0.15; pointer-events:none; z-index:0; animation:floatAnim 20s infinite linear; }
+    @keyframes floatAnim {
+      0%   { transform:translateY(0) rotate(0deg); }
+      25%  { transform:translateY(-40px) rotate(90deg); }
+      50%  { transform:translateY(0) rotate(180deg); }
+      75%  { transform:translateY(40px) rotate(270deg); }
+      100% { transform:translateY(0) rotate(360deg); }
+    }
+    @media (max-width:600px) {
+      .float-el { display: none; }
     }
     .anim-1 { animation: fadeSlideUp 0.5s ease both; }
     .anim-2 { animation: fadeSlideUp 0.5s 0.1s ease both; }
@@ -386,6 +398,7 @@
       justify-content: center;
       align-items: center;
       opacity: 0;
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
       pointer-events: none;
       transition: opacity 0.25s ease;
     }
@@ -658,6 +671,7 @@
     .ocr-actions {
       margin-top: 6px;
       display: flex;
+      justify-content: center;
       gap: 6px;
       flex-wrap: wrap;
     }
@@ -1207,6 +1221,17 @@
   </style>
 </head>
 <body>
+  <!-- Floating movie elements -->
+  <span class="float-el" style="top:8%;left:5%;font-size:32px;animation-duration:25s;animation-delay:-2s;">🎬</span>
+  <span class="float-el" style="top:15%;right:8%;font-size:24px;animation-duration:22s;animation-delay:-5s;">🍿</span>
+  <span class="float-el" style="top:40%;left:3%;font-size:36px;animation-duration:28s;animation-delay:-10s;">🎞️</span>
+  <span class="float-el" style="top:55%;right:5%;font-size:26px;animation-duration:20s;animation-delay:-3s;">🎥</span>
+  <span class="float-el" style="top:70%;left:6%;font-size:30px;animation-duration:24s;animation-delay:-8s;">🎟️</span>
+  <span class="float-el" style="top:85%;right:10%;font-size:22px;animation-duration:26s;animation-delay:-15s;">🎭</span>
+  <span class="float-el" style="top:25%;left:12%;font-size:20px;animation-duration:30s;animation-delay:-7s;">📽️</span>
+  <span class="float-el" style="top:60%;left:85%;font-size:28px;animation-duration:23s;animation-delay:-12s;">✨</span>
+  <span class="float-el" style="top:90%;left:15%;font-size:24px;animation-duration:27s;animation-delay:-4s;">🎬</span>
+  <span class="float-el" style="top:10%;left:50%;font-size:18px;animation-duration:29s;animation-delay:-9s;">🍿</span>
 
   <!-- NAVBAR -->
   <nav class="navbar">
@@ -1214,8 +1239,8 @@
       <div class="nav-brand">
         <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="College Logo" style="height:36px;width:auto;border-radius:6px;" onerror="this.style.display='none'">
         <div>
-          <div class="brand-text">Pazhassiraja College</div>
-          <div class="brand-sub">Pulpally</div>
+          <div class="brand-text">Dept. of English</div>
+          <div class="brand-sub">Pazhassiraja College</div>
         </div>
       </div>
       <div class="nav-actions">
@@ -1374,9 +1399,10 @@
               </div>
               <div class="verify-status" id="verify-status"></div>
               <div class="ocr-result-box" id="ocr-result">
-                <div style="font-weight:600;color:#166534;margin-bottom:4px;"><i class="fas fa-check-circle"></i> <span id="ocr-heading">Transaction ID Verified ✓</span></div>
+                <div style="font-weight:600;color:#166534;margin-bottom:4px;" id="ocr-heading-wrap"><i class="fas fa-check-circle" id="ocr-icon"></i> <span id="ocr-heading">Transaction ID Verified ✓</span></div>
                 <div class="info-row">UPI Ref: <strong id="ocr-ref-id">—</strong></div>
                 <div class="info-row" id="ocr-upi-row" style="display:none;color:#166534;font-weight:600;"><i class="fas fa-check-circle"></i> UPI ID: <strong id="ocr-upi-val"></strong> ✓</div>
+                <div class="info-row" id="ocr-date-row" style="display:none;">Payment Date: <strong id="ocr-date-val">—</strong></div>
                 <div style="font-size:10px;color:#666;margin-top:4px;" id="ocr-hint">Transaction ID detected successfully. Click confirm to proceed.</div>
                 <div class="ocr-actions">
                   <button type="button" class="btn-ok" id="btn-confirm-payment">Confirm &amp; Proceed</button>
@@ -1750,7 +1776,13 @@
       qrImg.style.cssText = 'border-radius:10px;background:#fff;padding:8px;box-shadow:0 2px 10px rgba(0,0,0,0.08);width:180px;height:180px;';
       container.appendChild(qrImg);
 
-      // UPI app links
+      // UPI app links with app-specific URI schemes
+      const appSchemes = {
+        'Google Pay': 'tez://upi/pay',
+        'PhonePe': 'phonepe://pay',
+        'Paytm': 'paytmmp://pay',
+        'BHIM': 'bhimupi://pay',
+      };
       [
         { name: 'Google Pay' },
         { name: 'PhonePe' },
@@ -1759,7 +1791,10 @@
       ].forEach(a => {
         const el = document.createElement('a');
         el.className = 'upi-app-btn';
-        el.href = upiUrl;
+        const scheme = appSchemes[a.name] || 'upi://pay';
+        el.href = scheme + '?pa=' + encodeURIComponent(CONFIG.upiId) +
+          '&pn=' + encodeURIComponent(CONFIG.upiName) +
+          '&am=' + amount.toFixed(2) + '&cu=INR&tr=' + encodeURIComponent(refId);
         el.target = '_blank';
         el.textContent = a.name;
         apps.appendChild(el);
@@ -1783,6 +1818,7 @@
       document.getElementById('upi-trans-id').value = '';
       document.getElementById('screenshot-b64').value = '';
       document.getElementById('btn-retry-ocr').style.display = '';
+      document.getElementById('ocr-date-row').style.display = 'none';
 
       const isUpi = document.querySelector('input[name="payMethod"]:checked')?.value === 'upi';
       if (isUpi) {
@@ -1936,6 +1972,8 @@
       box.className = 'ocr-result-box';
       box.style.display = 'block';
       document.getElementById('ocr-heading').textContent = 'Manually Entered';
+      document.getElementById('ocr-heading-wrap').style.color = '#b45309';
+      document.getElementById('ocr-icon').className = 'fas fa-pencil-alt';
       document.getElementById('ocr-ref-id').textContent = manual.trim();
       document.getElementById('ocr-hint').textContent = 'Admin will verify the payment. Keep your screenshot as proof.';
       document.getElementById('btn-confirm-payment').textContent = '✓ Confirmed';
@@ -1977,31 +2015,88 @@
 
       // ── Extract Transaction / Reference ID ──────────────────────────
       const refPatterns = [
-        /\b(?:UTR|REF|REFERENCE|TRANSACTION|TXN|PAYMENT)\s*(?:ID|NO|NUMBER|#|REF)?\s*[:.\s]*([A-Z0-9]{6,25})/gi,
-        /\b(HDFC\d{6,20}|SBIN\d{6,20}|ICICI\d{6,20}|AXIS\d{6,20}|YESB\d{6,20}|PAYTM\d{6,20}|PHONEPE\d{6,20}|GOOGLEPAY\d{6,20}|BHIM\d{6,20})\b/gi,
-        /\bTXN[#\s]*(\w{6,20})\b/gi,
-        /\bREF[#\s]*(\w{6,20})\b/gi,
-        /\b([A-Z0-9]{12,20})\b/g
+        /\b(?:UTR|RRN|REF|REFERENCE|TRANSACTION|TXN|PAYMENT)\s*(?:ID|NO|NUMBER|#|REF)?\s*[:.\s]*([A-Z0-9]{6,35})/gi,
+        /\b(HDFC\d{6,20}|SBIN\d{6,20}|ICICI\d{6,20}|AXIS\d{6,20}|YESB\d{6,20}|KOTAK\d{6,20}|PNB\d{6,20}|BOI\d{6,20}|CANARA\d{6,20}|UNION\d{6,20}|SBI\d{6,20}|IDFC\d{6,20}|INDUS\d{6,20}|PAYTM\d{6,20}|PHONEPE\d{6,20}|GOOGLEPAY\d{6,20}|BHIM\d{6,20})\b/gi,
+        /\bTXN[#\s]*(\w{6,35})\b/gi,
+        /\bREF[#\s]*(\w{6,35})\b/gi,
+        /\b([A-Z0-9]{12,32})\b/g
       ];
       let refId = null;
       for (const pat of refPatterns) {
         let m;
         while ((m = pat.exec(upper)) !== null) {
           const candidate = (m[1] || m[0]).replace(/[^A-Z0-9]/g, '');
-          if (candidate.length >= 6 && candidate.length <= 25) {
-            if (/^\d{12,20}$/.test(candidate) || /[A-Z]/.test(candidate)) {
+          if (candidate.length >= 6 && candidate.length <= 35) {
+            // Require at least one digit — real UPI IDs/UTRs always contain digits
+            if (/[0-9]/.test(candidate)) {
               refId = candidate; break;
             }
           }
         }
         if (refId) break;
       }
+      // Prefer the 12–16 digit numeric UPI RRN when a reference ID was detected
+      // (fixes GPay showing both "UPI transaction ID" and "Google transaction ID")
+      if (refId) {
+        const rrnMatch = upper.match(/\b\d{12,16}\b/);
+        if (rrnMatch) refId = rrnMatch[0];
+      }
+      // Spaced digit groups like "UPI Ref: 4123 4567 8901 2345" (bank SMS)
+      if (!refId) {
+        const spaced = upper.match(/\b(?:UTR|RRN|REF|REFERENCE|TRANSACTION|TXN|PAYMENT)\s*(?:ID|NO|NUMBER|#|REF)?\s*[:.\s]*((?:\d{3,4}[\s.-]+)+\d{3,4})\b/);
+        if (spaced) {
+          const cand = spaced[1].replace(/[^0-9]/g, '');
+          if (cand.length >= 12) refId = cand;
+        }
+      }
 
       // ── Extract UPI IDs & verify recipient ─────────────────────────────
       const upiIds = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+/g) || [];
       const upiVerified = upiIds.some(id => id.toLowerCase() === CONFIG.upiId.toLowerCase());
 
-      return { refId, rawText: text, upiVerified };
+      // ── Extract payment date & verify it is today ─────────────────────
+      const monthMap = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
+      const monthWords = 'jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec';
+      let payDate = null;
+      let m;
+      // "30 Jul 2026" / "31-Jul-2026" / "31. Jul. 2026" (day first, flexible separators)
+      m = text.match(new RegExp('\\b(\\d{1,2})\\s*[-.,/]?\\s*(' + monthWords + ')[a-z]*[.,]?\\s*[-.,/]?\\s*(\\d{4})\\b', 'i'));
+      if (m) payDate = new Date(+m[3], monthMap[m[2].slice(0,3).toLowerCase()], +m[1]);
+      // "Jul 30, 2026" / "Tue June 04 00 13:16:18 IST 2024"
+      // (month first, optional weekday prefix, optional time between day and year)
+      if (!payDate) {
+        m = text.match(new RegExp('\\b(?:(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*[.,]?\\s+)?(' + monthWords + ')[a-z]*[.,]?\\s+(\\d{1,2})\\b', 'i'));
+        if (m) {
+          const start = text.indexOf(m[0]) + m[0].length;
+          const rest = text.slice(start, start + 100);
+          const ym = rest.match(/\b(20\d{2})\b/);
+          if (ym) payDate = new Date(+ym[0], monthMap[m[1].slice(0,3).toLowerCase()], +m[2]);
+        }
+      }
+      // "30/07/2026" / "30-07-2026" / "30.07.2026" (dd/mm/yyyy)
+      if (!payDate) {
+        m = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})\b/);
+        if (m) payDate = new Date(+m[3], +m[2] - 1, +m[1]);
+      }
+      // "2026-07-30" (yyyy-mm-dd)
+      if (!payDate) {
+        m = text.match(/\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
+        if (m) payDate = new Date(+m[1], +m[2] - 1, +m[3]);
+      }
+
+      let dateOk = false;
+      if (payDate) {
+        const now = new Date();
+        dateOk = payDate.getFullYear() === now.getFullYear() &&
+                 payDate.getMonth() === now.getMonth() &&
+                 payDate.getDate() === now.getDate();
+      }
+
+      return {
+        refId, rawText: text, upiVerified,
+        payDate: payDate ? payDate.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : null,
+        dateOk
+      };
     }
 
     function showOcrResult(result) {
@@ -2015,36 +2110,65 @@
         document.getElementById('ocr-ref-id').textContent = 'Not found';
       }
 
-      // ── Show UPI ID Verification ───────────────────────────────────
+      // ── Show UPI ID Verification — only when refId is missing ─────
       const upiRow = document.getElementById('ocr-upi-row');
-      if (result.upiVerified) {
+      if (result.upiVerified && !result.refId) {
         upiRow.style.display = '';
         document.getElementById('ocr-upi-val').textContent = CONFIG.upiId;
       } else {
         upiRow.style.display = 'none';
       }
 
-      // ── Overall status ─────────────────────────────────────────────
-      const ok = result.upiVerified || !!result.refId;
+      // ── Show Payment Date & validate ───────────────────────────────
+      const dateRow = document.getElementById('ocr-date-row');
+      const dateVal = document.getElementById('ocr-date-val');
+      dateRow.style.display = '';
+      if (result.payDate) {
+        dateVal.textContent = result.payDate + (result.dateOk ? ' ✓ (Today)' : '');
+        dateVal.style.color = result.dateOk ? '#166534' : '#b45309';
+      } else {
+        dateVal.textContent = 'Not detected';
+        dateVal.style.color = '#999';
+      }
 
-      if (ok) {
+      // ── Overall status ─────────────────────────────────────────────
+      const hasPay = result.upiVerified || !!result.refId;
+      const dateBad = result.payDate && !result.dateOk;
+      const headingWrap = document.getElementById('ocr-heading-wrap');
+      const ocrIcon = document.getElementById('ocr-icon');
+      const setIcon = (icon, color) => {
+        ocrIcon.className = icon;
+        headingWrap.style.color = color;
+      };
+
+      if (dateBad) {
+        // Date detected but NOT today — likely a reused/old screenshot
+        box.className = 'ocr-result-box fail';
+        setIcon('fas fa-times-circle', '#dc2626');
+        document.getElementById('ocr-heading').textContent = 'Stale Payment Rejected';
+        document.getElementById('ocr-hint').textContent = 'Payment date (' + result.payDate + ') is not today. Please upload a screenshot of today\'s payment.';
+        document.getElementById('btn-confirm-payment').disabled = true;
+      } else if (hasPay && result.dateOk) {
         box.className = 'ocr-result-box';
-        if (result.upiVerified && result.refId) {
-          document.getElementById('ocr-heading').textContent = 'Payment Verified ✓';
-          document.getElementById('ocr-hint').textContent = 'Recipient UPI ID & transaction ID confirmed.';
-        } else if (result.upiVerified) {
-          document.getElementById('ocr-heading').textContent = 'Recipient Verified ✓';
-          document.getElementById('ocr-hint').textContent = 'Recipient UPI ID (' + CONFIG.upiId + ') confirmed in screenshot.';
-        } else {
-          document.getElementById('ocr-heading').textContent = 'Transaction ID Detected ✓';
-          document.getElementById('ocr-hint').textContent = 'Transaction ID confirmed.';
-        }
+        setIcon('fas fa-check-circle', '#166534');
+        document.getElementById('ocr-heading').textContent = 'Payment Verified ✓';
+        document.getElementById('ocr-hint').textContent = result.refId
+          ? 'Transaction ID, recipient & date confirmed.'
+          : 'Recipient & payment date confirmed.';
+        document.getElementById('btn-confirm-payment').disabled = false;
+      } else if (hasPay) {
+        // Valid transaction but date not detected
+        box.className = 'ocr-result-box';
+        setIcon('fas fa-exclamation-circle', '#b45309');
+        document.getElementById('ocr-heading').textContent = 'Payment Partially Verified';
+        document.getElementById('ocr-hint').textContent = 'Transaction ID confirmed but payment date not detected. Admin will verify date.';
         document.getElementById('btn-confirm-payment').disabled = false;
       } else {
         box.className = 'ocr-result-box fail';
+        setIcon('fas fa-times-circle', '#dc2626');
         document.getElementById('ocr-heading').textContent = 'Verification Failed';
         document.getElementById('ocr-hint').textContent = 'Could not verify payment. Enter transaction ID manually or retry with a clearer screenshot.';
-        document.getElementById('btn-confirm-payment').disabled = false;
+        document.getElementById('btn-confirm-payment').disabled = true;
       }
 
       box.style.display = 'block';
