@@ -1402,7 +1402,6 @@
                 <div style="font-weight:600;color:#166534;margin-bottom:4px;" id="ocr-heading-wrap"><i class="fas fa-check-circle" id="ocr-icon"></i> <span id="ocr-heading">Transaction ID Verified ✓</span></div>
                 <div class="info-row">UPI Ref: <strong id="ocr-ref-id">—</strong></div>
                 <div class="info-row" id="ocr-upi-row" style="display:none;color:#166534;font-weight:600;"><i class="fas fa-check-circle"></i> UPI ID: <strong id="ocr-upi-val"></strong> ✓</div>
-                <div class="info-row" id="ocr-date-row" style="display:none;">Payment Date: <strong id="ocr-date-val">—</strong></div>
                 <div style="font-size:10px;color:#666;margin-top:4px;" id="ocr-hint">Transaction ID detected successfully. Click confirm to proceed.</div>
                 <div class="ocr-actions">
                   <button type="button" class="btn-ok" id="btn-confirm-payment">Confirm &amp; Proceed</button>
@@ -1818,7 +1817,6 @@
       document.getElementById('upi-trans-id').value = '';
       document.getElementById('screenshot-b64').value = '';
       document.getElementById('btn-retry-ocr').style.display = '';
-      document.getElementById('ocr-date-row').style.display = 'none';
 
       const isUpi = document.querySelector('input[name="payMethod"]:checked')?.value === 'upi';
       if (isUpi) {
@@ -2054,48 +2052,8 @@
       const upiIds = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+/g) || [];
       const upiVerified = upiIds.some(id => id.toLowerCase() === CONFIG.upiId.toLowerCase());
 
-      // ── Extract payment date & verify it is today ─────────────────────
-      const monthMap = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
-      const monthWords = 'jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec';
-      let payDate = null;
-      let m;
-      // "30 Jul 2026" / "31-Jul-2026" / "31. Jul. 2026" (day first, flexible separators)
-      m = text.match(new RegExp('\\b(\\d{1,2})\\s*[-.,/]?\\s*(' + monthWords + ')[a-z]*[.,]?\\s*[-.,/]?\\s*(\\d{4})\\b', 'i'));
-      if (m) payDate = new Date(+m[3], monthMap[m[2].slice(0,3).toLowerCase()], +m[1]);
-      // "Jul 30, 2026" / "Tue June 04 00 13:16:18 IST 2024"
-      // (month first, optional weekday prefix, optional time between day and year)
-      if (!payDate) {
-        m = text.match(new RegExp('\\b(?:(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*[.,]?\\s+)?(' + monthWords + ')[a-z]*[.,]?\\s+(\\d{1,2})\\b', 'i'));
-        if (m) {
-          const start = text.indexOf(m[0]) + m[0].length;
-          const rest = text.slice(start, start + 100);
-          const ym = rest.match(/\b(20\d{2})\b/);
-          if (ym) payDate = new Date(+ym[0], monthMap[m[1].slice(0,3).toLowerCase()], +m[2]);
-        }
-      }
-      // "30/07/2026" / "30-07-2026" / "30.07.2026" (dd/mm/yyyy)
-      if (!payDate) {
-        m = text.match(/\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})\b/);
-        if (m) payDate = new Date(+m[3], +m[2] - 1, +m[1]);
-      }
-      // "2026-07-30" (yyyy-mm-dd)
-      if (!payDate) {
-        m = text.match(/\b(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})\b/);
-        if (m) payDate = new Date(+m[1], +m[2] - 1, +m[3]);
-      }
-
-      let dateOk = false;
-      if (payDate) {
-        const now = new Date();
-        dateOk = payDate.getFullYear() === now.getFullYear() &&
-                 payDate.getMonth() === now.getMonth() &&
-                 payDate.getDate() === now.getDate();
-      }
-
       return {
-        refId, rawText: text, upiVerified,
-        payDate: payDate ? payDate.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : null,
-        dateOk
+        refId, rawText: text, upiVerified
       };
     }
 
@@ -2119,21 +2077,8 @@
         upiRow.style.display = 'none';
       }
 
-      // ── Show Payment Date & validate ───────────────────────────────
-      const dateRow = document.getElementById('ocr-date-row');
-      const dateVal = document.getElementById('ocr-date-val');
-      dateRow.style.display = '';
-      if (result.payDate) {
-        dateVal.textContent = result.payDate + (result.dateOk ? ' ✓ (Today)' : '');
-        dateVal.style.color = result.dateOk ? '#166534' : '#b45309';
-      } else {
-        dateVal.textContent = 'Not detected';
-        dateVal.style.color = '#999';
-      }
-
       // ── Overall status ─────────────────────────────────────────────
       const hasPay = result.upiVerified || !!result.refId;
-      const dateBad = result.payDate && !result.dateOk;
       const headingWrap = document.getElementById('ocr-heading-wrap');
       const ocrIcon = document.getElementById('ocr-icon');
       const setIcon = (icon, color) => {
@@ -2141,27 +2086,19 @@
         headingWrap.style.color = color;
       };
 
-      if (dateBad) {
-        // Date detected but NOT today — likely a reused/old screenshot
-        box.className = 'ocr-result-box fail';
-        setIcon('fas fa-times-circle', '#dc2626');
-        document.getElementById('ocr-heading').textContent = 'Stale Payment Rejected';
-        document.getElementById('ocr-hint').textContent = 'Payment date (' + result.payDate + ') is not today. Please upload a screenshot of today\'s payment.';
-        document.getElementById('btn-confirm-payment').disabled = true;
-      } else if (hasPay && result.dateOk) {
+      if (hasPay) {
         box.className = 'ocr-result-box';
         setIcon('fas fa-check-circle', '#166534');
-        document.getElementById('ocr-heading').textContent = 'Payment Verified ✓';
-        document.getElementById('ocr-hint').textContent = result.refId
-          ? 'Transaction ID, recipient & date confirmed.'
-          : 'Recipient & payment date confirmed.';
-        document.getElementById('btn-confirm-payment').disabled = false;
-      } else if (hasPay) {
-        // Valid transaction but date not detected
-        box.className = 'ocr-result-box';
-        setIcon('fas fa-exclamation-circle', '#b45309');
-        document.getElementById('ocr-heading').textContent = 'Payment Partially Verified';
-        document.getElementById('ocr-hint').textContent = 'Transaction ID confirmed but payment date not detected. Admin will verify date.';
+        if (result.upiVerified && result.refId) {
+          document.getElementById('ocr-heading').textContent = 'Payment Verified ✓';
+          document.getElementById('ocr-hint').textContent = 'Recipient UPI ID & transaction ID confirmed.';
+        } else if (result.upiVerified) {
+          document.getElementById('ocr-heading').textContent = 'Recipient Verified ✓';
+          document.getElementById('ocr-hint').textContent = 'Recipient UPI ID (' + CONFIG.upiId + ') confirmed in screenshot.';
+        } else {
+          document.getElementById('ocr-heading').textContent = 'Transaction ID Detected ✓';
+          document.getElementById('ocr-hint').textContent = 'Transaction ID confirmed.';
+        }
         document.getElementById('btn-confirm-payment').disabled = false;
       } else {
         box.className = 'ocr-result-box fail';
