@@ -137,6 +137,20 @@
     .cast-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;}
     .cast-role{font-size:11px;color:var(--text-dim);}
 
+    /* SOUNDTRACK */
+    .soundtrack-section{padding-top:20px;}
+    .section-sub{font-size:14px;color:var(--text-dim);margin-top:6px;}
+    .soundtrack-box{position:relative;max-width:640px;margin:8px auto 0;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid var(--border);background:var(--card);transition:box-shadow 0.2s;}
+    .soundtrack-box:hover{box-shadow:var(--shadow-xl);}
+    .soundtrack-box iframe{display:block;width:100%;}
+    .spotify-overlay{position:absolute;inset:0;background:rgba(26,26,46,0.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:5;transition:opacity 0.4s;opacity:1;cursor:pointer;}
+    .spotify-overlay.hidden{opacity:0;pointer-events:none;}
+    .spotify-play-btn{width:64px;height:64px;border-radius:50%;border:none;background:linear-gradient(135deg,#1db954,#15883c);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(29,185,84,0.45);transition:transform 0.2s cubic-bezier(0.16,1,0.3,1);}
+    .spotify-play-btn:hover{transform:scale(1.08);}
+    .spotify-play-btn i{margin-left:4px;}
+    .spotify-overlay-title{color:#fff;font-size:15px;font-weight:800;}
+    .spotify-overlay-hint{color:rgba(255,255,255,0.7);font-size:11px;font-weight:500;}
+
     /* CTA SECTION */
     .cta-section{padding:80px 24px;text-align:center;background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
     .cta-inner{max-width:560px;margin:0 auto;}
@@ -444,6 +458,23 @@
     </div>
   </section>
 
+  <!-- SOUNDTRACK -->
+  <section class="section soundtrack-section" id="soundtrack">
+    <div class="section-header">
+      <div class="section-tag anim-1"><i class="fas fa-music"></i> Official Soundtrack</div>
+      <h2 class="section-title anim-2">Enjoy the <span class="hl">Music</span></h2>
+      <p class="section-sub anim-3">Songs by Shaan Rahman — the soundtrack starts with your first tap</p>
+    </div>
+    <div class="soundtrack-box anim-4">
+      <div id="spotify-embed"></div>
+      <div class="spotify-overlay" id="spotifyOverlay">
+        <button class="spotify-play-btn" id="spotifyPlayBtn" aria-label="Play soundtrack"><i class="fas fa-play"></i></button>
+        <div class="spotify-overlay-title">Play Soundtrack</div>
+        <div class="spotify-overlay-hint">Or it will start automatically with your first click</div>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="cta-section" id="synopsis">
     <div class="cta-inner">
@@ -686,6 +717,41 @@
       var c=document.getElementById('heroCarousel');
       if(c){c.addEventListener('mouseenter',stopAuto);c.addEventListener('mouseleave',startAuto);}
       startAuto();
+    })();
+
+    // ========== SPOTIFY SOUNDTRACK PLAYER ==========
+    (function(){
+      var controller=null;
+      var overlay=document.getElementById('spotifyOverlay');
+      var played=false;
+      function play(){
+        if(!controller||played)return;
+        played=true;
+        try{controller.play();}catch(e){}
+        if(overlay)overlay.classList.add('hidden');
+      }
+      if(overlay)overlay.addEventListener('click',play);
+      document.addEventListener('click',function once(){
+        setTimeout(play,250);
+        document.removeEventListener('click',once);
+      });
+      document.addEventListener('touchstart',function onceT(){
+        setTimeout(play,250);
+        document.removeEventListener('touchstart',onceT);
+      });
+      window.onSpotifyIframeApiReady=function(IFrameAPI){
+        var el=document.getElementById('spotify-embed');
+        if(!el)return;
+        IFrameAPI.createController(el,{
+          uri:'spotify:album:0BDiUn2Hxac9orinntjcLo',
+          width:'100%',
+          height:'352'
+        },function(c){controller=c;});
+      };
+      var s=document.createElement('script');
+      s.src='https://open.spotify.com/embed/iframe-api/v1';
+      s.async=true;
+      document.head.appendChild(s);
     })();
 
     // ========== BOOKING MODAL SYSTEM ==========
