@@ -371,18 +371,215 @@
       max-height: 90vh;
       display: block;
     }
+
+    /* ACCESSIBILITY */
+    :focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+    .skip-link {
+      position: absolute; top: -100%; left: 16px; z-index: 9999;
+      background: var(--primary); color: #fff; padding: 8px 16px; border-radius: 0 0 8px 8px;
+      font-size: 13px; font-weight: 700; text-decoration: none; transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* TOAST */
+    #admin-toast {
+      position: fixed; top: 20px; right: 20px; z-index: 9999;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff; padding: 12px 20px; border-radius: 12px;
+      font-size: 13px; font-weight: 700; font-family: var(--font);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.35);
+      display: flex; align-items: center; gap: 8px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0; transform: translateY(-12px) translateX(10px);
+      max-width: 340px; pointer-events: none;
+    }
+    #admin-toast.show { opacity: 1; transform: translateY(0) translateX(0); }
+    #admin-toast i { font-size: 16px; }
+
+    /* STAT CARD ANIMATION */
+    .stat-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+    .stat-card .val {
+      transition: color 0.2s;
+    }
+
+    /* TABLE ROW HOVER */
+    tr {
+      transition: background 0.15s;
+    }
+    tbody tr:hover {
+      background: #fafbfc;
+    }
+
+    /* ROW FLASH ANIMATION */
+    @keyframes flashGreen {
+      0% { background: rgba(34, 197, 94, 0.15); }
+      100% { background: transparent; }
+    }
+    .flash-green {
+      animation: flashGreen 1.5s ease-out;
+    }
+
+    /* PILL ANIMATIONS */
+    .pill {
+      transition: transform 0.15s;
+    }
+    .pill:hover {
+      transform: scale(1.05);
+    }
+
+    /* BUTTON PRESS */
+    .btn:active, .btn-icon:active, .btn-label:active, .logout-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* SEARCH INPUT ICON */
+    #searchInput {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'%3E%3C/line%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 12px center;
+      padding-left: 36px;
+    }
+
+    /* SCAN INPUT HIGHLIGHT */
+    #scanInput {
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #scanInput:focus {
+      border-color: #2e7d32;
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+    }
+
+    /* MOBILE CARD IMPROVED */
+    .m-card {
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .m-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    /* LOADING SKELETON */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: skShimmer 1.5s infinite;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    @keyframes skShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* LOGIN CARD ANIMATION */
+    .login-card {
+      animation: fadeSlideUp 0.4s ease both;
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ADMIN HEADER ANIMATION */
+    .admin-header {
+      animation: fadeSlideUp 0.3s ease both;
+    }
+
+    /* STATS STAGGER */
+    .stat-card:nth-child(1) { animation: fadeSlideUp 0.3s 0.05s ease both; }
+    .stat-card:nth-child(2) { animation: fadeSlideUp 0.3s 0.1s ease both; }
+    .stat-card:nth-child(3) { animation: fadeSlideUp 0.3s 0.15s ease both; }
+    .stat-card:nth-child(4) { animation: fadeSlideUp 0.3s 0.2s ease both; }
+    .stat-card:nth-child(5) { animation: fadeSlideUp 0.3s 0.25s ease both; }
+
+    /* TABLE CARD ANIMATION */
+    .table-card {
+      animation: fadeSlideUp 0.4s 0.2s ease both;
+    }
+
+    /* CONFIRM DIALOG */
+    .confirm-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px); z-index: 2000;
+      display: none; justify-content: center; align-items: center;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .confirm-overlay.active { display: flex; opacity: 1; }
+    .confirm-box {
+      background: #fff; border-radius: 14px; padding: 28px;
+      width: min(400px, 90vw); text-align: center;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+      animation: fadeSlideUp 0.25s ease both;
+    }
+    .confirm-box .c-icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+    .confirm-box .c-icon.warn { background: #fef2f2; color: #dc2626; }
+    .confirm-box .c-icon.info { background: #eff6ff; color: #2563eb; }
+    .confirm-box .c-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .confirm-box .c-msg { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
+    .confirm-box .c-actions { display: flex; gap: 10px; justify-content: center; }
+    .confirm-box .c-btn {
+      padding: 10px 24px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: var(--font); border: none; transition: all 0.15s;
+    }
+    .confirm-box .c-btn.cancel { background: #f3f4f6; color: var(--text); border: 1px solid var(--border); }
+    .confirm-box .c-btn.cancel:hover { background: #e5e7eb; }
+    .confirm-box .c-btn.danger { background: #dc2626; color: #fff; }
+    .confirm-box .c-btn.danger:hover { background: #b91c1c; }
+    .confirm-box .c-btn.primary { background: var(--primary); color: #fff; }
+    .confirm-box .c-btn.primary:hover { background: var(--primary-dark); }
   </style>
 </head>
 <body>
 
+  <!-- SKIP LINK -->
+  <a href="#adminPanel" class="skip-link">Skip to Admin Panel</a>
+
+  <!-- TOAST -->
+  <div id="admin-toast"><i class="fas fa-check-circle"></i> <span id="admin-toast-msg"></span></div>
+
+  <!-- CONFIRM DIALOG -->
+  <div class="confirm-overlay" id="confirmDialog">
+    <div class="confirm-box">
+      <div class="c-icon warn" id="confirmIcon"><i class="fas fa-exclamation-triangle"></i></div>
+      <div class="c-title" id="confirmTitle">Are you sure?</div>
+      <div class="c-msg" id="confirmMsg">This action cannot be undone.</div>
+      <div class="c-actions">
+        <button class="c-btn cancel" id="confirmCancel">Cancel</button>
+        <button class="c-btn danger" id="confirmOk">Confirm</button>
+      </div>
+    </div>
+  </div>
+
   <nav class="navbar">
-    <div class="navbar-inner">
+      <div class="navbar-inner">
       <div class="nav-brand">
-        <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="College Logo" style="height:36px;width:auto;border-radius:6px;" onerror="this.style.display='none'">
-        <div>
-          <div class="bt">CeniNova Admin &bull; Ohm Shanthi Oshaana</div>
-          <div class="bs">Pazhassiraja College</div>
-        </div>
+        <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+          <img src="assets/ceninova-logo.png" alt="CeniNova Logo" style="height:36px;width:auto;border-radius:6px;" onerror="this.src='assets/Pazhassiraja_College_Pulpally_Logo.png';this.onerror=null;">
+          <div>
+            <div class="bt">CeniNova Admin &bull; Ohm Shanthi Oshaana</div>
+            <div class="bs">Pazhassiraja College</div>
+          </div>
+        </a>
       </div>
       <button class="logout-btn" onclick="logout()" id="logoutBtn" style="display:none;">Logout</button>
     </div>
@@ -393,11 +590,14 @@
     <!-- LOGIN -->
     <div id="loginForm" class="login-wrap">
       <div class="login-card">
-        <h2>Admin</h2>
-        <p class="sub">CeniNova — Ohm Shanthi Oshaana Screening Manager</p>
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#f84464,#d82949);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;box-shadow:0 6px 20px rgba(248,68,100,0.3);">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h2>Admin Panel</h2>
+        <p class="sub">CeniNova &mdash; Ohm Shanthi Oshaana Screening Manager</p>
         <div id="loginError"></div>
         <input type="password" id="adminCode" placeholder="Enter admin code" maxlength="10" autofocus>
-        <button class="btn" onclick="login()"><i class="fas fa-lock"></i> Unlock</button>
+        <button class="btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> Unlock</button>
       </div>
     </div>
 
@@ -413,29 +613,47 @@
 
       <div class="stats" id="statsRow">
         <div class="stat-card primary">
-          <div class="val" id="totalBookings">0</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(248,68,100,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;color:#f84464;"><i class="fas fa-calendar-check"></i></div>
+            <div class="val" id="totalBookings">0</div>
+          </div>
           <div class="lbl">Total Bookings</div>
         </div>
         <div class="stat-card gold">
-          <div class="val" id="totalTickets">0</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(245,197,24,0.12);display:flex;align-items:center;justify-content:center;font-size:14px;color:#d4a017;"><i class="fas fa-ticket-alt"></i></div>
+            <div class="val" id="totalTickets">0</div>
+          </div>
           <div class="lbl">Tickets Sold</div>
         </div>
         <div class="stat-card green">
-          <div class="val" id="totalRevenue">₹0</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(46,125,50,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;color:#2e7d32;"><i class="fas fa-rupee-sign"></i></div>
+            <div class="val" id="totalRevenue">₹0</div>
+          </div>
           <div class="lbl">Revenue</div>
         </div>
         <div class="stat-card">
-          <div class="val" id="paidCount">0</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;color:#2563eb;"><i class="fas fa-credit-card"></i></div>
+            <div class="val" id="paidCount">0</div>
+          </div>
           <div class="lbl">Payments</div>
         </div>
         <div class="stat-card">
-          <div class="val" id="attendedCount">0</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(124,58,237,0.1);display:flex;align-items:center;justify-content:center;font-size:14px;color:#7c3aed;"><i class="fas fa-user-check"></i></div>
+            <div class="val" id="attendedCount">0</div>
+          </div>
           <div class="lbl">Attended</div>
         </div>
       </div>
 
       <div class="table-card">
         <div class="tc-inner">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <div style="font-size:14px;font-weight:700;color:var(--text);"><i class="fas fa-list" style="color:var(--primary);margin-right:6px;"></i> Bookings <span id="resultCount" style="font-size:12px;font-weight:600;color:var(--text-light);margin-left:4px;"></span></div>
+          </div>
           <div class="filter-bar">
             <input type="text" id="searchInput" placeholder="Search name, phone or code...">
             <select id="paymentFilter">
@@ -563,6 +781,63 @@
     // Anonymous auth for DB access
     firebase.auth().signInAnonymously().catch(() => {});
 
+    // TOAST
+    function adminToast(msg, type) {
+      const t = document.getElementById('admin-toast');
+      const icon = t.querySelector('i');
+      const bg = type === 'error' ? 'linear-gradient(135deg, #ef4444, #dc2626)' : type === 'warning' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'linear-gradient(135deg, #10b981, #059669)';
+      const shadow = type === 'error' ? 'rgba(239,68,68,0.35)' : type === 'warning' ? 'rgba(245,158,11,0.35)' : 'rgba(16,185,129,0.35)';
+      t.style.background = bg;
+      t.style.boxShadow = '0 8px 30px ' + shadow;
+      icon.className = type === 'error' ? 'fas fa-exclamation-circle' : type === 'warning' ? 'fas fa-exclamation-triangle' : 'fas fa-check-circle';
+      document.getElementById('admin-toast-msg').textContent = msg;
+      t.classList.remove('show');
+      void t.offsetWidth;
+      t.classList.add('show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // CONFIRM DIALOG (replaces window.confirm)
+    function showConfirm(title, msg, type, btnText) {
+      return new Promise(resolve => {
+        const overlay = document.getElementById('confirmDialog');
+        document.getElementById('confirmTitle').textContent = title;
+        document.getElementById('confirmMsg').textContent = msg;
+        const icon = document.getElementById('confirmIcon');
+        const okBtn = document.getElementById('confirmOk');
+        if (type === 'danger') {
+          icon.className = 'c-icon warn';
+          icon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+          okBtn.className = 'c-btn danger';
+          okBtn.textContent = btnText || 'Delete';
+        } else {
+          icon.className = 'c-icon info';
+          icon.innerHTML = '<i class="fas fa-info-circle"></i>';
+          okBtn.className = 'c-btn primary';
+          okBtn.textContent = btnText || 'Confirm';
+        }
+        overlay.classList.add('active');
+        const cleanup = (result) => {
+          overlay.classList.remove('active');
+          okBtn.onclick = null;
+          document.getElementById('confirmCancel').onclick = null;
+          resolve(result);
+        };
+        okBtn.onclick = () => cleanup(true);
+        document.getElementById('confirmCancel').onclick = () => cleanup(false);
+        overlay.addEventListener('click', function handler(e) {
+          if (e.target === overlay) { cleanup(false); overlay.removeEventListener('click', handler); }
+        });
+      });
+    }
+
+    // DEBOUNCE HELPER
+    function debounce(fn, ms) {
+      let t;
+      return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), ms); };
+    }
+
     // DOM
     const loginForm = document.getElementById('loginForm');
     const adminPanel = document.getElementById('adminPanel');
@@ -587,13 +862,21 @@
     function login() {
       const code = document.getElementById('adminCode').value.trim();
       const errEl = document.getElementById('loginError');
+      const btn = document.querySelector('.login-card .btn');
       errEl.style.display = 'none';
       if (code === CONFIG.adminCode) {
-        sessionStorage.setItem('admin_authenticated', 'true');
-        showAdmin();
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Unlocking...';
+        btn.disabled = true;
+        setTimeout(() => {
+          sessionStorage.setItem('admin_authenticated', 'true');
+          showAdmin();
+        }, 400);
       } else {
-        errEl.textContent = 'Incorrect code. Try again.';
+        errEl.textContent = 'Incorrect code. Please try again.';
         errEl.style.display = 'block';
+        errEl.style.animation = 'none';
+        void errEl.offsetWidth;
+        errEl.style.animation = 'fadeSlideUp 0.3s ease both';
         document.getElementById('adminCode').value = '';
         document.getElementById('adminCode').focus();
       }
@@ -602,12 +885,15 @@
     function logout() {
       sessionStorage.removeItem('admin_authenticated');
       showLogin();
+      adminToast('Logged out successfully');
     }
 
     function showAdmin() {
       loginForm.style.display = 'none';
       adminPanel.style.display = 'block';
       document.getElementById('logoutBtn').style.display = 'inline-block';
+      const btn = document.querySelector('.login-card .btn');
+      if (btn) { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Unlock'; btn.disabled = false; }
       loadData();
     }
 
@@ -661,6 +947,8 @@
       f.sort((a, b) => b.timestamp - a.timestamp);
 
       totalBookings.textContent = f.length;
+      const resultCountEl = document.getElementById('resultCount');
+      if (resultCountEl) resultCountEl.textContent = f.length + ' of ' + allData.length + ' shown';
       const tix = f.reduce((s, d) => s + (d.tickets || 1), 0);
       totalTickets.textContent = tix;
       const rev = f.reduce((s, d) => s + (d.amount || (d.tickets||1) * 15), 0);
@@ -669,7 +957,11 @@
       attendedCount.textContent = f.filter(d => !!d.attended).length;
 
       if (f.length === 0) {
-        const e = `<div style="padding:24px;text-align:center;color:var(--text-light);">No bookings found.</div>`;
+        const e = `<div style="padding:40px 20px;text-align:center;color:var(--text-light);">
+          <div style="font-size:32px;margin-bottom:8px;opacity:0.4;"><i class="fas fa-search"></i></div>
+          <div style="font-size:15px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">No bookings found</div>
+          <div style="font-size:12px;">Try adjusting your filters or search query</div>
+        </div>`;
         tableBody.innerHTML = `<tr><td colspan="8">${e}</td></tr>`;
         cardsView.innerHTML = e;
         return;
@@ -765,24 +1057,72 @@
       document.getElementById('screenshotModal').classList.add('active');
     }
 
-    function markPaid(key) {
+    async function markPaid(key) {
       const d = allData.find(x => x.id === key);
-      if (d && confirm('Mark PAID for ' + getNames(d) + '?')) ref.child(key).update({ paymentStatus: 'paid', paidAt: Date.now() }).catch(e => alert(e.message));
+      if (!d) return;
+      const ok = await showConfirm('Mark as Paid', 'Mark PAID for ' + getNames(d) + '?', 'info', 'Mark Paid');
+      if (ok) {
+        ref.child(key).update({ paymentStatus: 'paid', paidAt: Date.now() })
+          .then(() => { adminToast('Marked as paid: ' + getNames(d)); highlightRow(key); })
+          .catch(e => adminToast('Error: ' + e.message, 'error'));
+      }
     }
-    function verifyPayment(key) {
+    async function verifyPayment(key) {
       const d = allData.find(x => x.id === key);
-      if (d && confirm('Verify payment for ' + getNames(d) + '?')) ref.child(key).update({ paymentStatus: 'verified', verifiedAt: Date.now() }).catch(e => alert(e.message));
+      if (!d) return;
+      const ok = await showConfirm('Verify Payment', 'Verify payment for ' + getNames(d) + '?', 'info', 'Verify');
+      if (ok) {
+        ref.child(key).update({ paymentStatus: 'verified', verifiedAt: Date.now() })
+          .then(() => { adminToast('Verified: ' + getNames(d)); highlightRow(key); })
+          .catch(e => adminToast('Error: ' + e.message, 'error'));
+      }
     }
-    function toggleAttended(key) {
+    async function deleteBooking(key) {
       const d = allData.find(x => x.id === key);
-      const nv = d ? !d.attended : true;
-      ref.child(key).update({ attended: nv, attendedAt: nv ? Date.now() : null }).catch(e => alert(e.message));
-    }
-    function deleteBooking(key) {
-      if (confirm('Permanently delete this booking?\nThis cannot be undone.')) ref.child(key).remove().catch(e => alert(e.message));
+      if (!d) return;
+      const ok = await showConfirm('Delete Booking', 'Permanently delete booking for ' + getNames(d) + '? This cannot be undone.', 'danger', 'Delete');
+      if (ok) {
+        ref.child(key).remove()
+          .then(() => adminToast('Deleted: ' + getNames(d)))
+          .catch(e => adminToast('Error: ' + e.message, 'error'));
+      }
     }
 
-    searchInput.addEventListener('input', render);
+    // Highlight updated row
+    function highlightRow(key) {
+      setTimeout(() => {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+          if (row.innerHTML.includes(key)) {
+            row.classList.add('flash-green');
+            setTimeout(() => row.classList.remove('flash-green'), 1500);
+          }
+        });
+        const cards = document.querySelectorAll('.m-card');
+        cards.forEach(card => {
+          if (card.innerHTML.includes(key)) {
+            card.classList.add('flash-green');
+            setTimeout(() => card.classList.remove('flash-green'), 1500);
+          }
+        });
+      }, 100);
+    }
+
+    async function toggleAttended(key) {
+      const d = allData.find(x => x.id === key);
+      if (!d) return;
+      const nv = d ? !d.attended : true;
+      const label = nv ? 'Mark Entry' : 'Unmark Entry';
+      const msg = nv ? 'Mark ' + getNames(d) + ' as attended?' : 'Remove attendance for ' + getNames(d) + '?';
+      const ok = await showConfirm(label, msg, nv ? 'info' : 'danger', nv ? 'Mark Entry' : 'Unmark');
+      if (ok) {
+        ref.child(key).update({ attended: nv, attendedAt: nv ? Date.now() : null })
+          .then(() => { adminToast(nv ? 'Entry marked' : 'Entry unmarked'); highlightRow(key); })
+          .catch(e => adminToast('Error: ' + e.message, 'error'));
+      }
+    }
+
+    searchInput.addEventListener('input', debounce(render, 200));
     paymentFilter.addEventListener('change', render);
     attendanceFilter.addEventListener('change', render);
     yearFilter.addEventListener('change', render);
@@ -848,13 +1188,13 @@
           return;
         }
         await startZXingScan();
-      } catch(err) { alert('Camera error: ' + err.message); }
+      } catch(err) { adminToast('Camera error: ' + err.message, 'error'); }
     }
 
     async function startZXingScan() {
       try { await loadZXing(); } catch(_) {}
       const ZX = window.ZXing;
-      if (!ZX || !ZX.BrowserMultiFormatReader) { alert('Scanner unavailable. Use manual entry.'); return; }
+      if (!ZX || !ZX.BrowserMultiFormatReader) { adminToast('Scanner unavailable. Use manual entry.', 'error'); return; }
       const hints = new Map();
       try { hints.set(ZX.DecodeHintType.TRY_HARDER, true); } catch(_) {}
       try { hints.set(ZX.DecodeHintType.POSSIBLE_FORMATS, [ZX.BarcodeFormat.CODE_128]); } catch(_) {}
@@ -889,7 +1229,7 @@
 
     // CSV
     document.getElementById('exportBtn').addEventListener('click', () => {
-      if (allData.length === 0) return alert('No data');
+      if (allData.length === 0) { adminToast('No data to export', 'warning'); return; }
       let csv = 'data:text/csv;charset=utf-8,Name,Phone,Tickets,Amount,Code,Payment Status,UPI Trans ID,Verified Trans ID,Has Screenshot,Registered At,Attended\n';
       allData.forEach(r => {
         const names = getNames(r);
@@ -899,6 +1239,7 @@
       link.setAttribute('href', encodeURI(csv));
       link.setAttribute('download', 'movie_bookings.csv');
       document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      adminToast('CSV exported successfully!');
     });
 
     // Close overlays on backdrop

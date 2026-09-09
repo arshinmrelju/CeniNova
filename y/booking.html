@@ -1,0 +1,3297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Book Tickets — Ohm Shanthi Oshaana | CeniNova Cinema</title>
+  <meta name="description" content="Book tickets for Ohm Shanthi Oshaana movie screening organised by the English Department, Pazhassiraja College." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Dancing+Script:wght@700&family=Noto+Sans+Malayalam:wght@700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #f5f5f7;
+      --card: #ffffff;
+      --primary: #f84464;
+      --primary-dark: #d82949;
+      --accent: #f5c518;
+      --text: #1f2533;
+      --text-secondary: #5a6275;
+      --text-light: #8f98a8;
+      --border: #e6e8ec;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --shadow: 0 2px 10px rgba(0,0,0,0.06);
+      --shadow-lg: 0 12px 36px rgba(0,0,0,0.12);
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ENTRANCE ANIMATIONS */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .anim-1 { animation: fadeSlideUp 0.4s ease both; }
+    .anim-2 { animation: fadeSlideUp 0.4s 0.1s ease both; }
+    .anim-3 { animation: fadeSlideUp 0.4s 0.2s ease both; }
+    .navbar  { animation: fadeIn 0.3s ease both; }
+
+    /* HEADER / NAVBAR — Integrated Cinema Design */
+    .navbar {
+      background: rgba(26, 26, 36, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+    .navbar-inner {
+      width: 100%;
+      max-width: 1140px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-brand-logo-wrap {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-brand-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .nav-brand-text-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand-ceninova {
+      font-weight: 900;
+      font-size: 16px;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #ffffff 40%, #f5c518 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-badge {
+      font-size: 9px;
+      font-weight: 800;
+      background: rgba(248, 68, 100, 0.2);
+      color: #ff6b8b;
+      border: 1px solid rgba(248, 68, 100, 0.35);
+      padding: 1px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.6px;
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.62);
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-nav-ticket {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(8px);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #ffffff;
+      font-family: var(--font);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+    }
+    .btn-nav-ticket i {
+      color: #f84464;
+      font-size: 13px;
+      transition: transform 0.2s ease;
+    }
+    .btn-nav-ticket:hover {
+      border-color: #f84464;
+      background: rgba(248, 68, 100, 0.16);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(248, 68, 100, 0.3);
+    }
+    .btn-nav-ticket:hover i {
+      transform: scale(1.15);
+    }
+
+    /* FULL-BLEED BOOKMYSHOW HERO */
+    .bms-hero {
+      position: relative;
+      width: 100%;
+      background: #1a1a24;
+      color: #ffffff;
+      overflow: hidden;
+    }
+    .bms-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('assets/ohm_shanthi_oshaana_poster.png');
+      background-size: cover;
+      background-position: center 30%;
+      filter: blur(28px) brightness(0.24) saturate(1.5);
+      transform: scale(1.15);
+      z-index: 0;
+    }
+    .bms-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #1a1a24 0%, rgba(26,26,36,0.92) 42%, rgba(26,26,36,0.7) 100%);
+      z-index: 1;
+    }
+    .bms-mob-backdrop {
+      display: none;
+    }
+    .bms-hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 44px 24px 48px;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    /* Poster Column */
+    .bms-poster-wrap {
+      flex-shrink: 0;
+      width: 260px;
+    }
+    .bms-poster-card {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 44px rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #000;
+    }
+    .bms-poster-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .bms-poster-card:hover img {
+      transform: scale(1.03);
+    }
+    .bms-poster-badge {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-align: center;
+      padding: 7px 10px;
+      text-transform: uppercase;
+    }
+    .bms-poster-caption {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    /* Details Column */
+    .bms-info-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+    .bms-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(248, 68, 100, 0.16);
+      border: 1px solid rgba(248, 68, 100, 0.4);
+      color: #ff6b8b;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+    }
+    .bms-title {
+      font-size: 40px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin: 0 0 4px 0;
+    }
+    .bms-title-ml {
+      font-family: 'Noto Sans Malayalam', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #f5c518;
+      margin-bottom: 16px;
+    }
+
+    /* Rating Box */
+    .bms-rating-box {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      padding: 12px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .bms-rating-val {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .bms-rating-val i {
+      color: #f84464;
+      font-size: 18px;
+    }
+    .bms-rating-votes {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 500;
+    }
+    .bms-rating-badge {
+      background: rgba(248, 68, 100, 0.2);
+      color: #ff7895;
+      border: 1px solid rgba(248, 68, 100, 0.35);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    /* Format & Meta Row */
+    .bms-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .bms-tag-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    .bms-meta-details {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.72);
+      font-weight: 500;
+    }
+    .bms-tagline-text {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 16px;
+      line-height: 1.5;
+      max-width: 600px;
+    }
+    .bms-host-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 24px;
+    }
+    .bms-host-info i {
+      color: #f5c518;
+    }
+
+    /* Price & CTA */
+    .bms-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .bms-price-display {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      color: #fff;
+    }
+    .bms-price-display .bms-cur {
+      font-size: 18px;
+      font-weight: 700;
+      color: #f5c518;
+    }
+    .bms-price-display .bms-amt {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .bms-price-display .bms-lbl {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.55);
+    }
+    .btn-bms-book {
+      background: #f84464;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 44px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 6px 20px rgba(248, 68, 100, 0.45);
+      font-family: var(--font);
+    }
+    .btn-bms-book:hover {
+      background: #d82949;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(248, 68, 100, 0.55);
+    }
+    .btn-bms-book:active {
+      transform: translateY(0);
+    }
+
+    /* MAIN BODY CONTAINER */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+    }
+
+    /* VENUE & SHOWTIME CARD */
+    .bms-venue-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 22px 26px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .bms-venue-main {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .bms-venue-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      background: rgba(248, 68, 100, 0.1);
+      color: #f84464;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .bms-venue-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .bms-venue-addr {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .bms-showtime-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .bms-st-item {
+      text-align: right;
+    }
+    .bms-st-val {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bms-st-val i {
+      color: var(--primary);
+    }
+    .bms-st-lbl {
+      font-size: 11px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .bms-live-seats-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .bms-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2e7d32;
+      animation: pulseGreen 1.8s infinite;
+    }
+    @keyframes pulseGreen {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(46, 125, 50, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+    }
+
+    /* SECTION CARDS */
+    .bms-section-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      margin-bottom: 24px;
+    }
+    .bms-section-heading {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bms-section-heading i {
+      color: var(--primary);
+      font-size: 16px;
+    }
+    .bms-synopsis {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* Cast & Crew */
+    .bms-cast-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .bms-cast-card {
+      text-align: center;
+      padding: 12px 8px;
+      border-radius: 10px;
+      transition: all 0.15s ease;
+    }
+    .bms-cast-card:hover {
+      background: #f8f9fb;
+    }
+    .bms-cast-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      background: linear-gradient(135deg, #f84464, #f5c518);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(248, 68, 100, 0.25);
+    }
+    .bms-cast-avatar.crew {
+      background: linear-gradient(135deg, #1f2533, #3a4253);
+      box-shadow: 0 4px 12px rgba(31, 37, 51, 0.2);
+    }
+    .bms-cast-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .bms-cast-char {
+      font-size: 11px;
+      color: var(--text-light);
+      margin-top: 2px;
+    }
+
+    /* Info Grid */
+    .bms-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .bms-info-tile {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 14px;
+      text-align: center;
+    }
+    .bms-info-tile.highlight {
+      background: rgba(248,68,100,0.04);
+      border-color: rgba(248,68,100,0.2);
+    }
+    .bms-info-tile .val {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .bms-info-tile.highlight .val {
+      color: var(--primary);
+    }
+    .bms-info-tile .lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    /* Sticky Mobile Bar */
+    .bms-mobile-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 10px 18px env(safe-area-inset-bottom);
+      z-index: 99;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .bms-mob-price {
+      display: flex;
+      flex-direction: column;
+    }
+    .bms-mob-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .bms-mob-sub {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+    .bms-mob-btn {
+      background: #f84464;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(248, 68, 100, 0.4);
+      font-family: var(--font);
+    }
+
+    /* Mobile Responsive adjustments (Authentic BookMyShow Mobile) */
+    @media (max-width: 768px) {
+      .navbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 20;
+        padding: 0 16px;
+        height: 60px;
+        background: linear-gradient(180deg, rgba(15, 16, 24, 0.88) 0%, rgba(15, 16, 24, 0.45) 60%, rgba(15, 16, 24, 0) 100%);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-bottom: none;
+        box-shadow: none;
+      }
+      .nav-brand-logo-wrap {
+        width: 34px;
+        height: 34px;
+      }
+      .brand-ceninova {
+        font-size: 14px;
+      }
+      .brand-sub {
+        font-size: 10px;
+      }
+      .btn-nav-ticket {
+        padding: 5px 12px;
+        font-size: 11px;
+        gap: 5px;
+      }
+      .btn-nav-ticket i {
+        font-size: 11px;
+      }
+
+      .bms-hero-bg { display: none; }
+      .bms-hero-overlay { display: none; }
+      .bms-mob-backdrop {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 220px;
+        overflow: hidden;
+      }
+      .bms-mob-backdrop img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 22%;
+        filter: brightness(0.85);
+      }
+      .bms-mob-backdrop-fade {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(15,16,24,0.65) 0%, rgba(15,16,24,0.1) 40%, rgba(26,26,36,0.92) 85%, #1a1a24 100%);
+      }
+
+      /* Hero Inner: Horizontal flex with poster on left and details on right */
+      .bms-hero-inner {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        padding: 0 16px 20px;
+        margin-top: -55px;
+        gap: 14px;
+      }
+      .bms-poster-wrap {
+        width: 95px;
+        flex-shrink: 0;
+      }
+      .bms-poster-card {
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+        border: 2px solid #2e303e;
+      }
+      .bms-poster-badge { display: none; }
+      .bms-poster-caption { display: none; }
+
+      .bms-badge-pill {
+        font-size: 9px;
+        padding: 2px 8px;
+        margin-bottom: 6px;
+      }
+      .bms-title {
+        font-size: 19px;
+        line-height: 1.25;
+        margin-bottom: 2px;
+      }
+      .bms-title-ml {
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+      .bms-rating-box {
+        padding: 5px 10px;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .bms-rating-val { font-size: 14px; }
+      .bms-rating-val i { font-size: 13px; }
+      .bms-rating-votes { font-size: 10px; }
+      .bms-rating-badge { display: none; }
+
+      .bms-meta-row {
+        gap: 6px;
+        margin-bottom: 8px;
+      }
+      .bms-tag-pill {
+        font-size: 10px;
+        padding: 2px 6px;
+      }
+      .bms-meta-details {
+        font-size: 11px;
+      }
+      .bms-tagline-text {
+        display: none;
+      }
+      .bms-host-info {
+        font-size: 11px;
+        margin-bottom: 0;
+      }
+
+      /* HIDE duplicate in-hero CTA on mobile! Sticky bottom bar handles booking */
+      .bms-cta-group {
+        display: none !important;
+      }
+
+      /* Venue card mobile */
+      .bms-venue-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+        gap: 14px;
+      }
+      .bms-showtime-row {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .bms-st-item {
+        text-align: left;
+      }
+      .bms-st-val { font-size: 13px; }
+
+      /* Sticky Mobile Bar */
+      .bms-mobile-bar {
+        display: flex;
+      }
+      .container {
+        padding: 16px 16px 84px;
+      }
+    }
+
+    /* Legacy fallbacks for modal and ticket view */
+    .movie-hero, .movie-poster, .movie-info, .poster-badge, .cast-ribbon, .cast-title, .cast-chips, .cast-pill { display: none !important; }
+    .movie-title { font-family: var(--font); font-weight: 800; }
+
+    /* MODAL */
+    .overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .overlay.active {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      width: min(520px, 94vw);
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-height: 92vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+    .modal-header {
+      padding: 24px 28px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .modal-header .modal-title {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .modal-header .modal-sub {
+      font-size: 13px;
+      color: var(--primary);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: #f0f0f0;
+      cursor: pointer;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .modal-close:hover { background: #e0e0e0; }
+    .modal-body { padding: 28px 28px 20px; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font);
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.08);
+    }
+    .form-group select {
+      width: 100%;
+      padding: 12px 38px 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font);
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+      transition: all 0.2s;
+      appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      color: inherit;
+      cursor: pointer;
+    }
+    .form-group select:hover {
+      border-color: #bbb;
+      background-color: #fafafa;
+    }
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.08);
+      background-color: #fff;
+    }
+
+    .ticket-qty-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #fafafa;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      width: fit-content;
+    }
+    .ticket-qty-selector button {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ticket-qty-selector button:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .ticket-qty-selector .qty-val {
+      font-size: 20px;
+      font-weight: 700;
+      min-width: 32px;
+      text-align: center;
+    }
+
+    .booking-summary {
+      background: linear-gradient(135deg, #fef9ef, #fafafa);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 14px 0;
+      border: 1px solid #f0e6d0;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    .summary-row.total {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text);
+      border-top: 1px solid #e8dcc8;
+      padding-top: 10px;
+      margin-top: 6px;
+    }
+
+    /* Payment Section */
+    .payment-box {
+      margin: 14px 0;
+      text-align: center;
+      background: linear-gradient(135deg, #fafafa, #f5f5f5);
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--border);
+    }
+    .payment-box .pay-amt {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* Upload Area */
+    .upload-area {
+      margin: 8px 0;
+    }
+    .upload-area .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+      position: relative;
+    }
+    .upload-area .drop-zone:hover {
+      border-color: var(--primary);
+      background: rgba(229, 9, 20, 0.03);
+    }
+    .upload-area .drop-zone.dragover {
+      border-color: var(--primary);
+      background: rgba(229, 9, 20, 0.06);
+    }
+    .upload-area .preview-wrap {
+      position: relative;
+      display: none;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .upload-area .preview-wrap img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      display: block;
+    }
+    .upload-area .preview-wrap .remove-btn {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .upload-area .preview-wrap .remove-btn:hover {
+      background: rgba(0,0,0,0.8);
+    }
+    .verify-status {
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .verify-status .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ocr-result-box {
+      margin-top: 8px;
+      padding: 10px;
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      font-size: 12px;
+      display: none;
+    }
+    .ocr-result-box.fail {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+    .ocr-result-box .info-row {
+      margin: 2px 0;
+    }
+    .ocr-result-box .info-row strong {
+      color: #166534;
+    }
+    .ocr-result-box.fail .info-row strong {
+      color: #991b1b;
+    }
+    .ocr-actions {
+      margin-top: 6px;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .ocr-actions .btn-ok {
+      padding: 5px 14px;
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .ocr-actions .btn-ok:hover { background: #15803d; }
+    .ocr-actions .btn-ok:disabled { background: #86efac; cursor: default; }
+    .ocr-actions .btn-retry {
+      padding: 5px 14px;
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .ocr-actions .btn-retry:hover { background: #e5e7eb; }
+
+    #upi-qr-container {
+      display: flex;
+      justify-content: center;
+      margin: 12px 0;
+    }
+    #upi-qr-container canvas, #upi-qr-container img {
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .upi-id-display {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-family: monospace;
+      margin-top: 10px;
+    }
+    .upi-app-links {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+    .upi-app-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .upi-app-btn:hover { border-color: var(--primary); transform: translateY(-1px); }
+
+    .ticket-row {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px 12px 18px;
+      margin-bottom: 10px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .ticket-row::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 6px;
+      border-radius: 10px 0 0 10px;
+      background: repeating-linear-gradient(180deg, var(--primary) 0px, var(--primary) 10px, #f5c518 10px, #f5c518 20px);
+    }
+    .ticket-row:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.06);
+    }
+    .ticket-row-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    .ticket-row-header::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .ticket-row input.tr-name {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: var(--font);
+      margin-bottom: 8px;
+      box-sizing: border-box;
+      background: #fafafa;
+      transition: all 0.2s;
+    }
+    .ticket-row input.tr-name:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.06);
+    }
+    .ticket-row input.tr-name::placeholder {
+      color: #bbb;
+    }
+    .tr-inline {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 6px;
+    }
+    .tr-inline .tr-dept { grid-column: 1 / 2; }
+    .tr-inline .tr-year { grid-column: 2 / 3; }
+    .tr-inline .tr-roll { grid-column: 3 / 4; }
+    .tr-inline select {
+      width: 100%;
+      padding: 8px 24px 8px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: var(--font);
+      background: #fafafa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 10px center;
+      appearance: none;
+      -webkit-tap-highlight-color: transparent;
+      color: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-sizing: border-box;
+    }
+    .tr-inline select:hover {
+      border-color: var(--primary);
+      background-color: #fff;
+    }
+    .tr-inline select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.06);
+      background: #fff;
+    }
+    .btn-sm {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--primary);
+      color: #fff;
+      font-family: var(--font);
+    }
+
+    .mini-ticket {
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+    }
+    .mini-ticket .mt-info { flex: 1; min-width: 0; }
+    .mini-ticket .mt-name { font-weight: 700; font-size: 14px; color: var(--text); }
+    .mini-ticket .mt-dept { font-size: 11px; color: var(--text-secondary); }
+    .mini-ticket .mt-code { font-size: 12px; font-family: monospace; color: var(--primary); font-weight: 600; margin-top: 2px; }
+    .mini-ticket .mt-barcode { width: 110px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .mini-ticket .mt-barcode svg { max-width: 100%; height: 40px; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #c8640a, #a04f06);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(200,100,10,0.25);
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, #a04f06, #7c3c04); box-shadow: 0 6px 20px rgba(200,100,10,0.35); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-gold {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #e8a030, #c8640a);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(200,100,10,0.3); }
+
+    .btn-link {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      font-family: var(--font);
+    }
+    .btn-link:hover { color: var(--primary); }
+
+    .divider-text {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-light);
+      margin: 12px 0;
+      position: relative;
+    }
+    .divider-text::before,
+    .divider-text::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: var(--border);
+    }
+    .divider-text::before { left: 0; }
+    .divider-text::after { right: 0; }
+
+    /* TICKET */
+    .ticket-card {
+      width: min(420px, 94vw);
+      background: #3d1f06;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(100,40,5,0.45);
+      overflow: hidden;
+      position: relative;
+    }
+    .ticket-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(90deg, #c8640a 0px, #c8640a 20px, #e8a030 20px, #e8a030 40px);
+    }
+    .ticket-inner {
+      display: flex;
+      background: #fff;
+      margin-top: 6px;
+    }
+    .ticket-main {
+      flex: 1;
+      padding: 24px 20px 20px;
+      position: relative;
+    }
+    .ticket-stub {
+      width: 100px;
+      flex-shrink: 0;
+      background: #fef3e2;
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-left: 2px dashed #e8c07a;
+      position: relative;
+    }
+    .ticket-stub::before, .ticket-stub::after {
+      content: '';
+      position: absolute;
+      left: -11px;
+      width: 20px; height: 20px;
+      background: #3d1f06;
+      border-radius: 50%;
+    }
+    .ticket-stub::before { top: -10px; }
+    .ticket-stub::after { bottom: -10px; }
+    .ticket-brand {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .ticket-title {
+      font-family: 'Dancing Script', 'Playfair Display', serif;
+      font-size: 28px;
+      color: #b8530a;
+      line-height: 1.1;
+      margin-bottom: 2px;
+    }
+    .ticket-venue-line {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
+    .ticket-divider {
+      border: none;
+      border-top: 1px dashed #ddd;
+      margin: 10px 0;
+    }
+    .ticket-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 16px;
+      text-align: left;
+      margin: 10px 0;
+    }
+    .ticket-info-item .tilbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      color: #999;
+      letter-spacing: 0.5px;
+    }
+    .ticket-info-item .tival {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .ticket-guest {
+      margin: 8px 0;
+      text-align: left;
+    }
+    .ticket-guest .tglbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      color: #999;
+      letter-spacing: 0.5px;
+    }
+    .ticket-guest .tgval {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .ticket-barcode-area {
+      margin: 10px 0 6px;
+    }
+    .ticket-barcode-area svg {
+      max-width: 100%;
+    }
+    .ticket-code-text {
+      font-size: 10px;
+      color: #999;
+      font-family: monospace;
+      letter-spacing: 1px;
+    }
+
+    /* Stub content */
+    .stub-barcode svg {
+      max-width: 100%;
+      height: 50px;
+    }
+    .stub-code {
+      font-size: 9px;
+      font-family: monospace;
+      color: #666;
+      margin: 8px 0;
+      text-align: center;
+      word-break: break-all;
+    }
+    .stub-label {
+      font-size: 8px;
+      text-transform: uppercase;
+      color: #999;
+      letter-spacing: 1px;
+    }
+    .stub-price {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 4px 0;
+    }
+
+    @media (max-width: 600px) {
+      .ticket-stub { width: 70px; padding: 14px 8px; }
+      .ticket-info-grid { grid-template-columns: 1fr; }
+      .ticket-title { font-size: 20px; }
+      .tr-inline { display: flex; flex-direction: column; gap: 6px; }
+      .tr-inline select { width: 100%; }
+    }
+
+    .ticket-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 16px 0 8px;
+    }
+    .act-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font);
+      color: #fff;
+    }
+    .act-btn.save { background: #2e7d32; }
+    .act-btn.share { background: #1976d2; }
+    .act-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+
+    .ticket-chip-list {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 8px 28px;
+    }
+    .ticket-chip {
+      background: rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 11px;
+      transition: all 0.15s;
+    }
+    .ticket-chip.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .ticket-chip:hover { transform: translateY(-1px); }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-light);
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    /* Custom Select */
+    .cs-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .cs-trigger {
+      width: 100%;
+      padding: 12px 38px 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: var(--font);
+      background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23666' d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+      color: inherit;
+      cursor: pointer;
+      text-align: left;
+      box-sizing: border-box;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .cs-trigger:hover { border-color: #bbb; background-color: #fafafa; }
+    .cs-trigger.open { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(229,9,20,0.08); background-color: #fff; }
+    .cs-trigger .cs-placeholder { color: #999; }
+    .cs-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      z-index: 999;
+      max-height: 260px;
+      overflow-y: auto;
+      display: none;
+      padding: 4px;
+    }
+    .cs-dropdown.open { display: block; }
+    .cs-group-label {
+      padding: 6px 12px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      pointer-events: none;
+    }
+    .cs-option {
+      padding: 9px 12px;
+      font-size: 13px;
+      font-family: var(--font);
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.1s;
+      color: var(--text);
+    }
+    .cs-option:hover { background: #f5f5f5; }
+    .cs-option.selected { background: var(--primary); color: #fff; font-weight: 600; }
+    .cs-option.selected:hover { background: var(--primary-dark); }
+    .tr-inline .cs-trigger {
+      padding: 10px 30px 10px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      background-size: 10px 7px;
+    }
+    .tr-inline .cs-trigger.open { box-shadow: 0 0 0 2px rgba(248,68,100,0.12); }
+    .tr-inline .cs-option { font-size: 12px; padding: 7px 10px; }
+    .tr-inline .cs-group-label { font-size: 10px; padding: 4px 10px 2px; }
+    .tr-inline .cs-dropdown { max-height: 200px; }
+
+    /* SKIP LINK (Accessibility) */
+    .skip-link {
+      position: absolute; top: -100%; left: 16px; z-index: 9999;
+      background: var(--primary); color: #fff; padding: 8px 16px; border-radius: 0 0 8px 8px;
+      font-size: 13px; font-weight: 700; text-decoration: none; transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* FOCUS RINGS (Accessibility) */
+    :focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :focus-visible { outline-color: var(--accent); }
+    }
+
+    /* SMOOTH SCROLL */
+    html { scroll-behavior: smooth; }
+
+    /* REDUCED MOTION */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+
+    /* MODAL ANIMATIONS */
+    .overlay {
+      transition: opacity 0.3s ease, backdrop-filter 0.3s ease;
+    }
+    .overlay.active .modal-card {
+      animation: modalSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(32px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* BUTTON PRESS EFFECT */
+    .btn-bms-book, .btn-primary, .btn-gold, .bms-mob-btn {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-bms-book:active, .btn-primary:active, .btn-gold:active, .bms-mob-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* RIPPLE EFFECT ON BUTTONS */
+    .ripple-effect {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      transform: scale(0);
+      animation: rippleAnim 0.6s ease-out;
+      pointer-events: none;
+    }
+    @keyframes rippleAnim {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* BETTER TOAST */
+    #toast-msg {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff; padding: 12px 20px; border-radius: 12px;
+      font-size: 13px; font-weight: 700; font-family: var(--font);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.35);
+      display: flex; align-items: center; gap: 8px;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0; transform: translateY(12px);
+      max-width: 340px;
+    }
+    #toast-msg.show {
+      opacity: 1; transform: translateY(0);
+    }
+    #toast-msg i { font-size: 16px; }
+
+    /* CARD HOVER LIFT */
+    .bms-section-card, .bms-venue-card {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+    }
+    .bms-section-card:hover, .bms-venue-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+    }
+
+    /* CAST CARD HOVER */
+    .bms-cast-card {
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+    }
+    .bms-cast-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+    .bms-cast-avatar {
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bms-cast-card:hover .bms-cast-avatar {
+      transform: scale(1.08);
+    }
+
+    /* FORM VALIDATION STATES */
+    .form-group input:invalid:not(:placeholder-shown) {
+      border-color: #ef4444;
+    }
+    .form-group input:valid:not(:placeholder-shown) {
+      border-color: #22c55e;
+    }
+    .form-group .field-hint {
+      font-size: 11px; color: var(--text-light); margin-top: 4px; display: flex; align-items: center; gap: 4px;
+    }
+
+    /* BOOKING SUMMARY ANIMATION */
+    .booking-summary {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .booking-summary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(200,100,10,0.1);
+    }
+
+    /* PAYMENT METHOD TOGGLE ANIMATION */
+    .payment-box {
+      transition: all 0.3s ease;
+    }
+
+    /* UPLOAD ZONE IMPROVED */
+    .upload-area .drop-zone {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .upload-area .drop-zone:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(248, 68, 100, 0.1);
+    }
+
+    /* SEAT COUNTER PULSE */
+    .bms-live-seats-badge {
+      transition: transform 0.2s ease;
+    }
+    .bms-live-seats-badge:hover {
+      transform: scale(1.03);
+    }
+
+    /* NAVBAR SCROLL EFFECT */
+    .navbar.scrolled {
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    /* POSTER CARD GLOW ON HOVER */
+    .bms-poster-card {
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .bms-poster-card:hover {
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(248, 68, 100, 0.15);
+    }
+
+    /* PRICE HIGHLIGHT PULSE */
+    .bms-price-display .bms-amt {
+      transition: color 0.2s;
+    }
+    .bms-price-display:hover .bms-amt {
+      color: var(--accent);
+    }
+
+    /* QUICK INFO TILES */
+    .bms-info-tile {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .bms-info-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+    }
+
+    /* SUCCESS ANIMATION ON BOOKING */
+    @keyframes checkPop {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    .check-pop { animation: checkPop 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    /* LOADING SKELETON */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: skeletonShimmer 1.5s infinite;
+      border-radius: 6px;
+    }
+    @keyframes skeletonShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* FOOTER IMPROVED */
+    footer {
+      transition: background 0.2s;
+    }
+    footer:hover {
+      background: rgba(0,0,0,0.02);
+    }
+
+    /* MOBILE BOTTOM BAR ANIMATION */
+    .bms-mobile-bar {
+      transition: transform 0.3s ease;
+    }
+
+    /* TICKET CODE COPY BUTTON */
+    .ticket-code-copy {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border);
+      background: #fafafa; cursor: pointer; font-size: 11px; font-weight: 600;
+      transition: all 0.15s; font-family: var(--font); color: var(--text-secondary);
+    }
+    .ticket-code-copy:hover {
+      border-color: var(--primary); color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      .ticket-card { width: 94vw; }
+      .ticket-details { min-width: auto; width: 100%; }
+      .modal-body { padding: 16px 18px; }
+      .modal-header { padding: 18px 18px 0; }
+      .tr-inline { grid-template-columns: 1fr 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- SKIP LINK (Accessibility) -->
+  <a href="#booking-modal" class="skip-link">Skip to Booking</a>
+
+  <!-- NAVBAR — Integrated Cinema Header -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="nav-brand">
+        <div class="nav-brand-logo-wrap">
+          <img src="assets/ceninova-logo.png" alt="College Logo" class="nav-brand-logo" onerror="this.src='assets/Pazhassiraja_College_Pulpally_Logo.png';this.onerror=null;">
+        </div>
+        <div class="nav-brand-text-wrap">
+          <div class="brand-title">
+            <span class="brand-ceninova">CeniNova</span>
+            <span class="brand-badge">CINEMA</span>
+          </div>
+          <div class="brand-sub">Dept. of English &bull; Pazhassiraja College</div>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <a href="index.html" class="btn-nav-ticket" style="text-decoration:none;">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </a>
+        <button class="btn-nav-ticket" onclick="openModal('find-modal')">
+          <i class="fas fa-ticket-alt"></i>
+          <span>My Ticket</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- FULL-BLEED BOOKMYSHOW HERO BANNER -->
+  <section class="bms-hero">
+    <div class="bms-hero-bg"></div>
+    <div class="bms-hero-overlay"></div>
+    <!-- Mobile Backdrop Image (visible on mobile only) -->
+    <div class="bms-mob-backdrop">
+      <img src="assets/ohm_shanthi_oshaana_poster.png" alt="Ohm Shanthi Oshaana Backdrop">
+      <div class="bms-mob-backdrop-fade"></div>
+    </div>
+    <div class="bms-hero-inner">
+      <!-- POSTER CARD (Left) -->
+      <div class="bms-poster-wrap">
+        <div class="bms-poster-card">
+          <img src="assets/ohm_shanthi_oshaana_poster.png" alt="Ohm Shanthi Oshaana">
+          <div class="bms-poster-badge">In Cinemas</div>
+        </div>
+        <div class="bms-poster-caption">Screening at Chithrashala</div>
+      </div>
+
+      <!-- DETAILS (Right) -->
+      <div class="bms-info-wrap">
+        <div class="bms-badge-pill"><i class="fas fa-film"></i> CeniNova Screening</div>
+        <h1 class="bms-title" id="movie-title">Ohm Shanthi Oshaana</h1>
+        <div class="bms-title-ml" id="movie-title-ml">ഓം ശാന്തി ഓശാന</div>
+
+        <!-- BookMyShow Rating Card -->
+        <div class="bms-rating-box">
+          <div class="bms-rating-val"><i class="fas fa-star"></i> 8.6/10</div>
+          <div class="bms-rating-votes">(24.8K Votes)</div>
+          <div class="bms-rating-badge">Superhit Classic</div>
+        </div>
+
+        <!-- Format & Meta row -->
+        <div class="bms-meta-row">
+          <span class="bms-tag-pill" id="movie-format">2D</span>
+          <span class="bms-tag-pill" id="movie-language">Malayalam</span>
+          <span class="bms-meta-details">
+            <span id="movie-duration">2h 16m</span> &nbsp;•&nbsp;
+            <span id="movie-genre">Comedy, Romance</span> &nbsp;•&nbsp;
+            <span id="movie-rating">U</span> &nbsp;•&nbsp;
+            <span>4 Aug, 2026</span>
+          </span>
+        </div>
+
+        <p class="bms-tagline-text" id="movie-tagline">A bold, heartfelt coming-of-age story — directed by Jude Anthany Joseph</p>
+
+        <div class="bms-host-info">
+          <i class="fas fa-university"></i> Dept. of English &bull; Pazhassiraja College
+        </div>
+
+        <!-- Price & CTA (Desktop only, mobile uses sticky bottom bar) -->
+        <div class="bms-cta-group">
+          <div class="bms-price-display">
+            <span class="bms-cur">₹</span><span class="bms-amt" id="ticket-price">15</span>
+            <span class="bms-lbl">per ticket</span>
+          </div>
+          <button class="btn-bms-book" id="btn-book">
+            <i class="fas fa-ticket-alt"></i> Book Tickets
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN BODY CONTAINER -->
+  <div class="container">
+
+    <!-- VENUE & SHOWTIME CARD -->
+    <div class="bms-venue-card">
+      <div class="bms-venue-main">
+        <div class="bms-venue-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div>
+          <div class="bms-venue-name" id="venue-name">Chithrashala Auditorium</div>
+          <div class="bms-venue-addr" id="venue-addr">Pazhassiraja College, Pulpally, Wayanad</div>
+        </div>
+      </div>
+      <div class="bms-showtime-row">
+        <div class="bms-st-item">
+          <div class="bms-st-val"><i class="fas fa-calendar-alt"></i> <span id="show-date">4 Aug, 2026</span></div>
+          <div class="bms-st-lbl">Date</div>
+        </div>
+        <div class="bms-st-item">
+          <div class="bms-st-val"><i class="fas fa-clock"></i> <span id="show-time">02:00 PM</span></div>
+          <div class="bms-st-lbl">Time</div>
+        </div>
+        <div class="bms-live-seats-badge">
+          <span class="bms-live-dot"></span>
+          <span id="seats-available">—</span> Seats Left
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT THE MOVIE -->
+    <div class="bms-section-card">
+      <h2 class="bms-section-heading"><i class="fas fa-align-left"></i> About the Movie</h2>
+      <p class="bms-synopsis">
+        A spirited, outspoken high-school girl, Pooja Mathew, falls head over heels for Giri, an older organic farmer and kung-fu practitioner. Unapologetic in her pursuit, she spends years hoping and planning to win his affection. Directed by Jude Anthany Joseph, this blockbuster romantic comedy is cherished for its delightful humor, soulful music by Shaan Rahman, and an unforgettable portrayal of youth, love, and persistence.
+      </p>
+    </div>
+
+    <!-- CAST & CREW -->
+    <div class="bms-section-card">
+      <h2 class="bms-section-heading"><i class="fas fa-users"></i> Cast</h2>
+      <div class="bms-cast-grid">
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar">NN</div>
+          <div class="bms-cast-name">Nazriya Nazim</div>
+          <div class="bms-cast-char">as Pooja Mathew</div>
+        </div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar">NP</div>
+          <div class="bms-cast-name">Nivin Pauly</div>
+          <div class="bms-cast-char">as Giri</div>
+        </div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar">AV</div>
+          <div class="bms-cast-name">Aju Varghese</div>
+          <div class="bms-cast-char">as David Kanjani</div>
+        </div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar">RP</div>
+          <div class="bms-cast-name">Renji Panicker</div>
+          <div class="bms-cast-char">as Dr. Mathew</div>
+        </div>
+      </div>
+
+      <h2 class="bms-section-heading" style="margin-top:24px;"><i class="fas fa-video"></i> Crew</h2>
+      <div class="bms-cast-grid">
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar crew">JA</div>
+          <div class="bms-cast-name">Jude Anthany Joseph</div>
+          <div class="bms-cast-char">Director</div>
+        </div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar crew">SR</div>
+          <div class="bms-cast-name">Shaan Rahman</div>
+          <div class="bms-cast-char">Music Director</div>
+        </div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar crew">MM</div>
+          <div class="bms-cast-name">Midhun Manuel Thomas</div>
+          <div class="bms-cast-char">Screenplay</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREENING INFORMATION -->
+    <div class="bms-section-card">
+      <h2 class="bms-section-heading"><i class="fas fa-info-circle"></i> Screening Information</h2>
+      <div class="bms-info-grid">
+        <div class="bms-info-tile">
+          <div class="val" id="total-seats">100</div>
+          <div class="lbl">Total Capacity</div>
+        </div>
+        <div class="bms-info-tile highlight">
+          <div class="val">₹<span id="price-per-ticket">15</span></div>
+          <div class="lbl">Ticket Price</div>
+        </div>
+        <div class="bms-info-tile">
+          <div class="val"><i class="fas fa-user-check"></i> 1:1</div>
+          <div class="lbl">1 Person / Ticket</div>
+        </div>
+        <div class="bms-info-tile">
+          <div class="val"><i class="fas fa-qrcode"></i> Digital</div>
+          <div class="lbl">QR Ticket Entry</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Pazhassiraja College, Pulpally &mdash; Dept. of English &bull; CeniNova
+    </footer>
+  </div>
+
+  <!-- STICKY MOBILE BOOKING BAR -->
+  <div class="bms-mobile-bar">
+    <div class="bms-mob-price">
+      <div class="bms-mob-val">₹<span id="mob-ticket-price">15</span></div>
+      <div class="bms-mob-sub">per ticket · Chithrashala</div>
+    </div>
+    <button class="bms-mob-btn" onclick="document.getElementById('btn-book').click()">
+      <i class="fas fa-ticket-alt"></i> Book Tickets
+    </button>
+  </div>
+
+  <!-- BOOKING MODAL -->
+  <div id="booking-modal" class="overlay">
+    <div class="modal-card">
+      <div style="height:4px;background:linear-gradient(90deg,#f84464,#f5c518);border-radius:16px 16px 0 0;"></div>
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Book Ticket</div>
+          <div class="modal-sub" id="modal-movie-name">Ohm Shanthi Oshaana (ഓം ശാന്തി ഓശാന)</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('booking-modal')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="booking-form">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="user-name" placeholder="Enter student's full name" required autocomplete="name">
+            <div class="field-hint"><i class="fas fa-info-circle"></i> As it appears on your college ID</div>
+          </div>
+
+          <div class="form-group">
+            <label>College Details</label>
+            <div class="tr-inline">
+              <select id="user-dept" required></select>
+              <select id="user-year" required></select>
+              <select id="user-roll" required></select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="user-phone" placeholder="Enter 10-digit mobile number" required pattern="[0-9]{10}" inputmode="numeric" autocomplete="tel">
+            <div class="field-hint"><i class="fas fa-info-circle"></i> For ticket delivery & updates</div>
+          </div>
+
+          <!-- Booking Summary -->
+          <div class="booking-summary" id="booking-summary">
+            <div class="summary-row">
+              <span>Ticket (1 Person)</span>
+              <span>₹<span id="summary-unit-price">15</span></span>
+            </div>
+            <div class="summary-row total">
+              <span>Total Payable</span>
+              <span>₹<span id="summary-total">15</span></span>
+            </div>
+          </div>
+
+          <!-- PAYMENT -->
+          <div class="payment-box" id="payment-box">
+            <div style="display:flex;gap:8px;justify-content:center;margin-bottom:10px;">
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--primary);font-size:13px;font-weight:600;background:var(--primary);color:#fff;" id="pay-cash-lbl">
+                <input type="radio" name="payMethod" value="cash" checked onchange="togglePayMethod()" style="display:none;"> Cash
+              </label>
+              <label style="display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;background:transparent;color:var(--text-secondary);" id="pay-upi-lbl">
+                <input type="radio" name="payMethod" value="upi" onchange="togglePayMethod()" style="display:none;"> UPI
+              </label>
+            </div>
+            <div class="pay-amt">₹<span id="pay-amount">15</span></div>
+            <div id="upi-section" style="display:none;">
+              <div id="upi-qr-container"></div>
+              <div class="upi-id-display" id="upi-id-display">Pay to: <strong id="upi-id-text">—</strong> <button type="button" onclick="copyUPIId()" style="margin-left:6px;padding:3px 8px;border-radius:4px;border:1px solid #ccc;background:#f9f9f9;font-size:11px;cursor:pointer;"><i class="fas fa-copy"></i> Copy</button></div>
+              <div class="upi-app-links" id="upi-app-links"></div>
+              <div style="font-size:12px;color:var(--text-secondary);margin:8px 0;">
+                After paying, upload a screenshot of your payment confirmation below
+              </div>
+              <div class="upload-area" id="upload-area">
+                <input type="file" id="screenshot-input" accept="image/*" style="display:none">
+                <div class="drop-zone" id="drop-zone">
+                  <i class="fas fa-cloud-upload-alt" style="font-size:28px;color:var(--primary);"></i>
+                  <div style="font-size:13px;color:var(--text-secondary);margin-top:6px;">Tap to upload payment screenshot</div>
+                  <div style="font-size:10px;color:var(--text-light);margin-top:4px;">PNG, JPG or WEBP</div>
+                </div>
+                <div class="preview-wrap" id="preview-wrap">
+                  <img id="screenshot-preview" alt="Payment screenshot preview">
+                  <button type="button" class="remove-btn" id="btn-remove-screenshot" title="Remove"><i class="fas fa-times"></i></button>
+                </div>
+              </div>
+              <div class="verify-status" id="verify-status"></div>
+              <div class="ocr-result-box" id="ocr-result">
+                <div style="font-weight:600;color:#166534;margin-bottom:4px;" id="ocr-heading-wrap"><i class="fas fa-check-circle" id="ocr-icon"></i> <span id="ocr-heading">Transaction ID Verified ✓</span></div>
+                <div class="info-row">UPI Ref: <strong id="ocr-ref-id">—</strong></div>
+                <div class="info-row" id="ocr-upi-row" style="display:none;color:#166534;font-weight:600;"><i class="fas fa-check-circle"></i> UPI ID: <strong id="ocr-upi-val"></strong> ✓</div>
+                <div style="font-size:10px;color:#666;margin-top:4px;" id="ocr-hint">Transaction ID detected successfully. Click confirm to proceed.</div>
+                <div class="ocr-actions">
+                  <button type="button" class="btn-ok" id="btn-confirm-payment">Confirm &amp; Proceed</button>
+                  <button type="button" class="btn-retry" id="btn-retry-ocr">Retry</button>
+                </div>
+              </div>
+              <input type="hidden" id="upi-trans-id" value="">
+              <input type="hidden" id="screenshot-b64" value="">
+              <input type="hidden" id="ocr-verified" value="false">
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="btn-confirm">Confirm &amp; Generate Ticket</button>
+        </form>
+        <button class="btn-link" onclick="closeModal('booking-modal')">Cancel</button>
+      </div>
+      <div style="height:4px;background:repeating-linear-gradient(90deg,#c8640a 0px,#c8640a 20px,#e8a030 20px,#e8a030 40px);border-radius:0 0 20px 20px;"></div>
+    </div>
+  </div>
+
+  <!-- TICKET MODAL -->
+  <div id="ticket-modal" class="overlay">
+    <div>
+      <div style="background:#3d1f06;border-radius:16px;box-shadow:0 20px 60px rgba(100,40,5,0.45);overflow:hidden;width:min(460px,94vw);">
+        <div style="background:repeating-linear-gradient(90deg,#c8640a 0px,#c8640a 20px,#e8a030 20px,#e8a030 40px);height:6px;"></div>
+        <div style="background:#fffdf9;padding:20px;">
+          <div style="text-align:center;position:relative;">
+            <div style="position:absolute;top:0;right:0;background:linear-gradient(135deg,#c8640a,#a04f06);color:#fff;font-size:8px;font-weight:800;padding:4px 9px;border-radius:4px;letter-spacing:0.8px;">SCREENING PASS</div>
+            <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" style="height:36px;margin-bottom:2px;" alt="College Logo">
+            <div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;color:#c8640a;font-weight:800;">CeniNova &bull; Dept of English</div>
+            <div style="font-family:'Dancing Script',serif;font-weight:700;font-size:24px;color:#b8530a;line-height:1.2;margin:2px 0;">Ohm Shanthi Oshaana</div>
+            <div style="font-family:'Noto Sans Malayalam',sans-serif;font-size:10px;font-weight:700;color:#8a4010;letter-spacing:0.5px;margin-bottom:4px;">ഓം ശാന്തി ഓശാന &bull; Pazhassiraja College</div>
+            <div style="font-size:10px;color:#6b4a2a;margin-bottom:8px;"><i class="fas fa-map-marker-alt"></i> Chithrashala, Pazhassiraja College</div>
+            <div style="font-size:11px;color:#6b4a2a;"><i class="fas fa-phone"></i> <span id="tkt-phone">—</span></div>
+          </div>
+
+          <hr style="border:none;border-top:1px dashed #ddd;margin:12px 0;">
+
+          <div id="multi-ticket-list" style="display:flex;flex-direction:column;gap:10px;max-height:55vh;overflow-y:auto;"></div>
+
+          <hr style="border:none;border-top:1px dashed #ddd;margin:12px 0;">
+
+          <div id="ticket-list" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:8px;"></div>
+
+          <div style="display:flex;gap:8px;">
+            <button class="act-btn save" onclick="saveTicket()" style="flex:1;"><i class="fas fa-download"></i> Save Ticket</button>
+            <button class="act-btn share" onclick="shareTicket()" style="flex:1;"><i class="fas fa-share-alt"></i> Share Ticket</button>
+            <button class="btn-link" onclick="closeModal('ticket-modal')" style="flex:1;margin:0;">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIND TICKET MODAL -->
+  <div id="find-modal" class="overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Find Your Ticket</div>
+          <div class="modal-sub">Search by code or by name &amp; phone</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('find-modal')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="find-form">
+          <div class="form-group">
+            <label>Ticket Code</label>
+            <input type="text" id="find-code" placeholder="e.g. ED-1234" autocomplete="off">
+          </div>
+          <div class="divider-text">OR</div>
+          <div class="form-group">
+            <label>Department</label>
+            <select id="find-dept"><option value="">Select Department</option></select>
+          </div>
+          <div class="form-group">
+            <label>Year of Study</label>
+            <select id="find-year"><option value="">Year of Study</option></select>
+          </div>
+          <div class="form-group">
+            <label>Roll Number</label>
+            <select id="find-roll"><option value="">Roll No</option></select>
+          </div>
+          <button type="submit" class="btn-primary"><i class="fas fa-search"></i> Search</button>
+        </form>
+        <button class="btn-link" onclick="closeModal('find-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+
+
+  <script>
+    // ========== CONFIG — Edit these to match your event ==========
+    const CONFIG = {
+      eventName: 'Ohm Shanthi Oshaana',
+      eventMalayalam: 'ഓം ശാന്തി ഓശാന',
+      eventTagline: 'A bold, heartfelt coming-of-age story — directed by Jude Anthany Joseph',
+      eventDate: 'August 4, 2026',
+      eventTime: '2:00 PM',
+      venueName: 'Chithrashala',
+      venueAddress: 'Pazhassiraja College, Pulpally, Wayanad',
+      totalSeats: 100,
+      ticketPrice: 15,
+      rating: 'U',
+      language: 'Malayalam',
+      genre: 'Rom-Com • Coming-of-Age',
+      duration: '2h 16m',
+      format: '2D HD',
+      upiId: 'arshinmrelju@okicici',
+      upiName: 'English Dept',
+      adminEmail: 'jesusyouthprc@gmail.com',
+      firebase: {
+        apiKey: "AIzaSyCj0JINS_OP68aMRXEXTIEeqbjbcGOXH58",
+        authDomain: "ceninovaprc.firebaseapp.com",
+        databaseURL: "https://ceninovaprc-default-rtdb.firebaseio.com",
+        projectId: "ceninovaprc",
+        storageBucket: "ceninovaprc.firebasestorage.app",
+        messagingSenderId: "491724769824",
+        appId: "1:491724769824:web:7aa6550c1f72db1b68ca45"
+      }
+    };
+    // ============================================================
+
+    // Apply config
+    document.getElementById('movie-title').textContent = CONFIG.eventName;
+    const mlEl = document.getElementById('movie-title-ml');
+    if (mlEl) mlEl.textContent = CONFIG.eventMalayalam;
+    document.getElementById('movie-tagline').textContent = CONFIG.eventTagline;
+    document.getElementById('movie-rating').textContent = CONFIG.rating;
+    document.getElementById('movie-language').textContent = CONFIG.language;
+    document.getElementById('movie-genre').textContent = CONFIG.genre;
+    document.getElementById('movie-duration').textContent = CONFIG.duration;
+    document.getElementById('movie-format').textContent = CONFIG.format;
+    document.getElementById('ticket-price').textContent = CONFIG.ticketPrice;
+    const mobPrEl = document.getElementById('mob-ticket-price');
+    if (mobPrEl) mobPrEl.textContent = CONFIG.ticketPrice;
+    document.getElementById('price-per-ticket').textContent = CONFIG.ticketPrice;
+    document.getElementById('summary-unit-price').textContent = CONFIG.ticketPrice;
+    document.getElementById('modal-movie-name').textContent = CONFIG.eventName + ' (' + CONFIG.eventMalayalam + ')';
+    document.getElementById('venue-name').textContent = CONFIG.venueName;
+    document.getElementById('venue-addr').textContent = CONFIG.venueAddress;
+    document.getElementById('show-date').textContent = CONFIG.eventDate;
+    document.getElementById('show-time').textContent = CONFIG.eventTime;
+    document.getElementById('total-seats').textContent = CONFIG.totalSeats;
+    document.getElementById('upi-id-text').textContent = CONFIG.upiId;
+    if (CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
+      document.getElementById('upi-id-display').style.display = 'block';
+    } else {
+      document.getElementById('upi-id-display').style.display = 'none';
+    }
+
+    // Firebase
+    firebase.initializeApp(CONFIG.firebase);
+    const db = firebase.database();
+    const auth = firebase.auth();
+    const bookingsRef = db.ref('movie_bookings');
+
+    auth.signInAnonymously().catch(() => {});
+
+    // Live Seats Availability
+    bookingsRef.on('value', snap => {
+      let totalSold = 0;
+      if (snap.exists()) {
+        Object.values(snap.val()).forEach(b => {
+          totalSold += Number(b.tickets || (b.ticketHolders ? b.ticketHolders.length : 1));
+        });
+      }
+      const avail = Math.max(0, CONFIG.totalSeats - totalSold);
+      const el = document.getElementById('seats-available');
+      if (el) el.textContent = avail;
+    });
+
+    let currentBooking = null;
+    let myTickets = [];
+    let activeCode = null;
+
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    const DEPARTMENTS = [
+      { group: 'Undergraduate', items: ['B.A Economics','B.A Econometrics and Data Management','B.A English Language and Literature','B.A History','B.Sc Microbiology','Bachelor of Travel and Tourism Management (BTTM)','B.A Journalism and Mass Communication','B.Sc Biochemistry'] },
+      { group: 'Postgraduate', items: ['M.A Journalism & Mass Communication','M Com','M.A Economics','Master of Travel and Tourism Management (MTTM)','M.Sc Microbiology','M.Sc Biochemistry'] }
+    ];
+    let ticketRows = 1;
+
+    function makeDeptHTML(selected) {
+      let h = '<option value="">Select Department</option>';
+      DEPARTMENTS.forEach(g => {
+        h += '<optgroup label="' + g.group + '">';
+        g.items.forEach(d => { h += '<option value="' + d + '"' + (d === selected ? ' selected' : '') + '>' + d + '</option>'; });
+        h += '</optgroup>';
+      });
+      return h;
+    }
+
+    function makeYearHTML(selected) {
+      let h = '<option value="">Year of Study</option>';
+      for (let i = 1; i <= 4; i++) h += '<option value="' + i + '"' + (i === selected ? ' selected' : '') + '>' + i + '</option>';
+      return h;
+    }
+
+    function makeRollHTML(selected) {
+      let h = '<option value="">Roll No</option>';
+      for (let i = 1; i <= 100; i++) h += '<option value="' + i + '"' + (i === selected ? ' selected' : '') + '>' + i + '</option>';
+      return h;
+    }
+
+    function initBookingFields() {
+      const d = document.getElementById('user-dept');
+      const y = document.getElementById('user-year');
+      const r = document.getElementById('user-roll');
+      if (d && !d.dataset.populated) {
+        d.innerHTML = makeDeptHTML();
+        d.dataset.populated = '1';
+        customSelect(d);
+      }
+      if (y && !y.dataset.populated) {
+        y.innerHTML = makeYearHTML();
+        y.dataset.populated = '1';
+        customSelect(y);
+      }
+      if (r && !r.dataset.populated) {
+        r.innerHTML = makeRollHTML();
+        r.dataset.populated = '1';
+        customSelect(r);
+      }
+    }
+
+    function resetBookingForm() {
+      const nameEl = document.getElementById('user-name');
+      const phoneEl = document.getElementById('user-phone');
+      const deptEl = document.getElementById('user-dept');
+      const yearEl = document.getElementById('user-year');
+      const rollEl = document.getElementById('user-roll');
+      if (nameEl) nameEl.value = '';
+      if (phoneEl) phoneEl.value = '';
+      if (deptEl) { deptEl.value = ''; deptEl.dispatchEvent(new Event('change', { bubbles: true })); }
+      if (yearEl) { yearEl.value = ''; yearEl.dispatchEvent(new Event('change', { bubbles: true })); }
+      if (rollEl) { rollEl.value = ''; rollEl.dispatchEvent(new Event('change', { bubbles: true })); }
+    }
+
+    function copyUPIId() {
+      if (CONFIG.upiId) {
+        navigator.clipboard.writeText(CONFIG.upiId);
+        showToast('UPI ID copied to clipboard!');
+      }
+    }
+
+    function shareWhatsAppTicket() {
+      if (!currentBooking) return;
+      const code = currentBooking.code || (currentBooking.ticketHolders ? currentBooking.ticketHolders[0].code : '');
+      const name = currentBooking.name || (currentBooking.ticketHolders ? currentBooking.ticketHolders[0].name : '');
+      const text = `💖 *Ohm Shanthi Oshaana (ഓം ശാന്തി ഓശാന) Movie Ticket*\nName: ${name}\nTicket Code: ${code}\nDate: ${CONFIG.eventDate} at ${CONFIG.eventTime}\nVenue: ${CONFIG.venueName}, ${CONFIG.venueAddress}\nSpecial Screening by Dept. of English, Pazhassiraja College`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function showToast(msg, type) {
+      let t = document.getElementById('toast-msg');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'toast-msg';
+        document.body.appendChild(t);
+      }
+      const icon = type === 'error' ? 'fa-exclamation-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-check-circle';
+      const bg = type === 'error' ? 'linear-gradient(135deg, #ef4444, #dc2626)' : type === 'warning' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'linear-gradient(135deg, #10b981, #059669)';
+      const shadow = type === 'error' ? 'rgba(239,68,68,0.35)' : type === 'warning' ? 'rgba(245,158,11,0.35)' : 'rgba(16,185,129,0.35)';
+      t.style.background = bg;
+      t.style.boxShadow = '0 8px 30px ' + shadow;
+      t.innerHTML = '<i class="fas ' + icon + '"></i> ' + msg;
+      t.classList.remove('show');
+      void t.offsetWidth;
+      t.classList.add('show');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => { t.classList.remove('show'); }, 3500);
+    }
+
+    // Navbar scroll shadow effect
+    (function() {
+      const navbar = document.querySelector('.navbar');
+      if (!navbar) return;
+      let ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            navbar.classList.toggle('scrolled', window.scrollY > 20);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    })();
+
+    // Ripple effect on primary buttons
+    document.addEventListener('click', function(e) {
+      const btn = e.target.closest('.btn-bms-book, .btn-primary, .btn-gold, .bms-mob-btn, .act-btn');
+      if (!btn || btn.disabled) return;
+      const rect = btn.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple-effect';
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+      btn.appendChild(ripple);
+      ripple.addEventListener('animationend', function() { ripple.remove(); });
+    });
+
+    function togglePayMethod() {
+      const isUpi = document.querySelector('input[name="payMethod"]:checked').value === 'upi';
+      document.getElementById('upi-section').style.display = isUpi ? 'block' : 'none';
+      if (!isUpi) resetUploadUI();
+      document.getElementById('pay-cash-lbl').style.cssText = isUpi
+        ? 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;background:transparent;color:var(--text-secondary);'
+        : 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--primary);font-size:13px;font-weight:600;background:var(--primary);color:#fff;';
+      document.getElementById('pay-upi-lbl').style.cssText = isUpi
+        ? 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--primary);font-size:13px;font-weight:600;background:var(--primary);color:#fff;'
+        : 'display:flex;align-items:center;gap:5px;cursor:pointer;padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);font-size:13px;font-weight:600;background:transparent;color:var(--text-secondary);';
+      
+      const ocrVerified = document.getElementById('ocr-verified').value === 'true';
+      const btnConfirm = document.getElementById('btn-confirm');
+      if (isUpi && !ocrVerified) {
+        btnConfirm.disabled = true;
+        btnConfirm.title = 'Please upload and verify your UPI payment screenshot to activate';
+      } else {
+        btnConfirm.disabled = false;
+        btnConfirm.title = '';
+      }
+
+      if (isUpi && CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
+        generateUPIQR(CONFIG.ticketPrice, 'TKT-' + Date.now());
+      }
+    }
+
+    function updateSummary() {
+      const total = CONFIG.ticketPrice;
+      const unitEl = document.getElementById('summary-unit-price');
+      const totEl = document.getElementById('summary-total');
+      const payEl = document.getElementById('pay-amount');
+      if (unitEl) unitEl.textContent = total;
+      if (totEl) totEl.textContent = total;
+      if (payEl) payEl.textContent = total;
+      if (document.querySelector('input[name="payMethod"]:checked')?.value === 'upi' && CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
+        generateUPIQR(total, 'TKT-' + Date.now());
+      }
+    }
+
+    // UPI QR
+    function generateUPIQR(amount, refId) {
+      const container = document.getElementById('upi-qr-container');
+      const apps = document.getElementById('upi-app-links');
+      container.innerHTML = '';
+      apps.innerHTML = '';
+
+      if (!CONFIG.upiId || CONFIG.upiId === 'example@upi') {
+        container.innerHTML = '<p style="color:#999;font-size:13px;">Set your UPI ID in settings.</p>';
+        return;
+      }
+
+      const upiUrl = 'upi://pay?pa=' + encodeURIComponent(CONFIG.upiId) +
+        '&pn=' + encodeURIComponent(CONFIG.upiName) +
+        '&am=' + amount.toFixed(2) +
+        '&cu=INR&tr=' + encodeURIComponent(refId);
+
+      // QR code via QR Server API (reliable, no library needed)
+      const qrImg = document.createElement('img');
+      qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(upiUrl);
+      qrImg.alt = 'UPI QR Code';
+      qrImg.style.cssText = 'border-radius:10px;background:#fff;padding:8px;box-shadow:0 2px 10px rgba(0,0,0,0.08);width:180px;height:180px;';
+      container.appendChild(qrImg);
+
+      // UPI app links with app-specific URI schemes
+      const appSchemes = {
+        'Google Pay': 'tez://upi/pay',
+        'PhonePe': 'phonepe://pay',
+        'Paytm': 'paytmmp://pay',
+        'BHIM': 'bhimupi://pay',
+      };
+      [
+        { name: 'Google Pay' },
+        { name: 'PhonePe' },
+        { name: 'Paytm' },
+        { name: 'BHIM' }
+      ].forEach(a => {
+        const el = document.createElement('a');
+        el.className = 'upi-app-btn';
+        const scheme = appSchemes[a.name] || 'upi://pay';
+        el.href = scheme + '?pa=' + encodeURIComponent(CONFIG.upiId) +
+          '&pn=' + encodeURIComponent(CONFIG.upiName) +
+          '&am=' + amount.toFixed(2) + '&cu=INR&tr=' + encodeURIComponent(refId);
+        el.target = '_blank';
+        el.textContent = a.name;
+        apps.appendChild(el);
+      });
+    }
+
+    // ========== SCREENSHOT UPLOAD & OCR ==========
+    let currentScreenshotFile = null;
+
+    function resetUploadUI() {
+      currentScreenshotFile = null;
+      document.getElementById('screenshot-input').value = '';
+      document.getElementById('drop-zone').style.display = '';
+      document.getElementById('preview-wrap').style.display = 'none';
+      document.getElementById('screenshot-preview').src = '';
+      document.getElementById('verify-status').style.display = 'none';
+      document.getElementById('verify-status').innerHTML = '';
+      document.getElementById('ocr-result').style.display = 'none';
+      document.getElementById('ocr-result').className = 'ocr-result-box';
+      document.getElementById('ocr-verified').value = 'false';
+      document.getElementById('upi-trans-id').value = '';
+      document.getElementById('screenshot-b64').value = '';
+      document.getElementById('btn-retry-ocr').style.display = '';
+
+      const isUpi = document.querySelector('input[name="payMethod"]:checked')?.value === 'upi';
+      if (isUpi) {
+        const btnConfirm = document.getElementById('btn-confirm');
+        btnConfirm.disabled = true;
+        btnConfirm.title = 'Please upload and verify your UPI payment screenshot to activate';
+      }
+    }
+
+    function compressImage(file, maxW, quality) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            if (w > maxW) { h = h * maxW / w; w = maxW; }
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(c.toDataURL('image/jpeg', quality));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Preprocess image for OCR: higher res + grayscale for better text recognition
+    function preprocessForOCR(file, maxW) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            if (w > maxW) { h = h * maxW / w; w = maxW; }
+            const c = document.createElement('canvas');
+            c.width = w; c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            // Convert to grayscale — Tesseract performs better on grayscale images
+            const imageData = ctx.getImageData(0, 0, w, h);
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+              const gray = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+              data[i] = gray;
+              data[i + 1] = gray;
+              data[i + 2] = gray;
+            }
+            ctx.putImageData(imageData, 0, 0);
+            resolve(c.toDataURL('image/jpeg', 0.95));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.getElementById('drop-zone').addEventListener('click', () => {
+      document.getElementById('screenshot-input').click();
+    });
+
+    document.getElementById('drop-zone').addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.currentTarget.classList.add('dragover');
+    });
+    document.getElementById('drop-zone').addEventListener('dragleave', (e) => {
+      e.currentTarget.classList.remove('dragover');
+    });
+    document.getElementById('drop-zone').addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.currentTarget.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length) handleScreenshotFile(files[0]);
+    });
+
+    document.getElementById('screenshot-input').addEventListener('change', (e) => {
+      if (e.target.files.length) handleScreenshotFile(e.target.files[0]);
+    });
+
+    document.getElementById('btn-remove-screenshot').addEventListener('click', resetUploadUI);
+
+    function handleScreenshotFile(file) {
+      if (!file.type.startsWith('image/')) { showToast('Please select an image file', 'error'); return; }
+      if (file.size > 10 * 1024 * 1024) { showToast('Image too large. Max 10 MB.', 'error'); return; }
+      currentScreenshotFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('screenshot-preview').src = e.target.result;
+        document.getElementById('drop-zone').style.display = 'none';
+        document.getElementById('preview-wrap').style.display = 'block';
+        document.getElementById('ocr-result').style.display = 'none';
+        document.getElementById('ocr-verified').value = 'false';
+        document.getElementById('upi-trans-id').value = '';
+        startVerification();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function startVerification() {
+      if (!currentScreenshotFile) return;
+      const statusEl = document.getElementById('verify-status');
+      statusEl.style.display = 'block';
+      if (typeof Tesseract === 'undefined') {
+        statusEl.innerHTML = '<span style="color:#e53935;">OCR library not available. You can enter the transaction ID manually.</span>';
+        setTimeout(() => showManualEntry(), 500);
+        return;
+      }
+      statusEl.innerHTML = '<span class="spinner"></span> Compressing image...';
+      let manualLinkShown = false;
+      const showManualLink = () => {
+        if (manualLinkShown) return;
+        manualLinkShown = true;
+        statusEl.innerHTML += '<div style="margin-top:8px;font-size:12px;"><button type="button" id="btn-manual-upi" style="background:none;border:none;color:var(--primary);text-decoration:underline;cursor:pointer;font-size:12px;">Enter UPI Transaction ID manually instead</button></div>';
+        document.getElementById('btn-manual-upi')?.addEventListener('click', () => {
+          showManualEntry();
+        });
+      };
+      setTimeout(showManualLink, 8000);
+      try {
+        const b64 = await compressImage(currentScreenshotFile, 1200, 0.92);
+        document.getElementById('screenshot-b64').value = b64;
+        statusEl.innerHTML = '<span class="spinner"></span> Preprocessing image for OCR...';
+        // Use grayscale + higher res image for OCR to improve text detection
+        const ocrB64 = await preprocessForOCR(currentScreenshotFile, 2000);
+        const text = await runOCR(ocrB64);
+        statusEl.innerHTML = '';
+        const result = parsePaymentText(text);
+        // Debug: see exact OCR output in browser console (F12 → Console)
+        console.log('%c[OCR Raw Text]', 'color:#e50914;font-weight:bold;', text);
+        console.log('%c[OCR Parsed]', 'color:#1a8a1a;font-weight:bold;', result);
+        showOcrResult(result);
+      } catch (err) {
+        console.error('Verification error:', err);
+        statusEl.innerHTML = '<span style="color:#e53935;">Error: ' + err.message + '</span>';
+        const refId = document.getElementById('upi-trans-id').value;
+        if (!refId) {
+          showOcrResult({ refId: null, amount: null, rawText: '' });
+        }
+      }
+    }
+    function showManualEntry() {
+      const manual = prompt('Enter your UPI Transaction ID / UTR manually:');
+      if (!manual || !manual.trim()) return;
+      document.getElementById('upi-trans-id').value = manual.trim();
+      document.getElementById('ocr-verified').value = 'true';
+      document.getElementById('verify-status').style.display = 'none';
+      const box = document.getElementById('ocr-result');
+      box.className = 'ocr-result-box';
+      box.style.display = 'block';
+      document.getElementById('ocr-heading').textContent = 'Manually Entered';
+      document.getElementById('ocr-heading-wrap').style.color = '#b45309';
+      document.getElementById('ocr-icon').className = 'fas fa-pencil-alt';
+      document.getElementById('ocr-ref-id').textContent = manual.trim();
+      document.getElementById('ocr-hint').textContent = 'Admin will verify the payment. Keep your screenshot as proof.';
+      document.getElementById('btn-confirm-payment').textContent = '✓ Confirmed';
+      document.getElementById('btn-confirm-payment').disabled = true;
+      document.getElementById('btn-retry-ocr').style.display = 'none';
+      const btnConfirm = document.getElementById('btn-confirm');
+      btnConfirm.disabled = false;
+      btnConfirm.title = '';
+      showToast('Transaction ID saved');
+    }
+
+    async function runOCR(imageB64) {
+      const statusEl = document.getElementById('verify-status');
+      statusEl.innerHTML = '<span class="spinner"></span> Loading OCR engine (first time downloads ~5MB, please wait)...';
+
+      const worker = await Tesseract.createWorker('eng', 1, {
+        logger: (m) => {
+          if (m.status === 'loading language traineddata') {
+            const pct = Math.round((m.progress || 0) * 100);
+            statusEl.innerHTML = '<span class="spinner"></span> Downloading OCR data ' + pct + '%...';
+          } else if (m.status === 'initializing api') {
+            statusEl.innerHTML = '<span class="spinner"></span> Initializing OCR engine...';
+          } else if (m.status === 'recognizing text') {
+            const pct = Math.round((m.progress || 0) * 100);
+            statusEl.innerHTML = '<span class="spinner"></span> Analyzing screenshot ' + pct + '%...';
+          }
+        }
+      });
+
+      const ocrPromise = worker.recognize(imageB64);
+      const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('OCR timed out after 60s')), 60000));
+      const { data } = await Promise.race([ocrPromise, timeout]);
+      await worker.terminate();
+      return data.text;
+    }
+
+    function parsePaymentText(text) {
+      const upper = text.toUpperCase();
+
+      // ── Extract Transaction / Reference ID ──────────────────────────
+      const refPatterns = [
+        /\b(?:UTR|RRN|REF|REFERENCE|TRANSACTION|TXN|PAYMENT)\s*(?:ID|NO|NUMBER|#|REF)?\s*[:.\s]*([A-Z0-9]{6,35})/gi,
+        /\b(HDFC\d{6,20}|SBIN\d{6,20}|ICICI\d{6,20}|AXIS\d{6,20}|YESB\d{6,20}|KOTAK\d{6,20}|PNB\d{6,20}|BOI\d{6,20}|CANARA\d{6,20}|UNION\d{6,20}|SBI\d{6,20}|IDFC\d{6,20}|INDUS\d{6,20}|PAYTM\d{6,20}|PHONEPE\d{6,20}|GOOGLEPAY\d{6,20}|BHIM\d{6,20})\b/gi,
+        /\bTXN[#\s]*(\w{6,35})\b/gi,
+        /\bREF[#\s]*(\w{6,35})\b/gi,
+        /\b([A-Z0-9]{12,32})\b/g
+      ];
+      let refId = null;
+      for (const pat of refPatterns) {
+        let m;
+        while ((m = pat.exec(upper)) !== null) {
+          const candidate = (m[1] || m[0]).replace(/[^A-Z0-9]/g, '');
+          if (candidate.length >= 6 && candidate.length <= 35) {
+            // Require at least one digit — real UPI IDs/UTRs always contain digits
+            if (/[0-9]/.test(candidate)) {
+              refId = candidate; break;
+            }
+          }
+        }
+        if (refId) break;
+      }
+      // Prefer the 12–16 digit numeric UPI RRN when a reference ID was detected
+      // (fixes GPay showing both "UPI transaction ID" and "Google transaction ID")
+      if (refId) {
+        const rrnMatch = upper.match(/\b\d{12,16}\b/);
+        if (rrnMatch) refId = rrnMatch[0];
+      }
+      // Spaced digit groups like "UPI Ref: 4123 4567 8901 2345" (bank SMS)
+      if (!refId) {
+        const spaced = upper.match(/\b(?:UTR|RRN|REF|REFERENCE|TRANSACTION|TXN|PAYMENT)\s*(?:ID|NO|NUMBER|#|REF)?\s*[:.\s]*((?:\d{3,4}[\s.-]+)+\d{3,4})\b/);
+        if (spaced) {
+          const cand = spaced[1].replace(/[^0-9]/g, '');
+          if (cand.length >= 12) refId = cand;
+        }
+      }
+
+      // ── Extract UPI IDs & verify recipient ─────────────────────────────
+      const upiIds = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+/g) || [];
+      const upiVerified = upiIds.some(id => id.toLowerCase() === CONFIG.upiId.toLowerCase());
+
+      return {
+        refId, rawText: text, upiVerified
+      };
+    }
+
+    function showOcrResult(result) {
+      const box = document.getElementById('ocr-result');
+
+      // ── Show Reference ID ──────────────────────────────────────────
+      if (result.refId) {
+        document.getElementById('ocr-ref-id').textContent = result.refId;
+        document.getElementById('upi-trans-id').value = result.refId;
+      } else {
+        document.getElementById('ocr-ref-id').textContent = 'Not found';
+      }
+
+      // ── Show UPI ID Verification — only when refId is missing ─────
+      const upiRow = document.getElementById('ocr-upi-row');
+      if (result.upiVerified && !result.refId) {
+        upiRow.style.display = '';
+        document.getElementById('ocr-upi-val').textContent = CONFIG.upiId;
+      } else {
+        upiRow.style.display = 'none';
+      }
+
+      // ── Overall status ─────────────────────────────────────────────
+      const hasPay = result.upiVerified || !!result.refId;
+      const headingWrap = document.getElementById('ocr-heading-wrap');
+      const ocrIcon = document.getElementById('ocr-icon');
+      const setIcon = (icon, color) => {
+        ocrIcon.className = icon;
+        headingWrap.style.color = color;
+      };
+
+      if (hasPay) {
+        box.className = 'ocr-result-box';
+        setIcon('fas fa-check-circle', '#166534');
+        if (result.upiVerified && result.refId) {
+          document.getElementById('ocr-heading').textContent = 'Payment Verified ✓';
+          document.getElementById('ocr-hint').textContent = 'Recipient UPI ID & transaction ID confirmed.';
+        } else if (result.upiVerified) {
+          document.getElementById('ocr-heading').textContent = 'Recipient Verified ✓';
+          document.getElementById('ocr-hint').textContent = 'Recipient UPI ID (' + CONFIG.upiId + ') confirmed in screenshot.';
+        } else {
+          document.getElementById('ocr-heading').textContent = 'Transaction ID Detected ✓';
+          document.getElementById('ocr-hint').textContent = 'Transaction ID confirmed.';
+        }
+        document.getElementById('btn-confirm-payment').disabled = false;
+      } else {
+        box.className = 'ocr-result-box fail';
+        setIcon('fas fa-times-circle', '#dc2626');
+        document.getElementById('ocr-heading').textContent = 'Verification Failed';
+        document.getElementById('ocr-hint').textContent = 'Could not verify payment. Enter transaction ID manually or retry with a clearer screenshot.';
+        document.getElementById('btn-confirm-payment').disabled = true;
+      }
+
+      box.style.display = 'block';
+    }
+
+    document.getElementById('btn-confirm-payment').addEventListener('click', () => {
+      let refId = document.getElementById('ocr-ref-id').textContent;
+
+      // No transaction ID found — ask for manual entry
+      if (!refId || refId === 'Not found' || refId === '—') {
+        const manual = prompt('No transaction ID was detected.\nPlease enter your UPI Transaction ID / UTR manually:');
+        if (!manual || !manual.trim()) return;
+        document.getElementById('upi-trans-id').value = manual.trim();
+        document.getElementById('ocr-ref-id').textContent = manual.trim();
+        refId = manual.trim();
+      }
+
+      document.getElementById('ocr-verified').value = 'true';
+      document.getElementById('btn-confirm-payment').textContent = '✓ Verified';
+      document.getElementById('btn-confirm-payment').disabled = true;
+      document.getElementById('ocr-hint').textContent = 'Payment verified. You can now generate your ticket below.';
+      const btnConfirm = document.getElementById('btn-confirm');
+      btnConfirm.disabled = false;
+      btnConfirm.title = '';
+      showToast('Payment verified ✓ — Ref: ' + refId);
+    });
+
+    document.getElementById('btn-retry-ocr').addEventListener('click', () => {
+      if (currentScreenshotFile) startVerification();
+      else resetUploadUI();
+    });
+
+    function generateCode() {
+      const prefix = 'ED';
+      return prefix + '-' + Math.floor(1000 + Math.random() * 9000);
+    }
+
+    // Booking
+    document.getElementById('btn-book').addEventListener('click', () => {
+      initBookingFields();
+      resetBookingForm();
+      document.getElementById('upi-trans-id').value = '';
+      document.getElementById('screenshot-b64').value = '';
+      document.getElementById('ocr-verified').value = 'false';
+      resetUploadUI();
+      // Reset to Cash
+      document.querySelector('input[name="payMethod"][value="cash"]').checked = true;
+      togglePayMethod();
+      updateSummary();
+      openModal('booking-modal');
+    });
+
+    document.getElementById('booking-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-confirm');
+      const name = document.getElementById('user-name').value.trim();
+      const dept = document.getElementById('user-dept').value;
+      const year = document.getElementById('user-year').value;
+      const roll = document.getElementById('user-roll').value;
+      const phone = document.getElementById('user-phone').value.trim();
+      const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+      const upiTransId = document.getElementById('upi-trans-id').value;
+      const screenshotB64 = document.getElementById('screenshot-b64').value;
+      const ocrVerified = document.getElementById('ocr-verified').value === 'true';
+
+      if (!name) { showToast('Please enter student full name', 'error'); document.getElementById('user-name').focus(); return; }
+      if (!dept || !year || !roll) { showToast('Please fill all college details', 'error'); return; }
+      if (!phone || phone.length < 10) { showToast('Please enter a valid 10-digit mobile number', 'error'); document.getElementById('user-phone').focus(); return; }
+      if (payMethod === 'upi') {
+        if (!ocrVerified) { showToast('Please upload and verify your UPI payment screenshot', 'warning'); return; }
+        if (!upiTransId) { showToast('Payment verification failed — no transaction ID detected', 'error'); return; }
+      }
+
+      const paymentStatus = payMethod === 'cash' ? 'pending' : 'paid';
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Ticket...';
+      btn.style.opacity = '0.8';
+
+      const total = CONFIG.ticketPrice;
+      const code = generateCode();
+      const codes = [code];
+      const timestamp = Date.now();
+      const ticketHolders = [{
+        name,
+        dept,
+        year: Number(year),
+        roll: Number(roll),
+        code
+      }];
+
+      // Save locally
+      try {
+        localStorage.setItem('my_ticket', JSON.stringify({ ticketHolders, phone, name, dept, year: Number(year), roll: Number(roll), qty: 1, amount: total, code, paymentStatus, timestamp }));
+        const arr = JSON.parse(localStorage.getItem('my_tickets') || '[]');
+        arr.unshift({ ticketHolders, phone, name, dept, year: Number(year), roll: Number(roll), qty: 1, amount: total, code, paymentStatus, timestamp });
+        localStorage.setItem('my_tickets', JSON.stringify(arr.slice(0, 50)));
+      } catch(e) {}
+
+      // Try saving to Firebase with a timeout
+      const saveToFirebase = () => {
+        return new Promise((resolve) => {
+          const timer = setTimeout(() => { console.warn('Firebase save timed out'); resolve(false); }, 8000);
+          const doSave = () => {
+            const p = auth.currentUser ? Promise.resolve() : auth.signInAnonymously();
+            p.then(() => {
+              const newRef = bookingsRef.push();
+              return newRef.set({
+                name,
+                dept,
+                year: Number(year),
+                roll: Number(roll),
+                phone,
+                ticketHolders,
+                tickets: 1,
+                amount: total,
+                ticketCodes: codes,
+                primaryCode: code,
+                payMethod,
+                upiTransId: payMethod === 'upi' ? upiTransId : '',
+                paymentScreenshot: payMethod === 'upi' ? screenshotB64 : '',
+                verifiedTransId: payMethod === 'upi' ? upiTransId : '',
+                paymentStatus,
+                timestamp,
+                createdAt: new Date(timestamp).toISOString(),
+                attended: false
+              });
+            }).then(() => { clearTimeout(timer); resolve(true); })
+              .catch(err => { clearTimeout(timer); console.warn('Firebase save error:', err); resolve(false); });
+          };
+          doSave();
+        });
+      };
+
+      saveToFirebase().then(() => {
+        closeModal('booking-modal');
+        showTicket(ticketHolders, phone, 1, total, codes, paymentStatus);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> Confirm & Generate Ticket';
+        btn.style.opacity = '';
+      });
+    });
+
+    function showTicket(ticketHolders, phone, tktQty, amount, codes, paymentStatus) {
+      document.getElementById('tkt-phone').textContent = phone;
+      const container = document.getElementById('multi-ticket-list');
+      const t = (ticketHolders && ticketHolders[0]) || { name: 'Student', dept: '—', year: '—', roll: '—' };
+      const code = (codes && codes[0]) || t.code || 'TKT';
+      const barcodeId = 'bc-' + Date.now();
+      setTimeout(() => {
+        try {
+          JsBarcode('#' + barcodeId, code, {
+            format: "CODE128", lineColor: "#1e293b", width: 1.6, height: 40,
+            displayValue: false, background: "transparent", margin: 0
+          });
+        } catch(e) {}
+      }, 50);
+
+      container.innerHTML =
+        '<div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px;text-align:left;position:relative;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">' +
+            '<div>' +
+              '<div style="font-size:10px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.8px;">ADMIT ONE &bull; OFFICIAL PASS</div>' +
+              '<div style="font-size:18px;font-weight:900;color:#0f172a;margin-top:2px;">' + t.name + '</div>' +
+              '<div style="font-size:12px;color:#64748b;font-weight:600;margin-top:2px;">' + t.dept + ' &bull; Year ' + t.year + ' &bull; Roll ' + t.roll + '</div>' +
+            '</div>' +
+            '<div style="text-align:right;">' +
+              '<div style="font-size:9px;font-weight:700;color:#f59e0b;text-transform:uppercase;">Price</div>' +
+              '<div style="font-size:18px;font-weight:900;color:#d90429;">₹' + amount + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="border-top:1px dashed #cbd5e1;margin:10px 0 8px;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">' +
+            '<div>' +
+              '<div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;">Pass Code</div>' +
+              '<div style="font-family:monospace;font-size:15px;font-weight:800;color:#0f172a;letter-spacing:1px;">' + code + '</div>' +
+            '</div>' +
+            '<div style="text-align:right;"><svg id="' + barcodeId + '"></svg></div>' +
+          '</div>' +
+        '</div>';
+
+      currentBooking = { ticketHolders, phone, name: t.name, dept: t.dept, year: t.year, roll: t.roll, qty: 1, amount, code, paymentStatus };
+
+      // history chips
+      try { myTickets = JSON.parse(localStorage.getItem('my_tickets') || '[]'); } catch(e) { myTickets = []; }
+      activeCode = code;
+      const listEl = document.getElementById('ticket-list');
+      listEl.innerHTML = myTickets.map((tItem, idx) =>
+        '<div class="ticket-chip ' + (tItem.code === activeCode ? 'active' : '') + '" data-idx="' + idx + '">' +
+          ((tItem.ticketHolders ? tItem.ticketHolders[0].name : (tItem.name || 'Ticket')) + ' &bull; ' + tItem.code) +
+        '</div>'
+      ).join('');
+      listEl.querySelectorAll('.ticket-chip').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = parseInt(el.getAttribute('data-idx'));
+          const tItem = myTickets[idx];
+          if (!tItem) return;
+          if (tItem.ticketHolders) {
+            showTicket(tItem.ticketHolders, tItem.phone, 1, tItem.amount, tItem.ticketHolders.map(h => h.code), tItem.paymentStatus);
+          } else {
+            showTicket([{name:tItem.name, dept:tItem.dept||'—', year:tItem.year||'—', roll:tItem.roll||'—'}], tItem.phone, 1, tItem.amount, [tItem.code], tItem.paymentStatus);
+          }
+        });
+      });
+
+      openModal('ticket-modal');
+      createConfetti();
+    }
+
+    // Populate form dropdowns
+    initBookingFields();
+    document.getElementById('find-dept').innerHTML = makeDeptHTML();
+    document.getElementById('find-year').innerHTML = makeYearHTML();
+    document.getElementById('find-roll').innerHTML = makeRollHTML();
+
+    // Find ticket
+    document.getElementById('find-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const code = document.getElementById('find-code').value.trim().toUpperCase();
+      const fdept = document.getElementById('find-dept').value;
+      const fyear = document.getElementById('find-year').value;
+      const froll = document.getElementById('find-roll').value;
+
+      if (!code && (!fdept || !fyear || !froll)) { showToast('Enter Code OR Department, Year & Roll', 'warning'); return; }
+
+      const btn = e.target.querySelector('.btn-primary');
+      btn.disabled = true; btn.textContent = 'Searching...';
+
+      const byCode = () =>
+        bookingsRef.orderByChild('primaryCode').equalTo(code).once('value').then(s => {
+          if (s.exists()) {
+            const v = Object.values(s.val())[0];
+            showTicket(v.ticketHolders || [{name:v.name,dept:v.dept||'—',year:v.year||'—',roll:v.roll||'—'}], v.phone, v.tickets, v.amount, v.ticketCodes || [v.primaryCode], v.paymentStatus);
+            closeModal('find-modal'); return true;
+          }
+          return false;
+        });
+
+      const byDeptRoll = () =>
+        bookingsRef.once('value').then(s => {
+          if (!s.exists()) return false;
+          const vals = Object.values(s.val());
+          const m = vals.find(v => {
+            const holders = v.ticketHolders || [{name:v.name,dept:v.dept,year:v.year,roll:v.roll}];
+            return holders.some(h => h.dept === fdept && String(h.year) === fyear && String(h.roll) === String(froll));
+          });
+          if (m) { showTicket(m.ticketHolders || [{name:m.name,dept:m.dept||'—',year:m.year||'—',roll:m.roll||'—'}], m.phone, m.tickets, m.amount, m.ticketCodes || [m.primaryCode], m.paymentStatus); closeModal('find-modal'); return true; }
+          return false;
+        });
+
+      let search;
+      if (code) search = byCode();
+      else search = byDeptRoll();
+
+      search.then(found => {
+        if (!found) showToast('Ticket not found. Please check your details.', 'error');
+      }).catch(() => showToast('Error searching. Please try again.', 'error')).finally(() => {
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-search"></i> Search';
+      });
+    });
+
+    function saveTicket() {
+      const el = document.getElementById('ticket-modal').querySelector('div > div');
+      const btn = document.querySelector('.act-btn.save');
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      html2canvas(el, { backgroundColor: null, scale: 2 }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'Tickets-' + (currentBooking?.code || 'ticket') + '.png';
+        link.href = canvas.toDataURL();
+        link.click();
+        btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+        setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        showToast('Ticket saved successfully!');
+      }).catch(() => {
+        btn.innerHTML = orig;
+        showToast('Failed to save ticket', 'error');
+      });
+    }
+
+    function shareTicket() {
+      const el = document.getElementById('ticket-modal').querySelector('div > div');
+      const btn = document.querySelector('.act-btn.share');
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing...';
+      html2canvas(el, { backgroundColor: null, scale: 2 }).then(canvas => {
+        canvas.toBlob(blob => {
+          const file = new File([blob], 'tickets.png', { type: 'image/png' });
+          if (navigator.share) {
+            navigator.share({ title: 'Movie Tickets', text: 'Booked our tickets!', files: [file] })
+              .then(() => showToast('Ticket shared!'))
+              .catch(() => {});
+          } else { saveTicket(); }
+          btn.innerHTML = orig;
+        });
+      }).catch(() => {
+        btn.innerHTML = orig;
+        showToast('Failed to prepare ticket', 'error');
+      });
+    }
+
+    function createConfetti() {
+      const colors = ['#e50914', '#f5c518', '#2e7d32', '#1976d2', '#fff'];
+      for (let i = 0; i < 40; i++) {
+        const c = document.createElement('div');
+        c.style.cssText = 'position:fixed;left:50%;top:50%;width:8px;height:8px;z-index:2001;border-radius:2px;pointer-events:none;';
+        c.style.background = colors[i % colors.length];
+        document.body.appendChild(c);
+        const a = Math.random() * Math.PI * 2;
+        const v = 3 + Math.random() * 5;
+        c.animate([
+          { transform: 'translate(0,0) scale(1) rotate(0deg)', opacity: 1 },
+          { transform: `translate(${Math.cos(a)*100*v}px,${Math.sin(a)*100*v}px) scale(0) rotate(720deg)`, opacity: 0 }
+        ], { duration: 1200 + Math.random() * 800, easing: 'cubic-bezier(0,.9,.57,1)', fill: 'forwards' }).onfinish = () => c.remove();
+      }
+    }
+
+
+
+    // Close on overlay click
+    document.querySelectorAll('.overlay').forEach(el => {
+      el.addEventListener('click', (e) => { if (e.target === el) el.classList.remove('active'); });
+    });
+
+    // Custom Select
+    function customSelect(sel) {
+      if (sel.dataset.cs) return;
+      sel.dataset.cs = '1';
+      sel.style.display = 'none';
+
+      const wrap = document.createElement('div');
+      wrap.className = 'cs-wrap';
+
+      const trigger = document.createElement('div');
+      trigger.className = 'cs-trigger';
+
+      const dd = document.createElement('div');
+      dd.className = 'cs-dropdown';
+
+      wrap.appendChild(trigger);
+      wrap.appendChild(dd);
+
+      function build() {
+        const val = sel.value;
+        trigger.innerHTML = '';
+        const span = document.createElement('span');
+        const selOpt = sel.options[sel.selectedIndex];
+        if (selOpt && selOpt.value) {
+          span.textContent = selOpt.textContent;
+        } else {
+          span.className = 'cs-placeholder';
+          span.textContent = sel.options[0]?.textContent || 'Select';
+        }
+        trigger.appendChild(span);
+
+        dd.innerHTML = '';
+        let group = null;
+        for (let i = 0; i < sel.options.length; i++) {
+          const opt = sel.options[i];
+          if (opt.parentElement.tagName === 'OPTGROUP' && opt.parentElement !== group) {
+            group = opt.parentElement;
+            const gl = document.createElement('div');
+            gl.className = 'cs-group-label';
+            gl.textContent = group.label;
+            dd.appendChild(gl);
+          }
+          const el = document.createElement('div');
+          el.className = 'cs-option';
+          if (opt.value === val) el.classList.add('selected');
+          el.textContent = opt.textContent;
+          el.dataset.value = opt.value;
+          el.addEventListener('click', () => {
+            sel.value = opt.value;
+            sel.dispatchEvent(new Event('change', { bubbles: true }));
+            closeAll();
+            build();
+          });
+          dd.appendChild(el);
+        }
+      }
+
+      function closeAll() {
+        document.querySelectorAll('.cs-dropdown.open').forEach(d => d.classList.remove('open'));
+        document.querySelectorAll('.cs-trigger.open').forEach(t => t.classList.remove('open'));
+      }
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = dd.classList.contains('open');
+        closeAll();
+        if (!isOpen) {
+          dd.classList.add('open');
+          trigger.classList.add('open');
+        }
+      });
+
+      sel.addEventListener('change', build);
+
+      sel.parentNode.insertBefore(wrap, sel.nextSibling);
+      build();
+    }
+
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.cs-dropdown.open').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.cs-trigger.open').forEach(t => t.classList.remove('open'));
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('select:not([data-cs])').forEach(customSelect);
+    });
+    setTimeout(() => { document.querySelectorAll('select:not([data-cs])').forEach(customSelect); }, 200);
+  </script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</body>
+</html>
