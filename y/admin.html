@@ -632,6 +632,7 @@
             <div class="val" id="totalRevenue">₹0</div>
           </div>
           <div class="lbl">Revenue</div>
+          <div style="font-size:10px;color:var(--text-light);margin-top:2px;">Collected only — cash counts after marked paid</div>
         </div>
         <div class="stat-card">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
@@ -951,7 +952,10 @@
       if (resultCountEl) resultCountEl.textContent = f.length + ' of ' + allData.length + ' shown';
       const tix = f.reduce((s, d) => s + (d.tickets || 1), 0);
       totalTickets.textContent = tix;
-      const rev = f.reduce((s, d) => s + (d.amount || (d.tickets||1) * 15), 0);
+      const rev = f.reduce((s, d) => {
+        if ((d.paymentStatus || 'pending') === 'pending') return s;
+        return s + (d.amount || (d.tickets||1) * 15);
+      }, 0);
       totalRevenue.textContent = '₹' + rev;
       paidCount.textContent = f.filter(d => d.paymentStatus === 'paid' || d.paymentStatus === 'verified').length;
       attendedCount.textContent = f.filter(d => !!d.attended).length;
