@@ -3,26 +3,26 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Book Movie Tickets — English Dept, Pazhassiraja College</title>
-  <meta name="description" content="Book tickets for the movie screening organised by the English Department, Pazhassiraja College." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <title>Ohm Shanthi Oshaana (ഓം ശാന്തി ഓശാന) — CeniNova Movie Screening</title>
+  <meta name="description" content="Book tickets for Ohm Shanthi Oshaana movie screening organised by the English Department, Pazhassiraja College." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Dancing+Script:wght@700&family=Noto+Sans+Malayalam:wght@700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --bg: #f5f5f5;
+      --bg: #f5f5f7;
       --card: #ffffff;
-      --primary: #e50914;
-      --primary-dark: #b2070f;
+      --primary: #f84464;
+      --primary-dark: #d82949;
       --accent: #f5c518;
-      --text: #1a1a2e;
-      --text-secondary: #666;
-      --text-light: #999;
-      --border: #e0e0e0;
+      --text: #1f2533;
+      --text-secondary: #5a6275;
+      --text-light: #8f98a8;
+      --border: #e6e8ec;
       --radius: 12px;
-      --radius-lg: 20px;
-      --shadow: 0 2px 12px rgba(0,0,0,0.08);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+      --radius-lg: 16px;
+      --shadow: 0 2px 10px rgba(0,0,0,0.06);
+      --shadow-lg: 0 12px 36px rgba(0,0,0,0.12);
       --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
     body {
@@ -35,36 +35,25 @@
 
     /* ENTRANCE ANIMATIONS */
     @keyframes fadeSlideUp {
-      from { opacity: 0; transform: translateY(22px); }
+      from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes fadeIn {
       from { opacity: 0; }
       to   { opacity: 1; }
     }
-    .float-el { position:fixed; font-size:38px; opacity:0.15; pointer-events:none; z-index:0; animation:floatAnim 20s infinite linear; }
-    @keyframes floatAnim {
-      0%   { transform:translateY(0) rotate(0deg); }
-      25%  { transform:translateY(-40px) rotate(90deg); }
-      50%  { transform:translateY(0) rotate(180deg); }
-      75%  { transform:translateY(40px) rotate(270deg); }
-      100% { transform:translateY(0) rotate(360deg); }
-    }
-    @media (max-width:600px) {
-      .float-el { display: none; }
-    }
-    .anim-1 { animation: fadeSlideUp 0.5s ease both; }
-    .anim-2 { animation: fadeSlideUp 0.5s 0.1s ease both; }
-    .anim-3 { animation: fadeSlideUp 0.5s 0.2s ease both; }
-    .anim-4 { animation: fadeSlideUp 0.5s 0.3s ease both; }
-    .anim-5 { animation: fadeSlideUp 0.5s 0.4s ease both; }
-    .navbar  { animation: fadeIn 0.4s ease both; }
+    .anim-1 { animation: fadeSlideUp 0.4s ease both; }
+    .anim-2 { animation: fadeSlideUp 0.4s 0.1s ease both; }
+    .anim-3 { animation: fadeSlideUp 0.4s 0.2s ease both; }
+    .navbar  { animation: fadeIn 0.3s ease both; }
 
-    /* HEADER / NAVBAR */
+    /* HEADER / NAVBAR — Integrated Cinema Design */
     .navbar {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      padding: 0 20px;
+      background: rgba(26, 26, 36, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      padding: 0 24px;
       height: 64px;
       display: flex;
       align-items: center;
@@ -72,11 +61,11 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     }
     .navbar-inner {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1140px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -84,309 +73,756 @@
     .nav-brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
-    .nav-brand .brand-text {
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--text);
+    .nav-brand-logo-wrap {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
-    .nav-brand .brand-sub {
+    .nav-brand-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .nav-brand-text-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .brand-ceninova {
+      font-weight: 900;
+      font-size: 16px;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #ffffff 40%, #f5c518 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-badge {
+      font-size: 9px;
+      font-weight: 800;
+      background: rgba(248, 68, 100, 0.2);
+      color: #ff6b8b;
+      border: 1px solid rgba(248, 68, 100, 0.35);
+      padding: 1px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.6px;
+    }
+    .brand-sub {
       font-size: 11px;
-      color: var(--text-light);
+      color: rgba(255, 255, 255, 0.62);
+      font-weight: 500;
+      letter-spacing: 0.2px;
     }
     .nav-actions {
       display: flex;
+      align-items: center;
       gap: 10px;
     }
-    .btn-outline-nav {
-      padding: 8px 18px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: transparent;
-      font-size: 13px;
-      font-weight: 600;
+    .btn-nav-ticket {
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(8px);
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
-      color: var(--text);
+      color: #ffffff;
       font-family: var(--font);
-      transition: all 0.2s;
-    }
-    .btn-outline-nav:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    /* CONTAINER */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 24px 20px 60px;
-    }
-
-    /* MOVIE CARD */
-    .movie-hero {
-      background: var(--card);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-lg);
-      margin-bottom: 28px;
-      display: flex;
-      flex-direction: column;
-    }
-    @media (min-width: 768px) {
-      .movie-hero { flex-direction: row; }
-    }
-    .movie-poster {
-      width: 100%;
-      min-height: 200px;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+    }
+    .btn-nav-ticket i {
+      color: #f84464;
+      font-size: 13px;
+      transition: transform 0.2s ease;
+    }
+    .btn-nav-ticket:hover {
+      border-color: #f84464;
+      background: rgba(248, 68, 100, 0.16);
+      color: #ffffff;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(248, 68, 100, 0.3);
+    }
+    .btn-nav-ticket:hover i {
+      transform: scale(1.15);
+    }
+
+    /* FULL-BLEED BOOKMYSHOW HERO */
+    .bms-hero {
       position: relative;
+      width: 100%;
+      background: #1a1a24;
+      color: #ffffff;
       overflow: hidden;
-      flex-shrink: 0;
     }
-    @media (min-width: 768px) {
-      .movie-poster { width: 300px; min-width: 300px; min-height: 380px; }
+    .bms-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('assets/ohm_shanthi_oshaana_poster.png');
+      background-size: cover;
+      background-position: center 30%;
+      filter: blur(28px) brightness(0.24) saturate(1.5);
+      transform: scale(1.15);
+      z-index: 0;
     }
-    .poster-placeholder {
-      text-align: center;
+    .bms-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #1a1a24 0%, rgba(26,26,36,0.92) 42%, rgba(26,26,36,0.7) 100%);
       z-index: 1;
     }
-    .poster-placeholder .icon {
-      font-size: 64px;
-      display: block;
-      margin-bottom: 8px;
+    .bms-mob-backdrop {
+      display: none;
     }
-    .poster-placeholder .label {
-      color: rgba(255,255,255,0.6);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .movie-info {
-      padding: 16px 18px;
-      flex: 1;
+    .bms-hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 44px 24px 48px;
       display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
-    @media (min-width: 768px) {
-      .movie-info { padding: 28px 30px; }
-    }
-    .movie-badge {
-      display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: var(--accent);
-      color: #1a1a2e;
-      padding: 4px 12px;
-      border-radius: 6px;
+      gap: 40px;
+    }
+
+    /* Poster Column */
+    .bms-poster-wrap {
+      flex-shrink: 0;
+      width: 260px;
+    }
+    .bms-poster-card {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 44px rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #000;
+    }
+    .bms-poster-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .bms-poster-card:hover img {
+      transform: scale(1.03);
+    }
+    .bms-poster-badge {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      color: #fff;
       font-size: 11px;
       font-weight: 700;
+      letter-spacing: 0.6px;
+      text-align: center;
+      padding: 7px 10px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-      width: fit-content;
     }
-    .movie-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.2;
-      margin-bottom: 4px;
+    .bms-poster-caption {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 10px;
+      font-weight: 500;
     }
-    @media (min-width: 768px) {
-      .movie-title { font-size: 2.4rem; margin-bottom: 6px; }
+
+    /* Details Column */
+    .bms-info-wrap {
+      flex: 1;
+      min-width: 0;
     }
-    .movie-tagline {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-bottom: 10px;
-    }
-    .movie-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-bottom: 0;
-    }
-    .meta-chip {
+    .bms-badge-pill {
       display: inline-flex;
       align-items: center;
-      gap: 3px;
-      background: #f0f0f0;
-      padding: 3px 8px;
+      gap: 6px;
+      background: rgba(248, 68, 100, 0.16);
+      border: 1px solid rgba(248, 68, 100, 0.4);
+      color: #ff6b8b;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
       border-radius: 20px;
-      font-size: 10px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
     }
-    @media (min-width: 768px) {
-      .meta-chip { font-size: 12px; padding: 5px 12px; gap: 4px; }
-      .movie-meta { gap: 8px; }
+    .bms-title {
+      font-size: 40px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin: 0 0 4px 0;
     }
-    .meta-chip.rating { background: #fff3cd; color: #856404; }
-    .meta-chip.lang { background: #e8f4fd; color: #0056b3; }
-    .meta-chip.genre { background: #f0e6ff; color: #6f42c1; }
-    .meta-chip i { color: inherit; }
+    .bms-title-ml {
+      font-family: 'Noto Sans Malayalam', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #f5c518;
+      margin-bottom: 16px;
+    }
 
-    .movie-price-row {
+    /* Rating Box */
+    .bms-rating-box {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      padding: 12px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .bms-rating-val {
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-    .movie-price {
-      font-size: 26px;
+      gap: 8px;
+      font-size: 20px;
       font-weight: 800;
-      color: var(--primary);
+      color: #fff;
+    }
+    .bms-rating-val i {
+      color: #f84464;
+      font-size: 18px;
+    }
+    .bms-rating-votes {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 500;
+    }
+    .bms-rating-badge {
+      background: rgba(248, 68, 100, 0.2);
+      color: #ff7895;
+      border: 1px solid rgba(248, 68, 100, 0.35);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    /* Format & Meta Row */
+    .bms-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .bms-tag-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    .bms-meta-details {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.72);
+      font-weight: 500;
+    }
+    .bms-tagline-text {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 16px;
+      line-height: 1.5;
+      max-width: 600px;
+    }
+    .bms-host-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+      margin-bottom: 24px;
+    }
+    .bms-host-info i {
+      color: #f5c518;
+    }
+
+    /* Price & CTA */
+    .bms-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .bms-price-display {
       display: flex;
       align-items: baseline;
-      gap: 6px;
-      white-space: nowrap;
-    }
-    .movie-price small {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-secondary);
-      white-space: nowrap;
-    }
-    .btn-book-now {
-      padding: 11px 24px;
-      background: var(--primary);
+      gap: 4px;
       color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
+    }
+    .bms-price-display .bms-cur {
+      font-size: 18px;
       font-weight: 700;
+      color: #f5c518;
+    }
+    .bms-price-display .bms-amt {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .bms-price-display .bms-lbl {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.55);
+    }
+    .btn-bms-book {
+      background: #f84464;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 44px;
+      border-radius: 8px;
+      border: none;
       cursor: pointer;
-      font-family: var(--font);
-      transition: all 0.2s;
-      letter-spacing: 0.3px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
+      gap: 10px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 6px 20px rgba(248, 68, 100, 0.45);
+      font-family: var(--font);
     }
-    @media (min-width: 768px) {
-      .btn-book-now { width: auto; flex: 1; min-width: 160px; }
+    .btn-bms-book:hover {
+      background: #d82949;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(248, 68, 100, 0.55);
     }
-    .btn-book-now:hover {
-      background: var(--primary-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3);
+    .btn-bms-book:active {
+      transform: translateY(0);
     }
 
-    /* VENUE INFO CARD */
-    .venue-card {
+    /* MAIN BODY CONTAINER */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 32px 24px 60px;
+    }
+
+    /* VENUE & SHOWTIME CARD */
+    .bms-venue-card {
       background: var(--card);
       border-radius: var(--radius);
+      border: 1px solid var(--border);
       box-shadow: var(--shadow);
-      padding: 20px 24px;
-      margin-bottom: 28px;
+      padding: 22px 26px;
+      margin-bottom: 24px;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
+      flex-wrap: wrap;
+      gap: 20px;
     }
-    .venue-info {
+    .bms-venue-main {
       display: flex;
       align-items: center;
       gap: 16px;
     }
-    .venue-icon {
-      width: 44px;
-      height: 44px;
-      background: #f0f0f0;
+    .bms-venue-icon {
+      width: 46px;
+      height: 46px;
       border-radius: 10px;
+      background: rgba(248, 68, 100, 0.1);
+      color: #f84464;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
+      flex-shrink: 0;
     }
-    .venue-detail .name {
-      font-weight: 600;
-      font-size: 14px;
+    .bms-venue-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
     }
-    .venue-detail .addr {
-      font-size: 12px;
+    .bms-venue-addr {
+      font-size: 13px;
       color: var(--text-secondary);
+      margin-top: 2px;
     }
-    .venue-date-time {
+    .bms-showtime-row {
       display: flex;
-      gap: 20px;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
     }
-    .venue-date-time .dt-item {
-      text-align: center;
+    .bms-st-item {
+      text-align: right;
     }
-    .venue-date-time .dt-item .dt-val {
+    .bms-st-val {
+      font-size: 15px;
       font-weight: 700;
-      font-size: 16px;
+      color: var(--text);
       display: flex;
       align-items: center;
       gap: 6px;
     }
-    .venue-date-time .dt-item .dt-val i {
-      color: var(--text);
-      font-size: 15px;
+    .bms-st-val i {
+      color: var(--primary);
     }
-    .venue-date-time .dt-item .dt-lbl {
-      font-size: 10px;
-      text-transform: uppercase;
-      color: var(--text-light);
-      letter-spacing: 0.5px;
-    }
-
-    /* SECTION */
-    .section {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 24px;
-      margin-bottom: 20px;
-    }
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .section-title i { color: var(--primary); }
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-    }
-    .info-box {
-      background: #fafafa;
-      border-radius: 10px;
-      padding: 16px;
-      text-align: center;
-      border: 1px solid var(--border);
-    }
-    .info-box .num {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text);
-    }
-    .info-box .lbl {
+    .bms-st-lbl {
       font-size: 11px;
       color: var(--text-light);
       text-transform: uppercase;
       letter-spacing: 0.5px;
+    }
+    .bms-live-seats-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #c8e6c9;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .bms-live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2e7d32;
+      animation: pulseGreen 1.8s infinite;
+    }
+    @keyframes pulseGreen {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(46, 125, 50, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+    }
+
+    /* SECTION CARDS */
+    .bms-section-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      margin-bottom: 24px;
+    }
+    .bms-section-heading {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bms-section-heading i {
+      color: var(--primary);
+      font-size: 16px;
+    }
+    .bms-synopsis {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+    }
+
+    /* Cast & Crew */
+    .bms-cast-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .bms-cast-card {
+      text-align: center;
+      padding: 12px 8px;
+      border-radius: 10px;
+      transition: all 0.15s ease;
+    }
+    .bms-cast-card:hover {
+      background: #f8f9fb;
+    }
+    .bms-cast-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      background: linear-gradient(135deg, #f84464, #f5c518);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(248, 68, 100, 0.25);
+    }
+    .bms-cast-avatar.crew {
+      background: linear-gradient(135deg, #1f2533, #3a4253);
+      box-shadow: 0 4px 12px rgba(31, 37, 51, 0.2);
+    }
+    .bms-cast-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .bms-cast-char {
+      font-size: 11px;
+      color: var(--text-light);
       margin-top: 2px;
     }
+
+    /* Info Grid */
+    .bms-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .bms-info-tile {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 14px;
+      text-align: center;
+    }
+    .bms-info-tile.highlight {
+      background: rgba(248,68,100,0.04);
+      border-color: rgba(248,68,100,0.2);
+    }
+    .bms-info-tile .val {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .bms-info-tile.highlight .val {
+      color: var(--primary);
+    }
+    .bms-info-tile .lbl {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    /* Sticky Mobile Bar */
+    .bms-mobile-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 10px 18px env(safe-area-inset-bottom);
+      z-index: 99;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+      align-items: center;
+      justify-content: space-between;
+    }
+    .bms-mob-price {
+      display: flex;
+      flex-direction: column;
+    }
+    .bms-mob-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .bms-mob-sub {
+      font-size: 11px;
+      color: var(--text-light);
+    }
+    .bms-mob-btn {
+      background: #f84464;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(248, 68, 100, 0.4);
+      font-family: var(--font);
+    }
+
+    /* Mobile Responsive adjustments (Authentic BookMyShow Mobile) */
+    @media (max-width: 768px) {
+      .navbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 20;
+        padding: 0 16px;
+        height: 60px;
+        background: linear-gradient(180deg, rgba(15, 16, 24, 0.88) 0%, rgba(15, 16, 24, 0.45) 60%, rgba(15, 16, 24, 0) 100%);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        border-bottom: none;
+        box-shadow: none;
+      }
+      .nav-brand-logo-wrap {
+        width: 34px;
+        height: 34px;
+      }
+      .brand-ceninova {
+        font-size: 14px;
+      }
+      .brand-sub {
+        font-size: 10px;
+      }
+      .btn-nav-ticket {
+        padding: 5px 12px;
+        font-size: 11px;
+        gap: 5px;
+      }
+      .btn-nav-ticket i {
+        font-size: 11px;
+      }
+
+      .bms-hero-bg { display: none; }
+      .bms-hero-overlay { display: none; }
+      .bms-mob-backdrop {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 220px;
+        overflow: hidden;
+      }
+      .bms-mob-backdrop img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 22%;
+        filter: brightness(0.85);
+      }
+      .bms-mob-backdrop-fade {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(15,16,24,0.65) 0%, rgba(15,16,24,0.1) 40%, rgba(26,26,36,0.92) 85%, #1a1a24 100%);
+      }
+
+      /* Hero Inner: Horizontal flex with poster on left and details on right */
+      .bms-hero-inner {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        padding: 0 16px 20px;
+        margin-top: -55px;
+        gap: 14px;
+      }
+      .bms-poster-wrap {
+        width: 95px;
+        flex-shrink: 0;
+      }
+      .bms-poster-card {
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+        border: 2px solid #2e303e;
+      }
+      .bms-poster-badge { display: none; }
+      .bms-poster-caption { display: none; }
+
+      .bms-badge-pill {
+        font-size: 9px;
+        padding: 2px 8px;
+        margin-bottom: 6px;
+      }
+      .bms-title {
+        font-size: 19px;
+        line-height: 1.25;
+        margin-bottom: 2px;
+      }
+      .bms-title-ml {
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+      .bms-rating-box {
+        padding: 5px 10px;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .bms-rating-val { font-size: 14px; }
+      .bms-rating-val i { font-size: 13px; }
+      .bms-rating-votes { font-size: 10px; }
+      .bms-rating-badge { display: none; }
+
+      .bms-meta-row {
+        gap: 6px;
+        margin-bottom: 8px;
+      }
+      .bms-tag-pill {
+        font-size: 10px;
+        padding: 2px 6px;
+      }
+      .bms-meta-details {
+        font-size: 11px;
+      }
+      .bms-tagline-text {
+        display: none;
+      }
+      .bms-host-info {
+        font-size: 11px;
+        margin-bottom: 0;
+      }
+
+      /* HIDE duplicate in-hero CTA on mobile! Sticky bottom bar handles booking */
+      .bms-cta-group {
+        display: none !important;
+      }
+
+      /* Venue card mobile */
+      .bms-venue-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 16px;
+        gap: 14px;
+      }
+      .bms-showtime-row {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .bms-st-item {
+        text-align: left;
+      }
+      .bms-st-val { font-size: 13px; }
+
+      /* Sticky Mobile Bar */
+      .bms-mobile-bar {
+        display: flex;
+      }
+      .container {
+        padding: 16px 16px 84px;
+      }
+    }
+
+    /* Legacy fallbacks for modal and ticket view */
+    .movie-hero, .movie-poster, .movie-info, .poster-badge, .cast-ribbon, .cast-title, .cast-chips, .cast-pill { display: none !important; }
+    .movie-title { font-family: var(--font); font-weight: 800; }
 
     /* MODAL */
     .overlay {
@@ -863,7 +1299,7 @@
     .btn-primary {
       width: 100%;
       padding: 14px;
-      background: var(--primary);
+      background: linear-gradient(135deg, #c8640a, #a04f06);
       color: #fff;
       border: none;
       border-radius: 8px;
@@ -872,8 +1308,9 @@
       cursor: pointer;
       font-family: var(--font);
       transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(200,100,10,0.25);
     }
-    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-primary:hover { background: linear-gradient(135deg, #a04f06, #7c3c04); box-shadow: 0 6px 20px rgba(200,100,10,0.35); }
     .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .btn-gold {
@@ -881,15 +1318,15 @@
       padding: 14px;
       border: none;
       border-radius: 8px;
-      background: linear-gradient(135deg, #f5c518, #d4a017);
-      color: #1a1a2e;
+      background: linear-gradient(135deg, #e8a030, #c8640a);
+      color: #fff;
       font-weight: 700;
       font-size: 15px;
       cursor: pointer;
       font-family: var(--font);
       transition: all 0.2s;
     }
-    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(212, 160, 23, 0.3); }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(200,100,10,0.3); }
 
     .btn-link {
       display: block;
@@ -926,9 +1363,9 @@
     /* TICKET */
     .ticket-card {
       width: min(420px, 94vw);
-      background: #1a1a2e;
+      background: #3d1f06;
       border-radius: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 60px rgba(100,40,5,0.45);
       overflow: hidden;
       position: relative;
     }
@@ -937,7 +1374,7 @@
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 6px;
-      background: repeating-linear-gradient(90deg, var(--primary) 0px, var(--primary) 20px, #f5c518 20px, #f5c518 40px);
+      background: repeating-linear-gradient(90deg, #c8640a 0px, #c8640a 20px, #e8a030 20px, #e8a030 40px);
     }
     .ticket-inner {
       display: flex;
@@ -952,13 +1389,13 @@
     .ticket-stub {
       width: 100px;
       flex-shrink: 0;
-      background: #f8f4ec;
+      background: #fef3e2;
       padding: 20px 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-left: 2px dashed #ccc;
+      border-left: 2px dashed #e8c07a;
       position: relative;
     }
     .ticket-stub::before, .ticket-stub::after {
@@ -966,7 +1403,7 @@
       position: absolute;
       left: -11px;
       width: 20px; height: 20px;
-      background: #1a1a2e;
+      background: #3d1f06;
       border-radius: 50%;
     }
     .ticket-stub::before { top: -10px; }
@@ -980,9 +1417,9 @@
       margin-bottom: 2px;
     }
     .ticket-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      color: var(--text);
+      font-family: 'Dancing Script', 'Playfair Display', serif;
+      font-size: 28px;
+      color: #b8530a;
       line-height: 1.1;
       margin-bottom: 2px;
     }
@@ -1193,176 +1630,277 @@
     }
     .cs-option:hover { background: #f5f5f5; }
     .cs-option.selected { background: var(--primary); color: #fff; font-weight: 600; }
-    .cs-option.selected:hover { background: #c00812; }
+    .cs-option.selected:hover { background: var(--primary-dark); }
     .tr-inline .cs-trigger {
       padding: 10px 30px 10px 10px;
       font-size: 12px;
       border-radius: 6px;
       background-size: 10px 7px;
     }
-    .tr-inline .cs-trigger.open { box-shadow: 0 0 0 2px rgba(229,9,20,0.06); }
+    .tr-inline .cs-trigger.open { box-shadow: 0 0 0 2px rgba(248,68,100,0.12); }
     .tr-inline .cs-option { font-size: 12px; padding: 7px 10px; }
     .tr-inline .cs-group-label { font-size: 10px; padding: 4px 10px 2px; }
     .tr-inline .cs-dropdown { max-height: 200px; }
 
     @media (max-width: 768px) {
-      .movie-title { font-size: 1.8rem; }
-      .movie-info { padding: 20px; }
-      .venue-card { flex-direction: column; align-items: flex-start; }
-      .venue-date-time { width: 100%; justify-content: space-around; }
       .ticket-card { width: 94vw; }
       .ticket-details { min-width: auto; width: 100%; }
-      .movie-price-row { flex-direction: column; align-items: stretch; gap: 10px; }
-      .btn-book-now { width: 100%; justify-content: center; }
-      .modal-body { padding: 14px 16px; }
-      .modal-header { padding: 18px 16px 0; }
+      .modal-body { padding: 16px 18px; }
+      .modal-header { padding: 18px 18px 0; }
       .tr-inline { grid-template-columns: 1fr 1fr 1fr; }
     }
   </style>
 </head>
 <body>
-  <!-- Floating movie elements -->
-  <span class="float-el" style="top:8%;left:5%;font-size:32px;animation-duration:25s;animation-delay:-2s;">🎬</span>
-  <span class="float-el" style="top:15%;right:8%;font-size:24px;animation-duration:22s;animation-delay:-5s;">🍿</span>
-  <span class="float-el" style="top:40%;left:3%;font-size:36px;animation-duration:28s;animation-delay:-10s;">🎞️</span>
-  <span class="float-el" style="top:55%;right:5%;font-size:26px;animation-duration:20s;animation-delay:-3s;">🎥</span>
-  <span class="float-el" style="top:70%;left:6%;font-size:30px;animation-duration:24s;animation-delay:-8s;">🎟️</span>
-  <span class="float-el" style="top:85%;right:10%;font-size:22px;animation-duration:26s;animation-delay:-15s;">🎭</span>
-  <span class="float-el" style="top:25%;left:12%;font-size:20px;animation-duration:30s;animation-delay:-7s;">📽️</span>
-  <span class="float-el" style="top:60%;left:85%;font-size:28px;animation-duration:23s;animation-delay:-12s;">✨</span>
-  <span class="float-el" style="top:90%;left:15%;font-size:24px;animation-duration:27s;animation-delay:-4s;">🎬</span>
-  <span class="float-el" style="top:10%;left:50%;font-size:18px;animation-duration:29s;animation-delay:-9s;">🍿</span>
-
-  <!-- NAVBAR -->
+  <!-- NAVBAR — Integrated Cinema Header -->
   <nav class="navbar">
     <div class="navbar-inner">
       <div class="nav-brand">
-        <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="College Logo" style="height:36px;width:auto;border-radius:6px;" onerror="this.style.display='none'">
-        <div>
-          <div class="brand-text">Dept. of English</div>
-          <div class="brand-sub">Pazhassiraja College</div>
+        <div class="nav-brand-logo-wrap">
+          <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="College Logo" class="nav-brand-logo" onerror="this.style.display='none'">
+        </div>
+        <div class="nav-brand-text-wrap">
+          <div class="brand-title">
+            <span class="brand-ceninova">CeniNova</span>
+            <span class="brand-badge">CINEMA</span>
+          </div>
+          <div class="brand-sub">Dept. of English &bull; Pazhassiraja College</div>
         </div>
       </div>
       <div class="nav-actions">
-        <button class="btn-outline-nav" onclick="openModal('find-modal')"><i class="fas fa-ticket-alt"></i> My Ticket</button>
+        <button class="btn-nav-ticket" onclick="openModal('find-modal')">
+          <i class="fas fa-ticket-alt"></i>
+          <span>My Ticket</span>
+        </button>
       </div>
     </div>
   </nav>
 
+  <!-- FULL-BLEED BOOKMYSHOW HERO BANNER -->
+  <section class="bms-hero">
+    <div class="bms-hero-bg"></div>
+    <div class="bms-hero-overlay"></div>
+    <!-- Mobile Backdrop Image (visible on mobile only) -->
+    <div class="bms-mob-backdrop">
+      <img src="assets/ohm_shanthi_oshaana_poster.png" alt="Ohm Shanthi Oshaana Backdrop">
+      <div class="bms-mob-backdrop-fade"></div>
+    </div>
+    <div class="bms-hero-inner">
+      <!-- POSTER CARD (Left) -->
+      <div class="bms-poster-wrap">
+        <div class="bms-poster-card">
+          <img src="assets/ohm_shanthi_oshaana_poster.png" alt="Ohm Shanthi Oshaana">
+          <div class="bms-poster-badge">In Cinemas</div>
+        </div>
+        <div class="bms-poster-caption">Screening at Chithrashala</div>
+      </div>
+
+      <!-- DETAILS (Right) -->
+      <div class="bms-info-wrap">
+        <div class="bms-badge-pill"><i class="fas fa-film"></i> CeniNova Screening</div>
+        <h1 class="bms-title" id="movie-title">Ohm Shanthi Oshaana</h1>
+        <div class="bms-title-ml" id="movie-title-ml">ഓം ശാന്തി ഓശാന</div>
+
+        <!-- BookMyShow Rating Card -->
+        <div class="bms-rating-box">
+          <div class="bms-rating-val"><i class="fas fa-star"></i> 8.6/10</div>
+          <div class="bms-rating-votes">(24.8K Votes)</div>
+          <div class="bms-rating-badge">Superhit Classic</div>
+        </div>
+
+        <!-- Format & Meta row -->
+        <div class="bms-meta-row">
+          <span class="bms-tag-pill" id="movie-format">2D</span>
+          <span class="bms-tag-pill" id="movie-language">Malayalam</span>
+          <span class="bms-meta-details">
+            <span id="movie-duration">2h 16m</span> &nbsp;•&nbsp;
+            <span id="movie-genre">Comedy, Romance</span> &nbsp;•&nbsp;
+            <span id="movie-rating">U</span> &nbsp;•&nbsp;
+            <span>4 Aug, 2026</span>
+          </span>
+        </div>
+
+        <p class="bms-tagline-text" id="movie-tagline">A bold, heartfelt coming-of-age story — directed by Jude Anthany Joseph</p>
+
+        <div class="bms-host-info">
+          <i class="fas fa-university"></i> Dept. of English &bull; Pazhassiraja College
+        </div>
+
+        <!-- Price & CTA (Desktop only, mobile uses sticky bottom bar) -->
+        <div class="bms-cta-group">
+          <div class="bms-price-display">
+            <span class="bms-cur">₹</span><span class="bms-amt" id="ticket-price">15</span>
+            <span class="bms-lbl">per ticket</span>
+          </div>
+          <button class="btn-bms-book" id="btn-book">
+            <i class="fas fa-ticket-alt"></i> Book Tickets
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN BODY CONTAINER -->
   <div class="container">
 
-    <!-- MOVIE HERO -->
-    <div class="movie-hero">
-      <div class="movie-poster">
-        <div class="poster-placeholder">
-          <div style="text-align:center;z-index:1;">
-          <i class="fas fa-film" style="font-size:72px;color:rgba(255,255,255,0.3);display:block;margin-bottom:8px;"></i>
-          <div style="color:rgba(255,255,255,0.5);font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;">CeniNova Poster</div>
-        </div>
-          <div class="label" id="poster-label">Movie Poster</div>
+    <!-- VENUE & SHOWTIME CARD -->
+    <div class="bms-venue-card">
+      <div class="bms-venue-main">
+        <div class="bms-venue-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div>
+          <div class="bms-venue-name" id="venue-name">Chithrashala Auditorium</div>
+          <div class="bms-venue-addr" id="venue-addr">Pazhassiraja College, Pulpally, Wayanad</div>
         </div>
       </div>
-      <div class="movie-info">
-        <div class="movie-badge">LIT - FEST</div>
-        <h1 class="movie-title" id="movie-title">Movie Night</h1>
-        <p class="movie-tagline" id="movie-tagline">Department of English — Special Screening</p>
-
-        <div class="movie-meta">
-          <span class="meta-chip rating"><i class="fas fa-star"></i> <span id="movie-rating">—</span></span>
-          <span class="meta-chip lang"><i class="fas fa-language"></i> <span id="movie-language">English</span></span>
-          <span class="meta-chip genre"><i class="fas fa-tag"></i> <span id="movie-genre">—</span></span>
-          <span class="meta-chip"><i class="fas fa-clock"></i> <span id="movie-duration">—</span></span>
-          <span class="meta-chip"><i class="fas fa-film"></i> <span id="movie-format">2D</span></span>
+      <div class="bms-showtime-row">
+        <div class="bms-st-item">
+          <div class="bms-st-val"><i class="fas fa-calendar-alt"></i> <span id="show-date">4 Aug, 2026</span></div>
+          <div class="bms-st-lbl">Date</div>
         </div>
-
-        <div class="movie-price-row">
-          <div class="movie-price">₹<span id="ticket-price">15</span> <small>per ticket</small></div>
-          <button class="btn-book-now" id="btn-book"><i class="fas fa-ticket-alt"></i> Book Tickets</button>
+        <div class="bms-st-item">
+          <div class="bms-st-val"><i class="fas fa-clock"></i> <span id="show-time">02:00 PM</span></div>
+          <div class="bms-st-lbl">Time</div>
+        </div>
+        <div class="bms-live-seats-badge">
+          <span class="bms-live-dot"></span>
+          <span id="seats-available">—</span> Seats Left
         </div>
       </div>
     </div>
 
-    <!-- VENUE CARD -->
-    <div class="venue-card">
-      <div class="venue-info">
-        <div class="venue-icon"><i class="fas fa-map-marker-alt"></i></div>
-        <div class="venue-detail">
-          <div class="name" id="venue-name">Chithrashala</div>
-          <div class="addr" id="venue-addr">Pazhassiraja College, Pulpally, Wayanad</div>
-        </div>
-      </div>
-        <div class="venue-date-time">
-          <div class="dt-item">
-            <div class="dt-val"><i class="fas fa-calendar-alt"></i> <span id="show-date">TBD</span></div>
-            <div class="dt-lbl">Date</div>
-          </div>
-          <div class="dt-item">
-            <div class="dt-val"><i class="fas fa-clock"></i> <span id="show-time">TBD</span></div>
-            <div class="dt-lbl">Time</div>
-          </div>
-        </div>
+    <!-- ABOUT THE MOVIE -->
+    <div class="bms-section-card">
+      <h2 class="bms-section-heading"><i class="fas fa-align-left"></i> About the Movie</h2>
+      <p class="bms-synopsis">
+        A spirited, outspoken high-school girl, Pooja Mathew, falls head over heels for Giri, an older organic farmer and kung-fu practitioner. Unapologetic in her pursuit, she spends years hoping and planning to win his affection. Directed by Jude Anthany Joseph, this blockbuster romantic comedy is cherished for its delightful humor, soulful music by Shaan Rahman, and an unforgettable portrayal of youth, love, and persistence.
+      </p>
     </div>
 
-    <!-- INFO SECTION -->
-    <div class="section">
-      <div class="section-title"><i class="fas fa-info-circle"></i> About the Event</div>
-      <div class="info-grid">
-        <div class="info-box">
-          <div class="num" id="total-seats">—</div>
-          <div class="lbl">Total Seats</div>
+    <!-- CAST & CREW -->
+    <div class="bms-section-card">
+      <h2 class="bms-section-heading"><i class="fas fa-users"></i> Cast</h2>
+      <div class="bms-cast-grid">
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar">NN</div>
+          <div class="bms-cast-name">Nazriya Nazim</div>
+          <div class="bms-cast-char">as Pooja Mathew</div>
         </div>
-        <div class="info-box">
-          <div class="num" id="seats-available">—</div>
-          <div class="lbl">Seats Available</div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar">NP</div>
+          <div class="bms-cast-name">Nivin Pauly</div>
+          <div class="bms-cast-char">as Giri</div>
         </div>
-        <div class="info-box">
-          <div class="num">₹<span id="price-per-ticket">15</span></div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar">AV</div>
+          <div class="bms-cast-name">Aju Varghese</div>
+          <div class="bms-cast-char">as David Kanjani</div>
+        </div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar">RP</div>
+          <div class="bms-cast-name">Renji Panicker</div>
+          <div class="bms-cast-char">as Dr. Mathew</div>
+        </div>
+      </div>
+
+      <h2 class="bms-section-heading" style="margin-top:24px;"><i class="fas fa-video"></i> Crew</h2>
+      <div class="bms-cast-grid">
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar crew">JA</div>
+          <div class="bms-cast-name">Jude Anthany Joseph</div>
+          <div class="bms-cast-char">Director</div>
+        </div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar crew">SR</div>
+          <div class="bms-cast-name">Shaan Rahman</div>
+          <div class="bms-cast-char">Music Director</div>
+        </div>
+        <div class="bms-cast-card">
+          <div class="bms-cast-avatar crew">MM</div>
+          <div class="bms-cast-name">Midhun Manuel Thomas</div>
+          <div class="bms-cast-char">Screenplay</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREENING INFORMATION -->
+    <div class="bms-section-card">
+      <h2 class="bms-section-heading"><i class="fas fa-info-circle"></i> Screening Information</h2>
+      <div class="bms-info-grid">
+        <div class="bms-info-tile">
+          <div class="val" id="total-seats">100</div>
+          <div class="lbl">Total Capacity</div>
+        </div>
+        <div class="bms-info-tile highlight">
+          <div class="val">₹<span id="price-per-ticket">15</span></div>
           <div class="lbl">Ticket Price</div>
+        </div>
+        <div class="bms-info-tile">
+          <div class="val"><i class="fas fa-user-check"></i> 1:1</div>
+          <div class="lbl">1 Person / Ticket</div>
+        </div>
+        <div class="bms-info-tile">
+          <div class="val"><i class="fas fa-qrcode"></i> Digital</div>
+          <div class="lbl">QR Ticket Entry</div>
         </div>
       </div>
     </div>
 
     <footer>
-      Pazhassiraja College, Pulpally &mdash; CeniNova
+      Pazhassiraja College, Pulpally &mdash; Dept. of English &bull; CeniNova
     </footer>
+  </div>
+
+  <!-- STICKY MOBILE BOOKING BAR -->
+  <div class="bms-mobile-bar">
+    <div class="bms-mob-price">
+      <div class="bms-mob-val">₹<span id="mob-ticket-price">15</span></div>
+      <div class="bms-mob-sub">per ticket · Chithrashala</div>
+    </div>
+    <button class="bms-mob-btn" onclick="document.getElementById('btn-book').click()">
+      <i class="fas fa-ticket-alt"></i> Book Tickets
+    </button>
   </div>
 
   <!-- BOOKING MODAL -->
   <div id="booking-modal" class="overlay">
     <div class="modal-card">
-      <div style="height:4px;background:repeating-linear-gradient(90deg,var(--primary) 0px,var(--primary) 20px,var(--accent) 20px,var(--accent) 40px);border-radius:20px 20px 0 0;"></div>
+      <div style="height:4px;background:linear-gradient(90deg,#f84464,#f5c518);border-radius:16px 16px 0 0;"></div>
       <div class="modal-header">
         <div>
-          <div class="modal-title">Book Tickets</div>
-          <div class="modal-sub" id="modal-movie-name">Movie Night</div>
+          <div class="modal-title">Book Ticket</div>
+          <div class="modal-sub" id="modal-movie-name">Ohm Shanthi Oshaana (ഓം ശാന്തി ഓശാന)</div>
         </div>
         <button class="modal-close" onclick="closeModal('booking-modal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <form id="booking-form">
           <div class="form-group">
-            <label>Phone Number (shared for all tickets)</label>
-            <input type="tel" id="user-phone" placeholder="Phone number" required>
+            <label>Full Name</label>
+            <input type="text" id="user-name" placeholder="Enter student's full name" required>
           </div>
 
           <div class="form-group">
-            <label>Tickets <span style="font-weight:400;color:#999;font-size:12px;">(each person needs their own details)</span></label>
-            <div id="ticket-rows"></div>
-            <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-              <button type="button" class="btn-sm" onclick="addTicketRow()"><i class="fas fa-plus"></i> Add Person</button>
-              <button type="button" class="btn-sm" onclick="removeTicketRow()" style="background:#e53935;"><i class="fas fa-minus"></i> Remove</button>
-              <button type="button" class="btn-sm" id="btn-copy-p1" onclick="copyPerson1Details()" style="background:#4b5563;color:#fff;display:none;"><i class="fas fa-copy"></i> Auto-fill Dept &amp; Year</button>
+            <label>College Details</label>
+            <div class="tr-inline">
+              <select id="user-dept" required></select>
+              <select id="user-year" required></select>
+              <select id="user-roll" required></select>
             </div>
+          </div>
+
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="user-phone" placeholder="Enter 10-digit mobile number" required>
           </div>
 
           <!-- Booking Summary -->
           <div class="booking-summary" id="booking-summary">
             <div class="summary-row">
-              <span>Tickets</span>
-              <span><span id="summary-qty">1</span> x ₹<span id="summary-unit-price">15</span></span>
+              <span>Ticket (1 Person)</span>
+              <span>₹<span id="summary-unit-price">15</span></span>
             </div>
             <div class="summary-row total">
-              <span>Total</span>
+              <span>Total Payable</span>
               <span>₹<span id="summary-total">15</span></span>
             </div>
           </div>
@@ -1418,23 +1956,24 @@
         </form>
         <button class="btn-link" onclick="closeModal('booking-modal')">Cancel</button>
       </div>
-      <div style="height:4px;background:repeating-linear-gradient(90deg,var(--primary) 0px,var(--primary) 20px,var(--accent) 20px,var(--accent) 40px);border-radius:0 0 20px 20px;"></div>
+      <div style="height:4px;background:repeating-linear-gradient(90deg,#c8640a 0px,#c8640a 20px,#e8a030 20px,#e8a030 40px);border-radius:0 0 20px 20px;"></div>
     </div>
   </div>
 
   <!-- TICKET MODAL -->
   <div id="ticket-modal" class="overlay">
     <div>
-      <div style="background:#1a1a2e;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.5);overflow:hidden;width:min(460px,94vw);">
-        <div style="background:repeating-linear-gradient(90deg,var(--primary) 0px,var(--primary) 20px,#f5c518 20px,#f5c518 40px);height:6px;"></div>
-        <div style="background:#fff;padding:20px;">
+      <div style="background:#3d1f06;border-radius:16px;box-shadow:0 20px 60px rgba(100,40,5,0.45);overflow:hidden;width:min(460px,94vw);">
+        <div style="background:repeating-linear-gradient(90deg,#c8640a 0px,#c8640a 20px,#e8a030 20px,#e8a030 40px);height:6px;"></div>
+        <div style="background:#fffdf9;padding:20px;">
           <div style="text-align:center;position:relative;">
-            <div style="position:absolute;top:0;right:0;background:linear-gradient(135deg,#f5c518,#d4a017);color:#1a1a2e;font-size:8px;font-weight:800;padding:3px 8px;border-radius:4px;letter-spacing:0.5px;">LIT-FEST</div>
+            <div style="position:absolute;top:0;right:0;background:linear-gradient(135deg,#c8640a,#a04f06);color:#fff;font-size:8px;font-weight:800;padding:4px 9px;border-radius:4px;letter-spacing:0.8px;">SCREENING PASS</div>
             <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" style="height:36px;margin-bottom:2px;" alt="College Logo">
-            <div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--primary);font-weight:700;">CeniNova &bull; Dept of English</div>
-            <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--text);line-height:1.2;">CeniNova Film Fest</div>
-            <div style="font-size:10px;color:var(--text-secondary);margin-bottom:8px;"><i class="fas fa-map-marker-alt"></i> Pazhassiraja College, Pulpally</div>
-            <div style="font-size:11px;color:#666;"><i class="fas fa-phone"></i> <span id="tkt-phone">—</span></div>
+            <div style="font-size:8px;text-transform:uppercase;letter-spacing:1px;color:#c8640a;font-weight:800;">CeniNova &bull; Dept of English</div>
+            <div style="font-family:'Dancing Script',serif;font-weight:700;font-size:24px;color:#b8530a;line-height:1.2;margin:2px 0;">Ohm Shanthi Oshaana</div>
+            <div style="font-family:'Noto Sans Malayalam',sans-serif;font-size:10px;font-weight:700;color:#8a4010;letter-spacing:0.5px;margin-bottom:4px;">ഓം ശാന്തി ഓശാന &bull; Pazhassiraja College</div>
+            <div style="font-size:10px;color:#6b4a2a;margin-bottom:8px;"><i class="fas fa-map-marker-alt"></i> Chithrashala, Pazhassiraja College</div>
+            <div style="font-size:11px;color:#6b4a2a;"><i class="fas fa-phone"></i> <span id="tkt-phone">—</span></div>
           </div>
 
           <hr style="border:none;border-top:1px dashed #ddd;margin:12px 0;">
@@ -1446,8 +1985,8 @@
           <div id="ticket-list" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:8px;"></div>
 
           <div style="display:flex;gap:8px;">
-            <button class="act-btn save" onclick="saveTicket()" style="flex:1;"><i class="fas fa-download"></i> Save All</button>
-            <button class="act-btn share" onclick="shareTicket()" style="flex:1;"><i class="fas fa-share-alt"></i> Share</button>
+            <button class="act-btn save" onclick="saveTicket()" style="flex:1;"><i class="fas fa-download"></i> Save Ticket</button>
+            <button class="act-btn share" onclick="shareTicket()" style="flex:1;"><i class="fas fa-share-alt"></i> Share Ticket</button>
             <button class="btn-link" onclick="closeModal('ticket-modal')" style="flex:1;margin:0;">Close</button>
           </div>
         </div>
@@ -1502,19 +2041,20 @@
   <script>
     // ========== CONFIG — Edit these to match your event ==========
     const CONFIG = {
-      eventName: 'CeniNova',
-      eventTagline: 'Pazhassiraja College, Pulpally',
+      eventName: 'Ohm Shanthi Oshaana',
+      eventMalayalam: 'ഓം ശാന്തി ഓശാന',
+      eventTagline: 'A bold, heartfelt coming-of-age story — directed by Jude Anthany Joseph',
       eventDate: 'August 4, 2026',
       eventTime: '2:00 PM',
       venueName: 'Chithrashala',
       venueAddress: 'Pazhassiraja College, Pulpally, Wayanad',
       totalSeats: 100,
       ticketPrice: 15,
-      rating: 'U/A',
-      language: 'English',
-      genre: 'Film Fest',
-      duration: '2h 30m',
-      format: '2D',
+      rating: 'U',
+      language: 'Malayalam',
+      genre: 'Rom-Com • Coming-of-Age',
+      duration: '2h 16m',
+      format: '2D HD',
       upiId: 'arshinmrelju@okicici',
       upiName: 'English Dept',
       adminEmail: 'jesusyouthprc@gmail.com',
@@ -1532,6 +2072,8 @@
 
     // Apply config
     document.getElementById('movie-title').textContent = CONFIG.eventName;
+    const mlEl = document.getElementById('movie-title-ml');
+    if (mlEl) mlEl.textContent = CONFIG.eventMalayalam;
     document.getElementById('movie-tagline').textContent = CONFIG.eventTagline;
     document.getElementById('movie-rating').textContent = CONFIG.rating;
     document.getElementById('movie-language').textContent = CONFIG.language;
@@ -1539,9 +2081,11 @@
     document.getElementById('movie-duration').textContent = CONFIG.duration;
     document.getElementById('movie-format').textContent = CONFIG.format;
     document.getElementById('ticket-price').textContent = CONFIG.ticketPrice;
+    const mobPrEl = document.getElementById('mob-ticket-price');
+    if (mobPrEl) mobPrEl.textContent = CONFIG.ticketPrice;
     document.getElementById('price-per-ticket').textContent = CONFIG.ticketPrice;
     document.getElementById('summary-unit-price').textContent = CONFIG.ticketPrice;
-    document.getElementById('modal-movie-name').textContent = CONFIG.eventName;
+    document.getElementById('modal-movie-name').textContent = CONFIG.eventName + ' (' + CONFIG.eventMalayalam + ')';
     document.getElementById('venue-name').textContent = CONFIG.venueName;
     document.getElementById('venue-addr').textContent = CONFIG.venueAddress;
     document.getElementById('show-date').textContent = CONFIG.eventDate;
@@ -1610,54 +2154,38 @@
       return h;
     }
 
-    function renderTicketRows() {
-      // Preserve existing values before rebuilding
-      const existing = document.querySelectorAll('.ticket-row');
-      const saved = [];
-      existing.forEach(r => {
-        saved.push({
-          name: r.querySelector('.tr-name')?.value || '',
-          dept: r.querySelector('.tr-dept')?.value || '',
-          year: r.querySelector('.tr-year')?.value || '',
-          roll: parseInt(r.querySelector('.tr-roll')?.value) || ''
-        });
-      });
-
-      const container = document.getElementById('ticket-rows');
-      container.innerHTML = '';
-      for (let i = 0; i < ticketRows; i++) {
-        const prev = saved[i] || {};
-        const row = document.createElement('div');
-        row.className = 'ticket-row';
-        row.innerHTML =
-          '<div class="ticket-row-header">Person ' + (i + 1) + '</div>' +
-          '<input type="text" class="tr-name" placeholder="Full Name" value="' + (prev.name || '').replace(/"/g, '&quot;') + '" required>' +
-          '<div class="tr-inline">' +
-            '<select class="tr-dept" required>' + makeDeptHTML(prev.dept) + '</select>' +
-            '<select class="tr-year" required>' + makeYearHTML(prev.year) + '</select>' +
-            '<select class="tr-roll" required>' + makeRollHTML(prev.roll) + '</select>' +
-          '</div>';
-        container.appendChild(row);
-        row.querySelectorAll('select').forEach(customSelect);
+    function initBookingFields() {
+      const d = document.getElementById('user-dept');
+      const y = document.getElementById('user-year');
+      const r = document.getElementById('user-roll');
+      if (d && !d.dataset.populated) {
+        d.innerHTML = makeDeptHTML();
+        d.dataset.populated = '1';
+        customSelect(d);
       }
-      const btnCopy = document.getElementById('btn-copy-p1');
-      if (btnCopy) btnCopy.style.display = ticketRows > 1 ? 'inline-block' : 'none';
-      updateSummary();
+      if (y && !y.dataset.populated) {
+        y.innerHTML = makeYearHTML();
+        y.dataset.populated = '1';
+        customSelect(y);
+      }
+      if (r && !r.dataset.populated) {
+        r.innerHTML = makeRollHTML();
+        r.dataset.populated = '1';
+        customSelect(r);
+      }
     }
 
-    function copyPerson1Details() {
-      const rows = document.querySelectorAll('.ticket-row');
-      if (rows.length < 2) return;
-      const dept = rows[0].querySelector('.tr-dept')?.value;
-      const year = rows[0].querySelector('.tr-year')?.value;
-      if (!dept || !year) return showToast('Fill Department & Year for Person 1 first.');
-      for (let i = 1; i < rows.length; i++) {
-        const d = rows[i].querySelector('.tr-dept');
-        const y = rows[i].querySelector('.tr-year');
-        if (d) { d.value = dept; d.dispatchEvent(new Event('change', { bubbles: true })); }
-        if (y) { y.value = year; y.dispatchEvent(new Event('change', { bubbles: true })); }
-      }
-      showToast('Copied Department & Year to all persons!');
+    function resetBookingForm() {
+      const nameEl = document.getElementById('user-name');
+      const phoneEl = document.getElementById('user-phone');
+      const deptEl = document.getElementById('user-dept');
+      const yearEl = document.getElementById('user-year');
+      const rollEl = document.getElementById('user-roll');
+      if (nameEl) nameEl.value = '';
+      if (phoneEl) phoneEl.value = '';
+      if (deptEl) { deptEl.value = ''; deptEl.dispatchEvent(new Event('change', { bubbles: true })); }
+      if (yearEl) { yearEl.value = ''; yearEl.dispatchEvent(new Event('change', { bubbles: true })); }
+      if (rollEl) { rollEl.value = ''; rollEl.dispatchEvent(new Event('change', { bubbles: true })); }
     }
 
     function copyUPIId() {
@@ -1670,8 +2198,8 @@
     function shareWhatsAppTicket() {
       if (!currentBooking) return;
       const code = currentBooking.code || (currentBooking.ticketHolders ? currentBooking.ticketHolders[0].code : '');
-      const name = currentBooking.ticketHolders ? currentBooking.ticketHolders[0].name : '';
-      const text = `🎟️ *CeniNova Movie Ticket*\nName: ${name}\nTicket Code: ${code}\nDate: ${CONFIG.eventDate} at ${CONFIG.eventTime}\nVenue: ${CONFIG.venueName}, ${CONFIG.venueAddress}`;
+      const name = currentBooking.name || (currentBooking.ticketHolders ? currentBooking.ticketHolders[0].name : '');
+      const text = `💖 *Ohm Shanthi Oshaana (ഓം ശാന്തി ഓശാന) Movie Ticket*\nName: ${name}\nTicket Code: ${code}\nDate: ${CONFIG.eventDate} at ${CONFIG.eventTime}\nVenue: ${CONFIG.venueName}, ${CONFIG.venueAddress}\nSpecial Screening by Dept. of English, Pazhassiraja College`;
       window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }
 
@@ -1686,32 +2214,6 @@
       t.textContent = msg;
       t.style.opacity = '1';
       setTimeout(() => { if (t) t.style.opacity = '0'; }, 3000);
-    }
-
-    function addTicketRow() {
-      if (ticketRows >= 10) return alert('Max 10 tickets.');
-      ticketRows++;
-      renderTicketRows();
-    }
-
-    function removeTicketRow() {
-      if (ticketRows <= 1) return alert('Need at least 1 ticket.');
-      ticketRows--;
-      renderTicketRows();
-    }
-
-    function getRowData() {
-      const rows = document.querySelectorAll('.ticket-row');
-      const data = [];
-      for (const r of rows) {
-        const name = r.querySelector('.tr-name').value.trim();
-        const dept = r.querySelector('.tr-dept').value;
-        const year = r.querySelector('.tr-year').value;
-        const roll = r.querySelector('.tr-roll').value;
-        if (!name || !dept || !year || !roll) return null;
-        data.push({ name, dept, year: Number(year), roll: Number(roll) });
-      }
-      return data;
     }
 
     function togglePayMethod() {
@@ -1736,16 +2238,18 @@
       }
 
       if (isUpi && CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
-        const total = ticketRows * CONFIG.ticketPrice;
-        generateUPIQR(total, 'TKT-' + Date.now());
+        generateUPIQR(CONFIG.ticketPrice, 'TKT-' + Date.now());
       }
     }
 
     function updateSummary() {
-      const total = ticketRows * CONFIG.ticketPrice;
-      document.getElementById('summary-qty').textContent = ticketRows;
-      document.getElementById('summary-total').textContent = total;
-      document.getElementById('pay-amount').textContent = total;
+      const total = CONFIG.ticketPrice;
+      const unitEl = document.getElementById('summary-unit-price');
+      const totEl = document.getElementById('summary-total');
+      const payEl = document.getElementById('pay-amount');
+      if (unitEl) unitEl.textContent = total;
+      if (totEl) totEl.textContent = total;
+      if (payEl) payEl.textContent = total;
       if (document.querySelector('input[name="payMethod"]:checked')?.value === 'upi' && CONFIG.upiId && CONFIG.upiId !== 'example@upi') {
         generateUPIQR(total, 'TKT-' + Date.now());
       }
@@ -2145,7 +2649,8 @@
 
     // Booking
     document.getElementById('btn-book').addEventListener('click', () => {
-      ticketRows = 1;
+      initBookingFields();
+      resetBookingForm();
       document.getElementById('upi-trans-id').value = '';
       document.getElementById('screenshot-b64').value = '';
       document.getElementById('ocr-verified').value = 'false';
@@ -2153,22 +2658,26 @@
       // Reset to Cash
       document.querySelector('input[name="payMethod"][value="cash"]').checked = true;
       togglePayMethod();
-      renderTicketRows();
+      updateSummary();
       openModal('booking-modal');
     });
 
     document.getElementById('booking-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const btn = document.getElementById('btn-confirm');
+      const name = document.getElementById('user-name').value.trim();
+      const dept = document.getElementById('user-dept').value;
+      const year = document.getElementById('user-year').value;
+      const roll = document.getElementById('user-roll').value;
       const phone = document.getElementById('user-phone').value.trim();
       const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
       const upiTransId = document.getElementById('upi-trans-id').value;
       const screenshotB64 = document.getElementById('screenshot-b64').value;
       const ocrVerified = document.getElementById('ocr-verified').value === 'true';
-      const rows = getRowData();
 
-      if (!phone) { alert('Enter phone number.'); return; }
-      if (!rows) { alert('Fill all fields for each person.'); return; }
+      if (!name) { alert('Please enter student full name.'); return; }
+      if (!dept || !year || !roll) { alert('Please select department, year of study, and roll number.'); return; }
+      if (!phone || phone.length < 10) { alert('Please enter a valid 10-digit mobile number.'); return; }
       if (payMethod === 'upi') {
         if (!ocrVerified) { alert('Please upload and verify your UPI payment screenshot before proceeding.'); return; }
         if (!upiTransId) { alert('Payment verification failed — no transaction ID detected. Please retry.'); return; }
@@ -2177,18 +2686,25 @@
       const paymentStatus = payMethod === 'cash' ? 'pending' : 'paid';
 
       btn.disabled = true;
-      btn.textContent = 'Generating...';
+      btn.textContent = 'Generating Ticket...';
 
-      const total = ticketRows * CONFIG.ticketPrice;
-      const codes = rows.map(() => generateCode());
+      const total = CONFIG.ticketPrice;
+      const code = generateCode();
+      const codes = [code];
       const timestamp = Date.now();
-      const ticketHolders = rows.map((r, i) => ({ ...r, code: codes[i] }));
+      const ticketHolders = [{
+        name,
+        dept,
+        year: Number(year),
+        roll: Number(roll),
+        code
+      }];
 
       // Save locally
       try {
-        localStorage.setItem('my_ticket', JSON.stringify({ ticketHolders, phone, qty: ticketRows, amount: total, code: codes[0], paymentStatus, timestamp }));
+        localStorage.setItem('my_ticket', JSON.stringify({ ticketHolders, phone, name, dept, year: Number(year), roll: Number(roll), qty: 1, amount: total, code, paymentStatus, timestamp }));
         const arr = JSON.parse(localStorage.getItem('my_tickets') || '[]');
-        arr.unshift({ ticketHolders, phone, qty: ticketRows, amount: total, code: codes[0], paymentStatus, timestamp });
+        arr.unshift({ ticketHolders, phone, name, dept, year: Number(year), roll: Number(roll), qty: 1, amount: total, code, paymentStatus, timestamp });
         localStorage.setItem('my_tickets', JSON.stringify(arr.slice(0, 50)));
       } catch(e) {}
 
@@ -2201,13 +2717,23 @@
             p.then(() => {
               const newRef = bookingsRef.push();
               return newRef.set({
-                ticketHolders, phone, tickets: ticketRows, amount: total,
-                ticketCodes: codes, primaryCode: codes[0],
-                payMethod, upiTransId: payMethod === 'upi' ? upiTransId : '',
+                name,
+                dept,
+                year: Number(year),
+                roll: Number(roll),
+                phone,
+                ticketHolders,
+                tickets: 1,
+                amount: total,
+                ticketCodes: codes,
+                primaryCode: code,
+                payMethod,
+                upiTransId: payMethod === 'upi' ? upiTransId : '',
                 paymentScreenshot: payMethod === 'upi' ? screenshotB64 : '',
                 verifiedTransId: payMethod === 'upi' ? upiTransId : '',
                 paymentStatus,
-                timestamp, createdAt: new Date(timestamp).toISOString(),
+                timestamp,
+                createdAt: new Date(timestamp).toISOString(),
                 attended: false
               });
             }).then(() => { clearTimeout(timer); resolve(true); })
@@ -2219,7 +2745,7 @@
 
       saveToFirebase().then(() => {
         closeModal('booking-modal');
-        showTicket(ticketHolders, phone, ticketRows, total, codes, paymentStatus);
+        showTicket(ticketHolders, phone, 1, total, codes, paymentStatus);
         btn.disabled = false;
         btn.textContent = 'Confirm & Generate Ticket';
       });
@@ -2228,47 +2754,60 @@
     function showTicket(ticketHolders, phone, tktQty, amount, codes, paymentStatus) {
       document.getElementById('tkt-phone').textContent = phone;
       const container = document.getElementById('multi-ticket-list');
-      container.innerHTML = ticketHolders.map((t, i) => {
-        const code = codes[i] || t.code;
-        const barcodeId = 'bc-' + i + '-' + Date.now();
-        setTimeout(() => {
-          try {
-            JsBarcode('#' + barcodeId, code, {
-              format: "CODE128", lineColor: "#333", width: 1.5, height: 35,
-              displayValue: false, background: "transparent", margin: 0
-            });
-          } catch(e) {}
-        }, 50);
-        return '<div class="mini-ticket">' +
-          '<div class="mt-info">' +
-            '<div class="mt-name">' + t.name + '</div>' +
-            '<div class="mt-dept">' + t.dept + ' &bull; Year ' + t.year + ' &bull; Roll ' + t.roll + '</div>' +
-            '<div class="mt-code">' + code + '</div>' +
-          '</div>' +
-          '<div class="mt-barcode"><svg id="' + barcodeId + '"></svg></div>' +
-        '</div>';
-      }).join('');
+      const t = (ticketHolders && ticketHolders[0]) || { name: 'Student', dept: '—', year: '—', roll: '—' };
+      const code = (codes && codes[0]) || t.code || 'TKT';
+      const barcodeId = 'bc-' + Date.now();
+      setTimeout(() => {
+        try {
+          JsBarcode('#' + barcodeId, code, {
+            format: "CODE128", lineColor: "#1e293b", width: 1.6, height: 40,
+            displayValue: false, background: "transparent", margin: 0
+          });
+        } catch(e) {}
+      }, 50);
 
-      currentBooking = { ticketHolders, phone, qty: tktQty, amount, code: codes[0], paymentStatus };
+      container.innerHTML =
+        '<div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px;text-align:left;position:relative;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">' +
+            '<div>' +
+              '<div style="font-size:10px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.8px;">ADMIT ONE &bull; OFFICIAL PASS</div>' +
+              '<div style="font-size:18px;font-weight:900;color:#0f172a;margin-top:2px;">' + t.name + '</div>' +
+              '<div style="font-size:12px;color:#64748b;font-weight:600;margin-top:2px;">' + t.dept + ' &bull; Year ' + t.year + ' &bull; Roll ' + t.roll + '</div>' +
+            '</div>' +
+            '<div style="text-align:right;">' +
+              '<div style="font-size:9px;font-weight:700;color:#f59e0b;text-transform:uppercase;">Price</div>' +
+              '<div style="font-size:18px;font-weight:900;color:#d90429;">₹' + amount + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="border-top:1px dashed #cbd5e1;margin:10px 0 8px;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">' +
+            '<div>' +
+              '<div style="font-size:9px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;">Pass Code</div>' +
+              '<div style="font-family:monospace;font-size:15px;font-weight:800;color:#0f172a;letter-spacing:1px;">' + code + '</div>' +
+            '</div>' +
+            '<div style="text-align:right;"><svg id="' + barcodeId + '"></svg></div>' +
+          '</div>' +
+        '</div>';
+
+      currentBooking = { ticketHolders, phone, name: t.name, dept: t.dept, year: t.year, roll: t.roll, qty: 1, amount, code, paymentStatus };
 
       // history chips
       try { myTickets = JSON.parse(localStorage.getItem('my_tickets') || '[]'); } catch(e) { myTickets = []; }
-      activeCode = codes[0];
+      activeCode = code;
       const listEl = document.getElementById('ticket-list');
-      listEl.innerHTML = myTickets.map((t, idx) =>
-        '<div class="ticket-chip ' + (t.code === activeCode ? 'active' : '') + '" data-idx="' + idx + '">' +
-          ((t.ticketHolders ? t.ticketHolders[0].name : t.name) + ' &bull; ' + t.code) +
+      listEl.innerHTML = myTickets.map((tItem, idx) =>
+        '<div class="ticket-chip ' + (tItem.code === activeCode ? 'active' : '') + '" data-idx="' + idx + '">' +
+          ((tItem.ticketHolders ? tItem.ticketHolders[0].name : (tItem.name || 'Ticket')) + ' &bull; ' + tItem.code) +
         '</div>'
       ).join('');
       listEl.querySelectorAll('.ticket-chip').forEach(el => {
         el.addEventListener('click', () => {
           const idx = parseInt(el.getAttribute('data-idx'));
-          const t = myTickets[idx];
-          if (!t) return;
-          if (t.ticketHolders) {
-            showTicket(t.ticketHolders, t.phone, t.qty, t.amount, t.ticketHolders.map(h => h.code), t.paymentStatus);
+          const tItem = myTickets[idx];
+          if (!tItem) return;
+          if (tItem.ticketHolders) {
+            showTicket(tItem.ticketHolders, tItem.phone, 1, tItem.amount, tItem.ticketHolders.map(h => h.code), tItem.paymentStatus);
           } else {
-            showTicket([{name:t.name, dept:t.dept||'—', year:t.year||'—', roll:t.roll||'—'}], t.phone, t.qty, t.amount, [t.code], t.paymentStatus);
+            showTicket([{name:tItem.name, dept:tItem.dept||'—', year:tItem.year||'—', roll:tItem.roll||'—'}], tItem.phone, 1, tItem.amount, [tItem.code], tItem.paymentStatus);
           }
         });
       });
@@ -2277,7 +2816,8 @@
       createConfetti();
     }
 
-    // Populate find-form dropdowns
+    // Populate form dropdowns
+    initBookingFields();
     document.getElementById('find-dept').innerHTML = makeDeptHTML();
     document.getElementById('find-year').innerHTML = makeYearHTML();
     document.getElementById('find-roll').innerHTML = makeRollHTML();
