@@ -150,17 +150,18 @@
     .spotify-play-btn i{margin-left:4px;}
     .spotify-overlay-title{color:#fff;font-size:15px;font-weight:800;}
     .spotify-overlay-hint{color:rgba(255,255,255,0.7);font-size:11px;font-weight:500;}
+    .spotify-overlay.blocking .spotify-play-btn .fa-play{display:none;}
+    .spotify-overlay.blocking .spotify-play-btn::after{content:'';position:absolute;width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spotspin 0.9s linear infinite;}
+    .spotify-play-btn{position:relative;}
+    @keyframes spotspin{to{transform:rotate(360deg);}}
 
-    .spotify-mini{position:fixed;left:16px;bottom:16px;z-index:1200;transform:translateY(140%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
-    .spotify-mini.show{transform:translateY(0);}
-    #spotifyMini .mini-head{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:800;color:rgba(255,255,255,0.9);background:#121212;border-radius:10px 10px 0 0;padding:6px 12px;letter-spacing:0.3px;}
-    #spotifyMini .mini-head i{color:#1db954;}
-    #spotifyMini .mini-body{background:#121212;border-radius:0 0 10px 10px;padding:0 4px 4px;box-shadow:0 12px 40px rgba(0,0,0,0.4);}
-    #spotifyMini .mini-body iframe{width:280px;height:80px;display:block;border:0;border-radius:8px;}
-    @media(max-width:480px){
-      .spotify-mini{left:10px;right:10px;bottom:10px;}
-      .spotify-mini .mini-body iframe{width:100%;}
-    }
+    .now-playing-pill{position:fixed;left:16px;bottom:16px;z-index:1100;display:flex;align-items:center;gap:8px;background:#121212;color:#fff;padding:10px 14px;border-radius:999px;box-shadow:0 12px 40px rgba(0,0,0,0.4);opacity:0;pointer-events:none;transform:translateY(120%);transition:opacity 0.3s,transform 0.35s cubic-bezier(0.16,1,0.3,1);font-size:12px;font-weight:700;}
+    .now-playing-pill.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+    .now-playing-pill .np-eq{display:inline-flex;align-items:flex-end;gap:2px;height:14px;}
+    .now-playing-pill .np-eq span{width:3px;background:#1db954;border-radius:2px;animation:eqbar 1s ease-in-out infinite;}
+    .now-playing-pill .np-eq span:nth-child(2){animation-delay:0.2s;}
+    .now-playing-pill .np-eq span:nth-child(3){animation-delay:0.4s;}
+    @keyframes eqbar{0%,100%{height:5px;}50%{height:14px;}}
 
     /* CTA SECTION */
     .cta-section{padding:80px 24px;text-align:center;background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
@@ -506,10 +507,11 @@
   <!-- TOAST -->
   <div id="toast-msg"></div>
 
-  <!-- FLOATING MINI SPOTIFY PLAYER -->
-  <div id="spotifyMini" class="spotify-mini">
-    <div class="mini-head"><i class="fas fa-music"></i> Now playing — Ohm Shanthi Oshaana</div>
-  </div>
+  <!-- NOW PLAYING PILL -->
+  <button id="nowPlayingPill" class="now-playing-pill" onclick="document.getElementById('soundtrack').scrollIntoView({behavior:'smooth'});">
+    <span class="np-eq"><span></span><span></span><span></span></span>
+    Now playing — Ohm Shanthi Oshaana
+  </button>
 
   <!-- BOOKING MODAL -->
   <div id="booking-modal" class="overlay">
@@ -739,36 +741,47 @@
     (function(){
       var controller=null;
       var overlay=document.getElementById('spotifyOverlay');
-      var played=false;
+      var overlayTitle=overlay?overlay.querySelector('.spotify-overlay-title'):null;
+      var overlayHint=overlay?overlay.querySelector('.spotify-overlay-hint'):null;
       var embedBox=document.getElementById('spotify-embed');
-      var mini=document.getElementById('spotifyMini');
-      var miniBody=document.createElement('div');
-      miniBody.className='mini-body';
-      mini.appendChild(miniBody);
-      var iframeEl=null;
-      var floating=false;
+      var pill=document.getElementById('nowPlayingPill');
       var box=document.querySelector('.soundtrack-box');
-      function play(){
-        if(!controller||played)return;
-        played=true;
-        try{controller.play();}catch(e){}
-        if(overlay)overlay.classList.add('hidden');
+      var playRequested=false;
+      var playInvoked=false;
+      var started=false;
+      function requestPlay(){
+        if(started)return;
+        playRequested=true;
+        if(overlay){
+          overlay.classList.remove('hidden');
+          overlay.classList.add('blocking');
+          if(overlayTitle)overlayTitle.textContent='Starting Soundtrack…';
+          if(overlayHint)overlayHint.textContent='Loading the track from Spotify…';
+        }
+        if(controller&&!playInvoked){
+          playInvoked=true;
+          try{controller.play();}catch(e){}
+        }
       }
-      function floatIt(){
-        if(floating||!iframeEl||!played)return;
-        floating=true;
-        iframeEl.style.width='280px';
-        iframeEl.style.height='80px';
-        miniBody.appendChild(iframeEl);
-        mini.classList.add('show');
+      function onPlaybackUpdate(u){
+        if(!u||!u.data||started)return;
+        var s=u.data;
+        if(s.is_active&&!s.is_paused&&!s.is_buffering){
+          started=true;
+          if(overlay){
+            overlay.classList.add('hidden');
+            overlay.classList.remove('blocking');
+            setTimeout(function(){
+              if(overlayTitle)overlayTitle.textContent='Play Soundtrack';
+              if(overlayHint)overlayHint.textContent='Or it will start automatically with your first click';
+            },700);
+          }
+        }
       }
-      function unfloatIt(){
-        if(!floating||!iframeEl)return;
-        floating=false;
-        iframeEl.style.width='100%';
-        iframeEl.style.height='352px';
-        embedBox.appendChild(iframeEl);
-        mini.classList.remove('show');
+      function onControllerReady(c){
+        controller=c;
+        c.addListener('playback_update',onPlaybackUpdate);
+        if(playRequested)requestPlay();
       }
       var ticking=false;
       window.addEventListener('scroll',function(){
@@ -776,36 +789,29 @@
         ticking=true;
         requestAnimationFrame(function(){
           var r=box.getBoundingClientRect();
-          if(played&&!floating&&r.bottom<70)floatIt();
-          else if(floating&&r.bottom>window.innerHeight*0.55)unfloatIt();
+          if(started&&pill)pill.classList.toggle('show',r.bottom<80);
           ticking=false;
         });
       },{passive:true});
-      if(overlay)overlay.addEventListener('click',play);
-      document.addEventListener('click',function once(){
-        setTimeout(play,250);
-        document.removeEventListener('click',once);
-      });
-      document.addEventListener('touchstart',function onceT(){
-        setTimeout(play,250);
-        document.removeEventListener('touchstart',onceT);
-      });
+      function firstGesture(){
+        setTimeout(function(){
+          requestPlay();
+          if(started){
+            document.removeEventListener('click',firstGesture);
+            document.removeEventListener('touchstart',firstGesture);
+          }
+        },200);
+      }
+      if(overlay)overlay.addEventListener('click',function(){requestPlay();});
+      document.addEventListener('click',firstGesture);
+      document.addEventListener('touchstart',firstGesture);
       window.onSpotifyIframeApiReady=function(IFrameAPI){
         if(!embedBox)return;
         IFrameAPI.createController(embedBox,{
           uri:'spotify:album:0BDiUn2Hxac9orinntjcLo',
           width:'100%',
           height:'352'
-        },function(c){
-          controller=c;
-          setTimeout(function(){
-            iframeEl=embedBox.querySelector('iframe');
-            if(iframeEl){
-              iframeEl.setAttribute('allow','autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture');
-              floatIt();
-            }
-          },800);
-        });
+        },onControllerReady);
       };
       var s=document.createElement('script');
       s.src='https://open.spotify.com/embed/iframe-api/v1';
