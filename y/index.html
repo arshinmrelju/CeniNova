@@ -151,6 +151,17 @@
     .spotify-overlay-title{color:#fff;font-size:15px;font-weight:800;}
     .spotify-overlay-hint{color:rgba(255,255,255,0.7);font-size:11px;font-weight:500;}
 
+    .spotify-mini{position:fixed;left:16px;bottom:16px;z-index:1200;transform:translateY(140%);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1);}
+    .spotify-mini.show{transform:translateY(0);}
+    #spotifyMini .mini-head{display:flex;align-items:center;gap:6px;font-size:10px;font-weight:800;color:rgba(255,255,255,0.9);background:#121212;border-radius:10px 10px 0 0;padding:6px 12px;letter-spacing:0.3px;}
+    #spotifyMini .mini-head i{color:#1db954;}
+    #spotifyMini .mini-body{background:#121212;border-radius:0 0 10px 10px;padding:0 4px 4px;box-shadow:0 12px 40px rgba(0,0,0,0.4);}
+    #spotifyMini .mini-body iframe{width:280px;height:80px;display:block;border:0;border-radius:8px;}
+    @media(max-width:480px){
+      .spotify-mini{left:10px;right:10px;bottom:10px;}
+      .spotify-mini .mini-body iframe{width:100%;}
+    }
+
     /* CTA SECTION */
     .cta-section{padding:80px 24px;text-align:center;background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
     .cta-inner{max-width:560px;margin:0 auto;}
@@ -495,6 +506,11 @@
   <!-- TOAST -->
   <div id="toast-msg"></div>
 
+  <!-- FLOATING MINI SPOTIFY PLAYER -->
+  <div id="spotifyMini" class="spotify-mini">
+    <div class="mini-head"><i class="fas fa-music"></i> Now playing — Ohm Shanthi Oshaana</div>
+  </div>
+
   <!-- BOOKING MODAL -->
   <div id="booking-modal" class="overlay">
     <div class="modal-card">
@@ -724,12 +740,47 @@
       var controller=null;
       var overlay=document.getElementById('spotifyOverlay');
       var played=false;
+      var embedBox=document.getElementById('spotify-embed');
+      var mini=document.getElementById('spotifyMini');
+      var miniBody=document.createElement('div');
+      miniBody.className='mini-body';
+      mini.appendChild(miniBody);
+      var iframeEl=null;
+      var floating=false;
+      var box=document.querySelector('.soundtrack-box');
       function play(){
         if(!controller||played)return;
         played=true;
         try{controller.play();}catch(e){}
         if(overlay)overlay.classList.add('hidden');
       }
+      function floatIt(){
+        if(floating||!iframeEl||!played)return;
+        floating=true;
+        iframeEl.style.width='280px';
+        iframeEl.style.height='80px';
+        miniBody.appendChild(iframeEl);
+        mini.classList.add('show');
+      }
+      function unfloatIt(){
+        if(!floating||!iframeEl)return;
+        floating=false;
+        iframeEl.style.width='100%';
+        iframeEl.style.height='352px';
+        embedBox.appendChild(iframeEl);
+        mini.classList.remove('show');
+      }
+      var ticking=false;
+      window.addEventListener('scroll',function(){
+        if(ticking)return;
+        ticking=true;
+        requestAnimationFrame(function(){
+          var r=box.getBoundingClientRect();
+          if(played&&!floating&&r.bottom<70)floatIt();
+          else if(floating&&r.bottom>window.innerHeight*0.55)unfloatIt();
+          ticking=false;
+        });
+      },{passive:true});
       if(overlay)overlay.addEventListener('click',play);
       document.addEventListener('click',function once(){
         setTimeout(play,250);
@@ -740,13 +791,21 @@
         document.removeEventListener('touchstart',onceT);
       });
       window.onSpotifyIframeApiReady=function(IFrameAPI){
-        var el=document.getElementById('spotify-embed');
-        if(!el)return;
-        IFrameAPI.createController(el,{
+        if(!embedBox)return;
+        IFrameAPI.createController(embedBox,{
           uri:'spotify:album:0BDiUn2Hxac9orinntjcLo',
           width:'100%',
           height:'352'
-        },function(c){controller=c;});
+        },function(c){
+          controller=c;
+          setTimeout(function(){
+            iframeEl=embedBox.querySelector('iframe');
+            if(iframeEl){
+              iframeEl.setAttribute('allow','autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture');
+              floatIt();
+            }
+          },800);
+        });
       };
       var s=document.createElement('script');
       s.src='https://open.spotify.com/embed/iframe-api/v1';
