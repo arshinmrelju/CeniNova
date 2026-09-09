@@ -822,7 +822,7 @@
     }
 
     function makeDeptHTML(selected) {
-      var h = '<option value="">Select Department</option>';
+      var h = '<option value="">Department</option>';
       DEPARTMENTS.forEach(function(g) {
         h += '<optgroup label="' + g.group + '">';
         g.items.forEach(function(d) { h += '<option value="' + d + '"' + (d === selected ? ' selected' : '') + '>' + d + '</option>'; });
