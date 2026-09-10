@@ -575,7 +575,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
       box-shadow: 0 4px 12px rgba(248, 68, 100, 0.25);
+    }
+    .bms-cast-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
     }
     .bms-cast-avatar.crew {
       background: linear-gradient(135deg, #1f2533, #3a4253);
@@ -2013,17 +2021,17 @@
       <h2 class="bms-section-heading"><i class="fas fa-users"></i> Cast</h2>
       <div class="bms-cast-grid">
         <div class="bms-cast-card">
-          <div class="bms-cast-avatar">NN</div>
+          <div class="bms-cast-avatar"><img src="assets/cast/nazriya_nazim.jpg" alt="Nazriya Nazim"></div>
           <div class="bms-cast-name">Nazriya Nazim</div>
           <div class="bms-cast-char">as Pooja Mathew</div>
         </div>
         <div class="bms-cast-card">
-          <div class="bms-cast-avatar">NP</div>
+          <div class="bms-cast-avatar"><img src="assets/cast/nivin_pauly.jpg" alt="Nivin Pauly"></div>
           <div class="bms-cast-name">Nivin Pauly</div>
           <div class="bms-cast-char">as Giri</div>
         </div>
         <div class="bms-cast-card">
-          <div class="bms-cast-avatar">AV</div>
+          <div class="bms-cast-avatar"><img src="assets/cast/aju_varghese.jpg" alt="Aju Varghese"></div>
           <div class="bms-cast-name">Aju Varghese</div>
           <div class="bms-cast-char">as David Kanjani</div>
         </div>
@@ -2037,12 +2045,12 @@
       <h2 class="bms-section-heading" style="margin-top:24px;"><i class="fas fa-video"></i> Crew</h2>
       <div class="bms-cast-grid">
         <div class="bms-cast-card">
-          <div class="bms-cast-avatar crew">JA</div>
+          <div class="bms-cast-avatar crew"><img src="assets/cast/jude_anthany_joseph.jpg" alt="Jude Anthany Joseph"></div>
           <div class="bms-cast-name">Jude Anthany Joseph</div>
           <div class="bms-cast-char">Director</div>
         </div>
         <div class="bms-cast-card">
-          <div class="bms-cast-avatar crew">SR</div>
+          <div class="bms-cast-avatar crew"><img src="assets/cast/shaan_rahman.jpg" alt="Shaan Rahman"></div>
           <div class="bms-cast-name">Shaan Rahman</div>
           <div class="bms-cast-char">Music Director</div>
         </div>

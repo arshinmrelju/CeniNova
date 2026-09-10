@@ -130,7 +130,8 @@
     .cast-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;}
     .cast-card{text-align:center;padding:24px 12px;background:var(--white);border:1px solid var(--border);border-radius:14px;transition:all 0.25s cubic-bezier(0.16,1,0.3,1);box-shadow:var(--shadow);}
     .cast-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:rgba(248,68,100,0.15);}
-    .cast-avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;transition:transform 0.25s cubic-bezier(0.16,1,0.3,1);}
+    .cast-avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;overflow:hidden;transition:transform 0.25s cubic-bezier(0.16,1,0.3,1);}
+    .cast-avatar img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;}
     .cast-card:hover .cast-avatar{transform:scale(1.06);}
     .cast-avatar.actor{background:linear-gradient(135deg,#f84464,#e03350);box-shadow:0 4px 14px rgba(248,68,100,0.25);}
     .cast-avatar.crew{background:linear-gradient(135deg,#334155,#475569);box-shadow:0 4px 14px rgba(51,65,85,0.2);}
@@ -433,17 +434,17 @@
     </div>
     <div class="cast-grid">
       <div class="cast-card anim-1">
-        <div class="cast-avatar actor">NN</div>
+        <div class="cast-avatar actor"><img src="assets/cast/nazriya_nazim.jpg" alt="Nazriya Nazim"></div>
         <div class="cast-name">Nazriya Nazim</div>
         <div class="cast-role">as Pooja Mathew</div>
       </div>
       <div class="cast-card anim-2">
-        <div class="cast-avatar actor">NP</div>
+        <div class="cast-avatar actor"><img src="assets/cast/nivin_pauly.jpg" alt="Nivin Pauly"></div>
         <div class="cast-name">Nivin Pauly</div>
         <div class="cast-role">as Giri</div>
       </div>
       <div class="cast-card anim-3">
-        <div class="cast-avatar actor">AV</div>
+        <div class="cast-avatar actor"><img src="assets/cast/aju_varghese.jpg" alt="Aju Varghese"></div>
         <div class="cast-name">Aju Varghese</div>
         <div class="cast-role">as David Kanjani</div>
       </div>
@@ -453,12 +454,12 @@
         <div class="cast-role">as Dr. Mathew</div>
       </div>
       <div class="cast-card anim-2">
-        <div class="cast-avatar crew">JA</div>
+        <div class="cast-avatar crew"><img src="assets/cast/jude_anthany_joseph.jpg" alt="Jude Anthany Joseph"></div>
         <div class="cast-name">Jude Anthany Joseph</div>
         <div class="cast-role">Director</div>
       </div>
       <div class="cast-card anim-3">
-        <div class="cast-avatar crew">SR</div>
+        <div class="cast-avatar crew"><img src="assets/cast/shaan_rahman.jpg" alt="Shaan Rahman"></div>
         <div class="cast-name">Shaan Rahman</div>
         <div class="cast-role">Music Director</div>
       </div>
