@@ -7,6 +7,14 @@
   <title>CeniNova Cinema — Pazhassiraja College</title>
   <meta name="description"
     content="CeniNova Cinema by the English Department, Pazhassiraja College. Now screening Happy (ഹാപ്പി ..be Happy)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://picsum.photos">
+  <link rel="dns-prefetch" href="https://picsum.photos">
+  <link rel="preconnect" href="https://api.qrserver.com">
+  <link rel="dns-prefetch" href="https://api.qrserver.com">
+  <link rel="preload" as="image" href="assets/a English Department Cinema (3)-Picsart-AiImageEnhancer.png">
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Malayalam:wght@700;800;900&display=swap"
     rel="stylesheet">
@@ -71,6 +79,24 @@
     :focus-visible {
       outline: 2px solid var(--primary);
       outline-offset: 2px;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .cast-avatar {
+      background: linear-gradient(135deg, #e8e8ee, #d8d8e0);
+      overflow: hidden;
+    }
+
+    .ticket-poster {
+      background: linear-gradient(135deg, #2a1a3e, #1a1a2e);
+    }
+
+    .preview-wrap {
+      background: #e8e8ee;
     }
 
     @keyframes fadeUp {
@@ -2672,7 +2698,7 @@
   <nav class="nav" id="mainNav">
     <div class="nav-inner">
       <a href="index.html" class="nav-logo">
-        <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="Pazhassiraja College">
+        <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="Pazhassiraja College" width="48" height="42" loading="eager" fetchpriority="high" decoding="async">
         <div class="nav-logo-text">
           <div class="brand-name"><span>Ceni</span>Nova</div>
           <span class="brand-sub">Pazhassiraja College</span>
@@ -2695,13 +2721,13 @@
         <div class="hero-carousel-track" id="heroTrack">
           <div class="hero-carousel-slide">
             <img src="assets/a English Department Cinema (3)-Picsart-AiImageEnhancer.png"
-              alt="CeniNova Cinema — Screening Banner">
+              alt="CeniNova Cinema — Screening Banner" width="1280" height="520" loading="eager" fetchpriority="high" decoding="async">
           </div>
           <div class="hero-carousel-slide">
-            <img src="assets/maxresdefault.jpg" alt="Happy — Movie Banner">
+            <img src="assets/maxresdefault.jpg" alt="Happy — Movie Banner" width="1280" height="520" loading="lazy" fetchpriority="low" decoding="async">
           </div>
           <div class="hero-carousel-slide">
-            <img src="assets/ab67616d0000b2731ab9fee99b9ff56a6ca70620.jpg" alt="Happy Be Happy — Official Poster">
+            <img src="assets/ab67616d0000b2731ab9fee99b9ff56a6ca70620.jpg" alt="Happy Be Happy — Official Poster" width="1280" height="520" loading="lazy" fetchpriority="low" decoding="async">
           </div>
         </div>
         <div class="hero-carousel-shine"></div>
@@ -2795,37 +2821,37 @@
     </div>
     <div class="cast-grid">
       <div class="cast-card anim-1">
-        <div class="cast-avatar actor">AA</div>
+        <div class="cast-avatar actor"><img src="https://picsum.photos/seed/ceninova-allu/128/128" alt="Allu Arjun" width="64" height="64" loading="lazy" decoding="async"></div>
         <div class="cast-name">Allu Arjun</div>
         <div class="cast-role">as Bunny</div>
       </div>
       <div class="cast-card anim-2">
-        <div class="cast-avatar actor">GD</div>
+        <div class="cast-avatar actor"><img src="https://picsum.photos/seed/ceninova-genelia/128/128" alt="Genelia D'Souza" width="64" height="64" loading="lazy" decoding="async"></div>
         <div class="cast-name">Genelia D'Souza</div>
         <div class="cast-role">as Madhumathi</div>
       </div>
       <div class="cast-card anim-3">
-        <div class="cast-avatar actor">MB</div>
+        <div class="cast-avatar actor"><img src="https://picsum.photos/seed/ceninova-manoj/128/128" alt="Manoj Bajpayee" width="64" height="64" loading="lazy" decoding="async"></div>
         <div class="cast-name">Manoj Bajpayee</div>
         <div class="cast-role">as DCP Arvind</div>
       </div>
       <div class="cast-card anim-4">
-        <div class="cast-avatar actor">BR</div>
+        <div class="cast-avatar actor"><img src="https://picsum.photos/seed/ceninova-bramhi/128/128" alt="Brahmanandam" width="64" height="64" loading="lazy" decoding="async"></div>
         <div class="cast-name">Brahmanandam</div>
         <div class="cast-role">as Appala Raju</div>
       </div>
       <div class="cast-card anim-2">
-        <div class="cast-avatar crew">AK</div>
+        <div class="cast-avatar crew"><img src="https://picsum.photos/seed/ceninova-ak/128/128" alt="A. Karunakaran" width="64" height="64" loading="lazy" decoding="async"></div>
         <div class="cast-name">A. Karunakaran</div>
         <div class="cast-role">Director</div>
       </div>
       <div class="cast-card anim-3">
-        <div class="cast-avatar crew">YSR</div>
+        <div class="cast-avatar crew"><img src="https://picsum.photos/seed/ceninova-yuvan/128/128" alt="Yuvan Shankar Raja" width="64" height="64" loading="lazy" decoding="async"></div>
         <div class="cast-name">Yuvan Shankar Raja</div>
         <div class="cast-role">Music Director</div>
       </div>
       <div class="cast-card anim-4">
-        <div class="cast-avatar crew">KH</div>
+        <div class="cast-avatar crew"><img src="https://picsum.photos/seed/ceninova-khadar/128/128" alt="Khadar Hassan" width="64" height="64" loading="lazy" decoding="async"></div>
         <div class="cast-name">Khadar Hassan</div>
         <div class="cast-role">Malayalam Release</div>
       </div>
@@ -2951,7 +2977,7 @@
                   <div style="font-size:10px;color:var(--text-light);margin-top:4px;">PNG, JPG or WEBP</div>
                 </div>
                 <div class="preview-wrap" id="preview-wrap">
-                  <img id="screenshot-preview" alt="Payment screenshot preview">
+                  <img id="screenshot-preview" alt="Payment screenshot preview" decoding="async" style="display:none;">
                   <button type="button" class="remove-btn" id="btn-remove-screenshot" title="Remove"><i
                       class="fas fa-times"></i></button>
                 </div>
@@ -2979,7 +3005,7 @@
       <div class="ticket-card" id="ticketCard">
         <div class="ticket-left">
           <div class="ticket-poster">
-            <img src="assets/ab67616d0000b2731ab9fee99b9ff56a6ca70620.jpg" alt="Happy" crossorigin="anonymous">
+            <img src="assets/ab67616d0000b2731ab9fee99b9ff56a6ca70620.jpg" alt="Happy" crossorigin="anonymous" width="120" height="180" loading="lazy" decoding="async">
           </div>
           <div class="ticket-info">
             <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -3004,7 +3030,7 @@
         <div class="ticket-stub">
           <div class="stub-label">ADMIT ONE</div>
           <div class="stub-code" id="tkt-code">ED-0000</div>
-          <div class="stub-qr"><img id="tkt-qr" alt="Ticket QR" crossorigin="anonymous" style="display:block;max-width:100%;border-radius:6px;background:#fff;padding:4px;"></div>
+          <div class="stub-qr"><img id="tkt-qr" alt="Ticket QR" crossorigin="anonymous" width="220" height="220" decoding="async" style="display:block;max-width:100%;border-radius:6px;background:#fff;padding:4px;"></div>
           <div class="stub-price">₹<span id="tkt-amount">10</span></div>
           <div class="stub-dept" id="tkt-dept">—</div>
         </div>
@@ -3409,6 +3435,9 @@
       var qrImg = document.createElement('img');
       qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(upiUrl);
       qrImg.alt = 'UPI QR Code';
+      qrImg.width = 180;
+      qrImg.height = 180;
+      qrImg.decoding = 'async';
       qrImg.style.cssText = 'border-radius:10px;background:#fff;padding:8px;box-shadow:0 2px 10px rgba(0,0,0,0.08);width:180px;height:180px;';
       container.appendChild(qrImg);
       var schemes = { 'Google Pay': 'tez://upi/pay', 'PhonePe': 'phonepe://pay', 'Paytm': 'paytmmp://pay', 'BHIM': 'bhimupi://pay' };

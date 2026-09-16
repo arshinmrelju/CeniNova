@@ -4,10 +4,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Admin — Happy Screening | CeniNova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://api.qrserver.com">
+  <link rel="dns-prefetch" href="https://api.qrserver.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    img { max-width: 100%; display: block; }
     :root {
       --bg: #f5f5f7;
       --card: #ffffff;
@@ -858,7 +864,7 @@
       <div class="navbar-inner">
       <div class="nav-brand">
         <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
-          <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="Pazhassiraja College" style="height:40px;width:auto;object-fit:contain;">
+          <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="Pazhassiraja College" width="40" height="40" loading="eager" fetchpriority="high" decoding="async" style="height:40px;width:auto;object-fit:contain;">
           <div>
             <div class="bt">CeniNova Admin &bull; Happy</div>
             <div class="bs">Pazhassiraja College</div>
@@ -1014,7 +1020,7 @@
               <div class="tkt-row" id="screenshot-row" style="display:none;"><i class="fas fa-image" style="width:18px;"></i><div><div class="lbl">Screenshot</div><div class="val"><a href="#" id="tkt-screenshot-link" onclick="viewScreenshot(this.href);return false;" style="color:var(--primary);font-size:12px;">View Payment Screenshot</a></div></div></div>
             </div>
               <svg id="tkt-barcode" style="display:none;"></svg>
-              <img id="tkt-qr" alt="Ticket QR" style="max-width:120px;margin:6px auto 0;display:block;border-radius:6px;background:#fff;padding:4px;">
+              <img id="tkt-qr" alt="Ticket QR" width="120" height="120" decoding="async" style="max-width:120px;margin:6px auto 0;display:block;border-radius:6px;background:#fff;padding:4px;">
           </div>
           <div class="tkt-strip"><span>ADMIT ONE</span><span id="tkt-code-short">—</span></div>
         </div>
@@ -1027,7 +1033,7 @@
       <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;">
         <div style="max-width:90vw;max-height:90vh;background:#111;border-radius:12px;overflow:hidden;position:relative;">
           <button onclick="document.getElementById('screenshotModal').classList.remove('active');" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;z-index:10;"><i class="fas fa-times"></i></button>
-          <img id="screenshot-full" src="" style="max-width:100%;max-height:90vh;display:block;" alt="Payment screenshot">
+          <img id="screenshot-full" src="" decoding="async" style="max-width:100%;max-height:90vh;display:block;" alt="Payment screenshot">
         </div>
       </div>
     </div>
