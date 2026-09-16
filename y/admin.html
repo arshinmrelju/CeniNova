@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Admin — Ohm Shanthi Oshaana Screening | CeniNova</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Admin — Happy Screening | CeniNova</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
   <style>
@@ -297,40 +297,319 @@
     /* TICKET MODAL */
     .overlay {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(4px);
+      background: rgba(10, 12, 25, 0.72);
+      backdrop-filter: blur(10px) saturate(1.2);
+      -webkit-backdrop-filter: blur(10px) saturate(1.2);
       z-index: 1000;
       display: none;
       justify-content: center;
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s;
+      transition: opacity 0.25s ease;
+      padding: calc(16px + env(safe-area-inset-top, 0px)) 12px calc(16px + env(safe-area-inset-bottom, 0px));
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+      min-height: 100vh;
+      min-height: 100dvh;
+      box-sizing: border-box;
     }
     .overlay.active { opacity: 1; pointer-events: auto; display: flex; }
     .ticket-card {
-      width: min(360px, 92vw);
-      background: linear-gradient(135deg, #fff, #faf5eb);
-      border-radius: var(--radius-lg);
-      border: 3px solid #d4a017;
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
+      width: min(400px, 96vw);
+      background:
+        radial-gradient(140% 80% at -10% 0%, rgba(255,205,86,0.22) 0%, transparent 55%),
+        radial-gradient(120% 90% at 110% 110%, rgba(212,160,23,0.12) 0%, transparent 60%),
+        linear-gradient(155deg, #fffdf6 0%, #fff5dd 45%, #ffe9b0 100%);
+      border-radius: 22px;
+      box-shadow:
+        0 40px 90px rgba(0, 0, 0, 0.50),
+        0 0 0 1px rgba(212,160,23,0.12) inset;
+      overflow: visible;
       text-align: center;
+      position: relative;
+      border: 1px solid rgba(212,160,23,0.18);
     }
-    .tkt-body { padding: 24px; }
-    .tkt-brand { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #8b5e18; font-weight: 600; }
-    .tkt-title { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--primary); margin: 2px 0; }
-    .tkt-details { border-top: 2px dashed #ddd; border-bottom: 2px dashed #ddd; padding: 12px 10px; margin: 12px 0; display: inline-block; text-align: left; min-width: 240px; }
-    .tkt-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 13px; }
-    .tkt-row .lbl { font-size: 9px; text-transform: uppercase; color: #999; letter-spacing: 0.5px; }
-    .tkt-row .val { font-weight: 600; }
-    .tkt-strip { background: #d4a017; color: #fff; padding: 8px 24px; display: flex; justify-content: space-between; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+    .ticket-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 22px;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='rgba(139,94,24,0.045)' stroke-width='1'%3E%3Cpath d='M0 30 L30 0 M0 60 L60 0 M0 90 L90 0 M0 120 L120 0 M30 120 L120 30 M60 120 L120 60 M90 120 L120 90'/%3E%3C/g%3E%3C/svg%3E");
+      opacity: 1;
+    }
+    .tkt-body {
+      padding: 24px 22px 18px;
+      position: relative;
+      z-index: 1;
+    }
+    .tkt-brand {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      color: #8b5e18;
+      font-weight: 700;
+      opacity: .9;
+    }
+    .tkt-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 25px;
+      color: #1a1a2e;
+      margin: 4px 0 10px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      line-height: 1.15;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+    }
+    .tkt-details {
+      border-top: 1.5px dashed rgba(139,94,24,0.35);
+      border-bottom: 1.5px dashed rgba(139,94,24,0.35);
+      padding: 14px 14px 12px;
+      margin: 12px 0 14px;
+      display: block;
+      text-align: left;
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 4px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.5), rgba(255,255,255,0.25));
+      position: relative;
+    }
+    .tkt-details::before,
+    .tkt-details::after {
+      content: '';
+      position: absolute;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #14161f 0%, #0a0c19 60%, #05070f 100%);
+      top: 50%;
+      transform: translateY(-50%);
+      box-shadow:
+        inset 0 0 0 1px rgba(0,0,0,0.8),
+        inset 0 3px 8px rgba(255,255,255,0.04),
+        0 0 0 1px rgba(0,0,0,0.2);
+    }
+    .tkt-details::before { left: -25px; }
+    .tkt-details::after  { right: -25px; }
+    .tkt-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 5px 0;
+      font-size: 13.5px;
+      color: #2a2a3a;
+    }
+    .tkt-row i {
+      color: #c78d0e;
+      font-size: 12px;
+      width: 16px;
+      text-align: center;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .tkt-row .lbl {
+      font-size: 8.5px;
+      text-transform: uppercase;
+      color: #8b5e18;
+      letter-spacing: 0.8px;
+      font-weight: 700;
+      opacity: .9;
+      margin-bottom: 1px;
+    }
+    .tkt-row .val {
+      font-weight: 700;
+      color: #1a1a2e;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+    .tkt-row > div { min-width: 0; flex: 1; }
+    .tkt-strip {
+      background: linear-gradient(90deg, #b88312 0%, #d4a017 50%, #b88312 100%);
+      color: #fff;
+      padding: 10px 22px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      font-weight: 800;
+      gap: 10px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.25),
+        inset 0 -1px 0 rgba(0,0,0,0.18);
+      position: relative;
+      z-index: 1;
+    }
+    #tkt-qr {
+      max-width: 120px;
+      margin: 6px auto 2px;
+      display: block;
+      border-radius: 12px;
+      background: #fff;
+      padding: 8px;
+      box-shadow:
+        0 12px 28px rgba(139,94,24,0.22),
+        0 0 0 1px rgba(139,94,24,0.1);
+    }
+    #tkt-barcode {
+      max-width: 100%;
+      margin: 10px auto 2px;
+    }
     .close-btn {
-      display: block; margin: 14px auto; background: transparent;
-      border: none; color: var(--text-secondary); font-size: 13px;
-      cursor: pointer; font-family: var(--font);
+      display: block;
+      margin: 16px auto 6px;
+      background: rgba(255,255,255,0.7);
+      border: 1.5px solid rgba(139,94,24,0.25);
+      color: #1a1a2e;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font);
+      padding: 11px 24px;
+      border-radius: 14px;
+      min-height: 46px;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(6px);
     }
-    .close-btn:hover { color: var(--primary); }
+    .close-btn:hover {
+      color: #8b5e18;
+      border-color: #d4a017;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 8px 20px rgba(212,160,23,0.18);
+    }
+    .close-btn:active { transform: translateY(1px) scale(0.99); }
+
+    @media (max-width: 540px) {
+      .overlay {
+        padding: 0 0 calc(16px + env(safe-area-inset-bottom, 0px));
+        align-items: stretch;
+      }
+      .ticket-card {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0 0 24px 24px;
+        box-shadow:
+          0 30px 70px rgba(0, 0, 0, 0.45),
+          0 0 0 1px rgba(212,160,23,0.10) inset;
+      }
+      .ticket-card::before {
+        border-radius: 0 0 24px 24px;
+      }
+      .tkt-body {
+        padding: calc(20px + env(safe-area-inset-top, 0px)) 18px 14px;
+      }
+      .tkt-brand {
+        font-size: 10.5px;
+        letter-spacing: 1.5px;
+      }
+      .tkt-title {
+        font-size: 22px;
+        margin: 5px 0 12px;
+      }
+      .tkt-details {
+        margin: 12px 0 14px;
+        padding: 14px 14px 12px;
+        border-radius: 6px;
+      }
+      .tkt-details::before,
+      .tkt-details::after {
+        width: 20px; height: 20px;
+      }
+      .tkt-details::before { left: -23px; }
+      .tkt-details::after  { right: -23px; }
+      .tkt-row {
+        font-size: 14px;
+        padding: 6px 0;
+        gap: 10px;
+      }
+      .tkt-row i {
+        font-size: 13px;
+        width: 16px;
+        margin-top: 1px;
+      }
+      .tkt-row .lbl {
+        font-size: 8.5px;
+        letter-spacing: 0.7px;
+      }
+      .tkt-row .val {
+        font-size: 14px;
+      }
+      #tkt-name-detail {
+        margin-left: 26px !important;
+        font-size: 12px !important;
+        word-break: break-word;
+        color: #5a4618;
+        opacity: .9;
+      }
+      #tkt-qr {
+        max-width: 128px !important;
+        padding: 9px;
+        border-radius: 14px;
+      }
+      .tkt-strip {
+        padding: 11px 18px;
+        font-size: 10px;
+        letter-spacing: 1.4px;
+      }
+      .close-btn {
+        margin: 14px 16px 2px;
+        min-height: 50px;
+        width: calc(100% - 32px);
+        font-size: 15px;
+        padding: 13px 18px;
+        border-radius: 16px;
+      }
+      .scan-box {
+        padding: 20px 18px;
+        width: 94vw;
+        max-width: none;
+      }
+      #screenshotModal > div {
+        padding: calc(8px + env(safe-area-inset-top, 0px)) 8px calc(8px + env(safe-area-inset-bottom, 0px));
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .tkt-body {
+        padding: calc(18px + env(safe-area-inset-top, 0px)) 15px 12px;
+      }
+      .tkt-title {
+        font-size: 20px;
+      }
+      .tkt-details {
+        padding: 12px 12px 10px;
+      }
+      .tkt-details::before,
+      .tkt-details::after {
+        width: 18px; height: 18px;
+      }
+      .tkt-details::before { left: -20px; }
+      .tkt-details::after  { right: -20px; }
+      .tkt-row {
+        font-size: 13.5px;
+        padding: 5px 0;
+      }
+      .tkt-row .val {
+        font-size: 13.5px;
+      }
+      .tkt-strip {
+        padding: 10px 14px;
+        font-size: 9.5px;
+        letter-spacing: 1.2px;
+      }
+      #tkt-qr {
+        max-width: 110px !important;
+      }
+      .close-btn {
+        margin: 12px 13px 2px;
+        width: calc(100% - 26px);
+      }
+    }
 
     /* SCAN */
     .scan-overlay {
@@ -344,6 +623,11 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s;
+      padding: calc(16px + env(safe-area-inset-top, 0px)) 12px calc(16px + env(safe-area-inset-bottom, 0px));
+      overflow-y: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      box-sizing: border-box;
     }
     .scan-overlay.active { opacity: 1; pointer-events: auto; display: flex; }
     .scan-box {
@@ -574,9 +858,9 @@
       <div class="navbar-inner">
       <div class="nav-brand">
         <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
-          <img src="assets/ceninova-logo.png" alt="CeniNova Logo" style="height:36px;width:auto;border-radius:6px;" onerror="this.src='assets/Pazhassiraja_College_Pulpally_Logo.png';this.onerror=null;">
+          <img src="assets/Pazhassiraja_College_Pulpally_Logo.png" alt="Pazhassiraja College" style="height:40px;width:auto;object-fit:contain;">
           <div>
-            <div class="bt">CeniNova Admin &bull; Ohm Shanthi Oshaana</div>
+            <div class="bt">CeniNova Admin &bull; Happy</div>
             <div class="bs">Pazhassiraja College</div>
           </div>
         </a>
@@ -594,7 +878,7 @@
           <i class="fas fa-lock"></i>
         </div>
         <h2>Admin Panel</h2>
-        <p class="sub">CeniNova &mdash; Ohm Shanthi Oshaana Screening Manager</p>
+        <p class="sub">CeniNova &mdash; Happy Screening Manager</p>
         <div id="loginError"></div>
         <input type="password" id="adminCode" placeholder="Enter admin code" maxlength="10" autofocus>
         <button class="btn" onclick="login()"><i class="fas fa-sign-in-alt"></i> Unlock</button>
@@ -606,7 +890,7 @@
       <div class="admin-header">
         <div>
           <div class="ah-title"><i class="fas fa-chart-bar"></i> Dashboard</div>
-          <div class="ah-sub">CeniNova &bull; Ohm Shanthi Oshaana Screening — Pazhassiraja College</div>
+          <div class="ah-sub">CeniNova &bull; Happy Screening — Pazhassiraja College</div>
         </div>
         <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
@@ -689,6 +973,9 @@
                 <tr>
                   <th>Name</th>
                   <th>Phone</th>
+                  <th>Dept</th>
+                  <th>Year</th>
+                  <th>Roll</th>
                   <th>Tickets</th>
                   <th>Amount</th>
                   <th>Code</th>
@@ -698,7 +985,7 @@
                 </tr>
               </thead>
               <tbody id="tableBody">
-                <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-light);">Loading...</td></tr>
+                <tr><td colspan="11" style="text-align:center;padding:32px;color:var(--text-secondary);"><i class="fas fa-spinner fa-spin" style="margin-right:8px;color:var(--primary);"></i>Loading bookings from Firestore...</td></tr>
               </tbody>
             </table>
           </div>
@@ -714,7 +1001,7 @@
         <div class="ticket-card">
           <div class="tkt-body">
             <div class="tkt-brand">CeniNova • Pazhassiraja College</div>
-            <div class="tkt-title">Ohm Shanthi Oshaana (ഓം ശാന്തി ഓശാന)</div>
+            <div class="tkt-title">Happy (ഹാപ്പി ..be Happy)</div>
             <div class="tkt-details">
               <div class="tkt-row"><i class="fas fa-user" style="width:18px;"></i><div><div class="lbl">Name</div><div class="val" id="tkt-name">—</div></div></div>
               <div id="tkt-name-detail" style="font-size:12px;color:#666;margin:0 0 8px 26px;"></div>
@@ -722,10 +1009,12 @@
               <div class="tkt-row"><i class="fas fa-ticket-alt" style="width:18px;"></i><div><div class="lbl">Tickets</div><div class="val" id="tkt-qty">—</div></div></div>
               <div class="tkt-row"><i class="fas fa-rupee-sign" style="width:18px;"></i><div><div class="lbl">Amount</div><div class="val" id="tkt-amount">—</div></div></div>
               <div class="tkt-row"><i class="fas fa-key" style="width:18px;"></i><div><div class="lbl">Code</div><div class="val" id="tkt-code" style="font-family:monospace;">—</div></div></div>
-              <div class="tkt-row"><i class="fas fa-check-circle" style="width:18px;"></i><div><div class="lbl">Payment</div><div class="val" id="tkt-pay">—</div></div></div>
+              <div class="tkt-row"><i class="fas fa-check-circle" style="width:18px;"></i><div><div class="lbl">Payment Status</div><div class="val" id="tkt-pay">—</div></div></div>
+              <div class="tkt-row"><i class="fas fa-wallet" style="width:18px;"></i><div><div class="lbl">Payment Method</div><div class="val" id="tkt-paymethod">—</div></div></div>
               <div class="tkt-row" id="screenshot-row" style="display:none;"><i class="fas fa-image" style="width:18px;"></i><div><div class="lbl">Screenshot</div><div class="val"><a href="#" id="tkt-screenshot-link" onclick="viewScreenshot(this.href);return false;" style="color:var(--primary);font-size:12px;">View Payment Screenshot</a></div></div></div>
             </div>
-            <svg id="tkt-barcode" style="max-width:100%;"></svg>
+              <svg id="tkt-barcode" style="display:none;"></svg>
+              <img id="tkt-qr" alt="Ticket QR" style="max-width:120px;margin:6px auto 0;display:block;border-radius:6px;background:#fff;padding:4px;">
           </div>
           <div class="tkt-strip"><span>ADMIT ONE</span><span id="tkt-code-short">—</span></div>
         </div>
@@ -757,7 +1046,7 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
   <script>
@@ -775,8 +1064,13 @@
     };
 
     firebase.initializeApp(CONFIG.firebase);
-    const db = firebase.database();
-    const ref = db.ref('movie_bookings');
+    const db = firebase.firestore();
+    try {
+      db.settings({ experimentalForceLongPolling: true });
+    } catch (e) {
+      console.warn('Firestore settings error:', e);
+    }
+    const bookingsCol = db.collection('movie_bookings');
     let allData = [];
 
     // Anonymous auth for DB access
@@ -909,15 +1203,100 @@
       if (e.key === 'Enter') login();
     });
 
-    function loadData() {
-      ref.on('value', snap => {
-        const val = snap.val();
-        allData = val ? Object.entries(val).map(([k, v]) => ({ id: k, ...v })) : [];
+    let unsubscribe = null;
+    let loadingTimer = null;
+
+    async function loadData() {
+      if (unsubscribe) {
+        try { unsubscribe(); } catch(e) {}
+        unsubscribe = null;
+      }
+      if (!allData || !allData.length) {
+        tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:36px;color:var(--text-secondary);">
+          <i class="fas fa-spinner fa-spin" style="font-size:22px;margin-bottom:10px;display:block;color:var(--primary);"></i>
+          Loading bookings from Firestore...
+        </td></tr>`;
+      }
+
+      // 1. Direct get() for immediate response without waiting for WebSocket handshake
+      try {
+        const snap = await bookingsCol.get();
+        allData = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         render();
-      }, err => {
-        tableBody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--primary);">Error: ${err.message}</td></tr>`;
-      });
+      } catch (getErr) {
+        console.warn('Direct get() warning, attempting REST fallback:', getErr);
+        fetchFirestoreREST();
+      }
+
+      // 2. Real-time listener for live updates
+      try {
+        unsubscribe = bookingsCol.onSnapshot(snap => {
+          allData = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          render();
+        }, err => {
+          console.warn('Firestore onSnapshot error, falling back to REST:', err);
+          fetchFirestoreREST();
+        });
+      } catch (snapErr) {
+        console.warn('onSnapshot attach error:', snapErr);
+        fetchFirestoreREST();
+      }
     }
+
+    // Direct REST API fallback in case WebSocket/streams are blocked by browser/network
+    async function fetchFirestoreREST() {
+      try {
+        const res = await fetch('https://firestore.googleapis.com/v1/projects/ceninovaprc/databases/(default)/documents/movie_bookings');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const json = await res.json();
+        const docs = json.documents || [];
+        allData = docs.map(doc => {
+          const id = doc.name ? doc.name.split('/').pop() : 'booking';
+          const f = doc.fields || {};
+          const obj = { id };
+          for (const k in f) {
+            const val = f[k];
+            if (val.stringValue !== undefined) obj[k] = val.stringValue;
+            else if (val.integerValue !== undefined) obj[k] = Number(val.integerValue);
+            else if (val.doubleValue !== undefined) obj[k] = Number(val.doubleValue);
+            else if (val.booleanValue !== undefined) obj[k] = val.booleanValue;
+            else if (val.timestampValue !== undefined) obj[k] = val.timestampValue;
+            else if (val.arrayValue && val.arrayValue.values) {
+              obj[k] = val.arrayValue.values.map(v => {
+                if (v.mapValue && v.mapValue.fields) {
+                  const sub = {};
+                  for (const sk in v.mapValue.fields) {
+                    const sv = v.mapValue.fields[sk];
+                    sub[sk] = sv.stringValue || (sv.integerValue !== undefined ? Number(sv.integerValue) : '');
+                  }
+                  return sub;
+                }
+                return v.stringValue || v.integerValue || '';
+              });
+            }
+          }
+          return obj;
+        });
+        render();
+      } catch (err) {
+        console.error('Firestore REST fallback failed:', err);
+        if (!allData || !allData.length) {
+          tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center;color:var(--primary);padding:28px;">
+            <i class="fas fa-exclamation-circle" style="font-size:24px;margin-bottom:8px;display:block;"></i>
+            <div style="font-weight:700;margin-bottom:6px;">Error connecting to Firestore:</div>
+            <div style="font-size:13px;color:var(--text-secondary);max-width:500px;margin:0 auto 14px;">${err.message}</div>
+            <button onclick="loadData()" class="btn" style="padding:8px 22px;width:auto;display:inline-block;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;"><i class="fas fa-sync-alt" style="margin-right:6px;"></i> Retry</button>
+          </td></tr>`;
+        }
+      }
+    }
+
+    // Ensure listener connects once auth is resolved
+    firebase.auth().onAuthStateChanged((u) => {
+      if (sessionStorage.getItem('admin_authenticated') === 'true') {
+        loadData();
+      }
+    });
 
     function getNames(d) {
       if (d.ticketHolders && d.ticketHolders.length) return d.ticketHolders.map(t => t.name).join(', ');
@@ -954,19 +1333,24 @@
       totalTickets.textContent = tix;
       const rev = f.reduce((s, d) => {
         if ((d.paymentStatus || 'pending') === 'pending') return s;
-        return s + (d.amount || (d.tickets||1) * 15);
+        return s + (d.amount !== undefined ? d.amount : (d.tickets||1) * 10);
       }, 0);
       totalRevenue.textContent = '₹' + rev;
       paidCount.textContent = f.filter(d => d.paymentStatus === 'paid' || d.paymentStatus === 'verified').length;
       attendedCount.textContent = f.filter(d => !!d.attended).length;
 
       if (f.length === 0) {
-        const e = `<div style="padding:40px 20px;text-align:center;color:var(--text-light);">
+        const isFilterActive = !!(s || pf || af || yf);
+        const e = isFilterActive ? `<div style="padding:40px 20px;text-align:center;color:var(--text-light);">
           <div style="font-size:32px;margin-bottom:8px;opacity:0.4;"><i class="fas fa-search"></i></div>
-          <div style="font-size:15px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">No bookings found</div>
+          <div style="font-size:15px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">No matching bookings found</div>
           <div style="font-size:12px;">Try adjusting your filters or search query</div>
+        </div>` : `<div style="padding:40px 20px;text-align:center;color:var(--text-light);">
+          <div style="font-size:36px;margin-bottom:10px;color:var(--primary);opacity:0.6;"><i class="fas fa-ticket-alt"></i></div>
+          <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;">No Bookings in Database Yet</div>
+          <div style="font-size:13px;color:var(--text-secondary);max-width:420px;margin:0 auto;">Database is connected! When students book tickets on the site, they will appear here automatically.</div>
         </div>`;
-        tableBody.innerHTML = `<tr><td colspan="8">${e}</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="11">${e}</td></tr>`;
         cardsView.innerHTML = e;
         return;
       }
@@ -977,12 +1361,26 @@
         const payTxt = ps === 'paid' ? 'Paid' : ps === 'verified' ? 'Verified' : 'Pending';
         const attCls = d.attended ? 'pill-attended' : 'pill-absent';
         const attTxt = d.attended ? 'Attended' : 'Not Attended';
+        // dept / year / roll — support both single and multi-ticket bookings
+        const deptVal = (d.ticketHolders && d.ticketHolders.length)
+          ? [...new Set(d.ticketHolders.map(t => t.dept||'—'))].join(', ')
+          : (d.dept || '—');
+        const yearVal = (d.ticketHolders && d.ticketHolders.length)
+          ? [...new Set(d.ticketHolders.map(t => t.year||'—'))].join(', ')
+          : (d.year || '—');
+        const rollVal = (d.ticketHolders && d.ticketHolders.length)
+          ? d.ticketHolders.map(t => t.roll||'—').join(', ')
+          : (d.roll || '—');
+        const codeVal = d.primaryCode || d.code || (d.ticketCodes && d.ticketCodes[0]) || '—';
         return `<tr>
-          <td style="font-weight:600;max-width:200px;word-break:break-word;">${getNames(d)}</td>
+          <td style="font-weight:600;max-width:160px;word-break:break-word;">${getNames(d)}</td>
           <td>${d.phone || '-'}</td>
+          <td style="font-size:12px;max-width:110px;word-break:break-word;">${deptVal}</td>
+          <td style="text-align:center;">${yearVal}</td>
+          <td style="text-align:center;font-weight:700;">${rollVal}</td>
           <td>${d.tickets || 1}</td>
-          <td>₹${d.amount || ((d.tickets||1)*15)}</td>
-          <td><span class="pill pill-code">${d.primaryCode}</span></td>
+          <td>₹${d.amount !== undefined ? d.amount : ((d.tickets||1)*10)}</td>
+          <td><span class="pill pill-code">${codeVal}</span></td>
           <td><span class="pill ${payCls}">${payTxt}</span></td>
           <td><span class="pill ${attCls}">${attTxt}</span></td>
           <td>
@@ -1001,12 +1399,16 @@
       cardsView.innerHTML = f.map(d => {
         const ps = d.paymentStatus || 'pending';
         const payTxt = ps === 'paid' ? 'Paid' : ps === 'verified' ? 'Verified' : 'Pending';
+        const codeVal = d.primaryCode || d.code || (d.ticketCodes && d.ticketCodes[0]) || '—';
         return `<div class="m-card">
           <div class="m-row">
             <div>
               <div class="m-name">${getNames(d)}</div>
-              <div class="m-meta">${d.phone||'-'} • ${d.tickets||1} tickets • ₹${d.amount||((d.tickets||1)*15)}</div>
-              <div class="m-meta">Code: <span class="pill pill-code">${d.primaryCode}</span> • Pay: ${payTxt} • ${d.attended ? 'Attended' : 'Not Attended'}</div>
+              <div class="m-meta">${d.phone||'-'} • ${d.tickets||1} tickets • ₹${d.amount !== undefined ? d.amount : ((d.tickets||1)*10)}</div>
+              <div class="m-meta" style="color:#2563eb;font-weight:600;">
+                <i class="fas fa-university" style="margin-right:4px;"></i>${(d.ticketHolders&&d.ticketHolders.length) ? d.ticketHolders.map(t=>(t.dept||'—')+' · Yr '+(t.year||'—')+' · Roll '+(t.roll||'—')).join(' | ') : (d.dept||'—')+' · Yr '+(d.year||'—')+' · Roll '+(d.roll||'—')}
+              </div>
+              <div class="m-meta">Code: <span class="pill pill-code">${codeVal}</span> • Pay: ${payTxt} • ${d.attended ? 'Attended' : 'Not Attended'}</div>
             </div>
           </div>
           <div class="m-actions">
@@ -1025,6 +1427,7 @@
       const d = allData.find(x => x.id === key);
       if (!d) return;
       const names = getNameArray(d);
+      const codeVal = d.primaryCode || d.code || (d.ticketCodes && d.ticketCodes[0]) || '—';
       document.getElementById('tkt-name').textContent = names.join(', ');
       document.getElementById('tkt-name-detail').innerHTML = (d.ticketHolders || []).map(t =>
         '<div style="padding:4px 0;border-bottom:1px solid #eee;">' +
@@ -1033,11 +1436,13 @@
       ).join('') || '<div style="padding:4px 0;">' + (d.dept || '—') + ' (Year ' + (d.year || '—') + ', Roll ' + (d.roll || '—') + ')</div>';
       document.getElementById('tkt-phone').textContent = d.phone || '-';
       document.getElementById('tkt-qty').textContent = (d.tickets||1) + ' ticket(s)';
-      document.getElementById('tkt-amount').textContent = '\u20B9' + (d.amount||((d.tickets||1)*15));
-      document.getElementById('tkt-code').textContent = d.primaryCode;
-      document.getElementById('tkt-code-short').textContent = d.primaryCode;
+      document.getElementById('tkt-amount').textContent = '\u20B9' + (d.amount !== undefined ? d.amount : ((d.tickets||1)*10));
+      document.getElementById('tkt-code').textContent = codeVal;
+      document.getElementById('tkt-code-short').textContent = codeVal;
       const ps = d.paymentStatus||'pending';
       document.getElementById('tkt-pay').textContent = ps === 'verified' ? '[Verified]' : ps === 'paid' ? '[Paid]' : '[Pending]';
+      const pm = d.payMethod;
+      document.getElementById('tkt-paymethod').textContent = pm === 'upi' ? 'UPI' : (pm === 'cash' ? 'Cash' : '—');
       const sRow = document.getElementById('screenshot-row');
       if (d.paymentScreenshot) {
         sRow.style.display = '';
@@ -1045,7 +1450,13 @@
       } else {
         sRow.style.display = 'none';
       }
-      try { JsBarcode("#tkt-barcode", d.primaryCode, { format:"CODE128", lineColor:"#333", width:2, height:35, displayValue:false, background:"transparent", margin:0 }); } catch(e) {}
+      try {
+        var qrEl = document.getElementById('tkt-qr');
+        if (qrEl) {
+          var qrPayload = 'CENINOVA-TICKET:' + codeVal;
+          qrEl.src = 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=0&data=' + encodeURIComponent(qrPayload);
+        }
+      } catch(e) {}
       ticketModal.classList.add('active');
     }
     function closeTicketModal() { ticketModal.classList.remove('active'); }
@@ -1066,7 +1477,7 @@
       if (!d) return;
       const ok = await showConfirm('Mark as Paid', 'Mark PAID for ' + getNames(d) + '?', 'info', 'Mark Paid');
       if (ok) {
-        ref.child(key).update({ paymentStatus: 'paid', paidAt: Date.now() })
+        bookingsCol.doc(key).update({ paymentStatus: 'paid', paidAt: Date.now() })
           .then(() => { adminToast('Marked as paid: ' + getNames(d)); highlightRow(key); })
           .catch(e => adminToast('Error: ' + e.message, 'error'));
       }
@@ -1076,7 +1487,7 @@
       if (!d) return;
       const ok = await showConfirm('Verify Payment', 'Verify payment for ' + getNames(d) + '?', 'info', 'Verify');
       if (ok) {
-        ref.child(key).update({ paymentStatus: 'verified', verifiedAt: Date.now() })
+        bookingsCol.doc(key).update({ paymentStatus: 'verified', verifiedAt: Date.now() })
           .then(() => { adminToast('Verified: ' + getNames(d)); highlightRow(key); })
           .catch(e => adminToast('Error: ' + e.message, 'error'));
       }
@@ -1086,7 +1497,7 @@
       if (!d) return;
       const ok = await showConfirm('Delete Booking', 'Permanently delete booking for ' + getNames(d) + '? This cannot be undone.', 'danger', 'Delete');
       if (ok) {
-        ref.child(key).remove()
+        bookingsCol.doc(key).delete()
           .then(() => adminToast('Deleted: ' + getNames(d)))
           .catch(e => adminToast('Error: ' + e.message, 'error'));
       }
@@ -1120,7 +1531,7 @@
       const msg = nv ? 'Mark ' + getNames(d) + ' as attended?' : 'Remove attendance for ' + getNames(d) + '?';
       const ok = await showConfirm(label, msg, nv ? 'info' : 'danger', nv ? 'Mark Entry' : 'Unmark');
       if (ok) {
-        ref.child(key).update({ attended: nv, attendedAt: nv ? Date.now() : null })
+        bookingsCol.doc(key).update({ attended: nv, attendedAt: nv ? Date.now() : null })
           .then(() => { adminToast(nv ? 'Entry marked' : 'Entry unmarked'); highlightRow(key); })
           .catch(e => adminToast('Error: ' + e.message, 'error'));
       }
@@ -1141,11 +1552,16 @@
     let scanStream = null, scanRunning = false, zxingReader = null, zxingActive = false, fallbackTimer = null;
 
     function showStatus(msg, err) { if (scanStatusEl) { scanStatusEl.textContent = msg; scanStatusEl.style.color = err ? '#e50914' : '#2e7d32'; } }
-    function findByCode(code) { const c = String(code).trim().toUpperCase(); return allData.find(d => String(d.primaryCode).trim().toUpperCase() === c); }
+    function normalizeCode(raw) {
+      let c = String(raw || '').trim().toUpperCase();
+      c = c.replace(/^CENINOVA[-_ ]TICKET[:_\- ]*/i, '');
+      return c;
+    }
+    function findByCode(code) { const c = normalizeCode(code); return allData.find(d => String(d.primaryCode).trim().toUpperCase() === c); }
     function processScan(code) {
       const user = findByCode(code);
-      if (!user) { showStatus('Not found: ' + code, true); return; }
-      ref.child(user.id).update({ attended: true, attendedAt: Date.now() }).then(() => showStatus('Entry: ' + getNames(user) + ' [OK]', false)).catch(e => alert(e.message));
+      if (!user) { showStatus('Not found: ' + normalizeCode(code), true); return; }
+      bookingsCol.doc(user.id).update({ attended: true, attendedAt: Date.now() }).then(() => showStatus('Entry: ' + getNames(user) + ' [OK]', false)).catch(e => alert(e.message));
     }
     if (scanInput) {
       scanInput.addEventListener('keydown', e => {
@@ -1166,10 +1582,10 @@
       try {
         const supported = (typeof BarcodeDetector !== 'undefined' && BarcodeDetector.getSupportedFormats)
           ? await BarcodeDetector.getSupportedFormats() : [];
-        const hasCode128 = Array.isArray(supported) && supported.includes('code_128');
-        const useNative = ('BarcodeDetector' in window) && hasCode128;
+        const hasQR = Array.isArray(supported) && supported.includes('qr_code');
+        const useNative = ('BarcodeDetector' in window) && hasQR;
         let detector = null;
-        if (useNative) { try { detector = new BarcodeDetector({ formats: ['code_128'] }); } catch(_) {} }
+        if (useNative) { try { detector = new BarcodeDetector({ formats: ['qr_code', 'code_128', 'ean_13'] }); } catch(_) {} }
         if (useNative && detector) {
           showStatus('Starting camera…', false);
           scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
@@ -1201,7 +1617,7 @@
       if (!ZX || !ZX.BrowserMultiFormatReader) { adminToast('Scanner unavailable. Use manual entry.', 'error'); return; }
       const hints = new Map();
       try { hints.set(ZX.DecodeHintType.TRY_HARDER, true); } catch(_) {}
-      try { hints.set(ZX.DecodeHintType.POSSIBLE_FORMATS, [ZX.BarcodeFormat.CODE_128]); } catch(_) {}
+      try { hints.set(ZX.DecodeHintType.POSSIBLE_FORMATS, [ZX.BarcodeFormat.QR_CODE, ZX.BarcodeFormat.CODE_128]); } catch(_) {}
       zxingReader = new ZX.BrowserMultiFormatReader(hints);
       scanModal.classList.add('active'); zxingActive = true;
       let deviceId = null;
@@ -1234,10 +1650,19 @@
     // CSV
     document.getElementById('exportBtn').addEventListener('click', () => {
       if (allData.length === 0) { adminToast('No data to export', 'warning'); return; }
-      let csv = 'data:text/csv;charset=utf-8,Name,Phone,Tickets,Amount,Code,Payment Status,UPI Trans ID,Verified Trans ID,Has Screenshot,Registered At,Attended\n';
+      let csv = 'data:text/csv;charset=utf-8,Name,Phone,Department,Year,Roll No,Tickets,Amount,Code,Payment Status,UPI Trans ID,Verified Trans ID,Has Screenshot,Registered At,Attended\n';
       allData.forEach(r => {
         const names = getNames(r);
-        csv += `"${names}","${r.phone||''}",${r.tickets||1},${r.amount||((r.tickets||1)*15)},"${r.primaryCode}","${r.paymentStatus||'pending'}","${r.upiTransId||''}","${r.verifiedTransId||''}","${r.paymentScreenshot ? 'Yes' : 'No'}","${new Date(r.timestamp).toLocaleString()}",${r.attended ? 'Yes' : 'No'}\r\n`;
+        const deptVal = (r.ticketHolders && r.ticketHolders.length)
+          ? [...new Set(r.ticketHolders.map(t => t.dept||'—'))].join(', ')
+          : (r.dept || '—');
+        const yearVal = (r.ticketHolders && r.ticketHolders.length)
+          ? [...new Set(r.ticketHolders.map(t => t.year||'—'))].join(', ')
+          : (r.year || '—');
+        const rollVal = (r.ticketHolders && r.ticketHolders.length)
+          ? r.ticketHolders.map(t => t.roll||'—').join(', ')
+          : (r.roll || '—');
+        csv += `"${names}","${r.phone||''}","${deptVal}","${yearVal}","${rollVal}",${r.tickets||1},${r.amount||((r.tickets||1)*15)},"${r.primaryCode}","${r.paymentStatus||'pending'}","${r.upiTransId||''}","${r.verifiedTransId||''}","${r.paymentScreenshot ? 'Yes' : 'No'}","${new Date(r.timestamp).toLocaleString()}",${r.attended ? 'Yes' : 'No'}\r\n`;
       });
       const link = document.createElement('a');
       link.setAttribute('href', encodeURI(csv));
