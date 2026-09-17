@@ -3281,6 +3281,13 @@
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
   <script>
     // Navbar scroll
     (function () {
@@ -3709,16 +3716,23 @@
     }
 
     function initBookingFirebase() {
-      if (bookingInitialized) return;
-      bookingInitialized = true;
+      if (bookingInitialized && bookingsCol) return;
       try {
-        if (!firebase.apps.length) {
-          firebase.initializeApp(BOOKING_CONFIG.firebase);
+        if (typeof firebase !== 'undefined') {
+          if (!firebase.apps.length) {
+            firebase.initializeApp(BOOKING_CONFIG.firebase);
+          }
+          db = firebase.firestore();
+          try {
+            db.settings({ experimentalForceLongPolling: true });
+          } catch (se) {
+            console.warn('Firestore settings error:', se);
+          }
+          auth = firebase.auth();
+          bookingsCol = db.collection('movie_bookings');
+          auth.signInAnonymously().catch(function () { });
+          bookingInitialized = true;
         }
-        db = firebase.firestore();
-        auth = firebase.auth();
-        bookingsCol = db.collection('movie_bookings');
-        auth.signInAnonymously().catch(function () { });
       } catch (e) { console.warn('Firebase init error:', e); }
     }
 
@@ -3928,6 +3942,62 @@
 
     function generateCode() { return 'ED-' + Math.floor(1000 + Math.random() * 9000); }
 
+    async function saveBookingToFirestoreREST(data) {
+      try {
+        var fields = {
+          name: { stringValue: String(data.name || '') },
+          phone: { stringValue: String(data.phone || '') },
+          dept: { stringValue: String(data.dept || '') },
+          year: { integerValue: String(data.year || 1) },
+          roll: { integerValue: String(data.roll || 1) },
+          tickets: { integerValue: String(data.tickets || 1) },
+          amount: { integerValue: String(data.amount || 10) },
+          primaryCode: { stringValue: String(data.primaryCode || '') },
+          ticketCodes: {
+            arrayValue: {
+              values: (data.ticketCodes || []).map(function (c) { return { stringValue: String(c) }; })
+            }
+          },
+          payMethod: { stringValue: String(data.payMethod || 'cash') },
+          paymentStatus: { stringValue: String(data.paymentStatus || 'pending') },
+          upiTransId: { stringValue: String(data.upiTransId || '') },
+          paymentScreenshot: { stringValue: String(data.paymentScreenshot || '') },
+          verifiedTransId: { stringValue: String(data.verifiedTransId || '') },
+          attended: { booleanValue: !!data.attended },
+          createdAt: { stringValue: String(data.createdAt || new Date().toISOString()) },
+          timestamp: { integerValue: String(data.timestamp || Date.now()) }
+        };
+        if (data.ticketHolders && data.ticketHolders.length) {
+          fields.ticketHolders = {
+            arrayValue: {
+              values: data.ticketHolders.map(function (th) {
+                return {
+                  mapValue: {
+                    fields: {
+                      name: { stringValue: String(th.name || '') },
+                      dept: { stringValue: String(th.dept || '') },
+                      year: { integerValue: String(th.year || 1) },
+                      roll: { integerValue: String(th.roll || 1) },
+                      code: { stringValue: String(th.code || '') }
+                    }
+                  }
+                };
+              })
+            }
+          };
+        }
+        var res = await fetch('https://firestore.googleapis.com/v1/projects/' + BOOKING_CONFIG.firebase.projectId + '/databases/(default)/documents/movie_bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fields: fields })
+        });
+        return res.ok;
+      } catch (err) {
+        console.error('REST save error:', err);
+        return false;
+      }
+    }
+
     // Form submit
     document.getElementById('booking-form').addEventListener('submit', function (e) {
       e.preventDefault();
@@ -3963,32 +4033,46 @@
         localStorage.setItem('my_tickets', JSON.stringify(arr.slice(0, 50)));
       } catch (e) { }
 
-      var saveToFirebase = function () {
-        return new Promise(function (resolve) {
-          var timer = setTimeout(function () { resolve(false); }, 8000);
-          var p = auth && auth.currentUser ? Promise.resolve() : (auth ? auth.signInAnonymously() : Promise.resolve());
-          p.then(function () {
-            if (!bookingsCol) { clearTimeout(timer); resolve(false); return; }
-            return bookingsCol.add({
-              name: name, dept: dept, year: Number(year), roll: Number(roll), phone: phone,
-              ticketHolders: ticketHolders, tickets: 1, amount: total,
-              ticketCodes: [code], primaryCode: code,
-              payMethod: payMethod, upiTransId: payMethod === 'upi' ? upiTransId : '',
-              paymentScreenshot: payMethod === 'upi' ? screenshotB64 : '',
-              verifiedTransId: payMethod === 'upi' ? upiTransId : '',
-              paymentStatus: paymentStatus, timestamp: timestamp,
-              createdAt: new Date(timestamp).toISOString(), attended: false
-            });
-          }).then(function () { clearTimeout(timer); resolve(true); })
-            .catch(function (err) { console.error('Firestore save error:', err); clearTimeout(timer); resolve(false); });
-        });
+      var bookingData = {
+        name: name, dept: dept, year: Number(year), roll: Number(roll), phone: phone,
+        ticketHolders: ticketHolders, tickets: 1, amount: total,
+        ticketCodes: [code], primaryCode: code,
+        payMethod: payMethod, upiTransId: payMethod === 'upi' ? upiTransId : '',
+        paymentScreenshot: payMethod === 'upi' ? screenshotB64 : '',
+        verifiedTransId: payMethod === 'upi' ? upiTransId : '',
+        paymentStatus: paymentStatus, timestamp: timestamp,
+        createdAt: new Date(timestamp).toISOString(), attended: false
       };
 
-      saveToFirebase().then(function () {
+      var saveToFirebase = async function () {
+        var sdkPromise = new Promise(function (resolve) {
+          try {
+            initBookingFirebase();
+            if (!bookingsCol) { resolve(false); return; }
+            var timer = setTimeout(function () { resolve(false); }, 3500);
+            bookingsCol.add(bookingData)
+              .then(function () { clearTimeout(timer); resolve(true); })
+              .catch(function (err) { console.warn('Firestore SDK add error:', err); clearTimeout(timer); resolve(false); });
+          } catch (e) {
+            resolve(false);
+          }
+        });
+
+        var sdkOk = await sdkPromise;
+        if (sdkOk) return true;
+
+        console.log('Using Firestore REST fallback to save booking...');
+        return await saveBookingToFirestoreREST(bookingData);
+      };
+
+      saveToFirebase().then(function (saved) {
         closeModal('booking-modal');
         showTicket(ticketHolders, phone, 1, total, [code], paymentStatus, payMethod);
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-check-circle"></i> Confirm & Generate Ticket';
+        if (!saved) {
+          showToast('Saved offline. Server sync pending.', 'warning');
+        }
       });
     });
 
@@ -4301,13 +4385,6 @@
     document.getElementById('screenshot-input').addEventListener('change', function () { if (this.files && this.files[0]) handleScreenshotFile(this.files[0]); });
     document.getElementById('btn-remove-screenshot').addEventListener('click', function () { resetUploadUI(); });
   </script>
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </body>
 
 </html>
