@@ -1733,7 +1733,7 @@
             <button class="btn btn-primary" id="scanCamBtn"><i class="fas fa-camera"></i> Camera Scan</button>
             <span class="scan-status" id="scanStatus"></span>
             <button type="button" class="btn btn-private" onclick="openPrivateEntryModal()"><i class="fas fa-user-plus"></i> Private Entry</button>
-            <button class="btn btn-outline" id="exportBtn"><i class="fas fa-download"></i> CSV</button>
+            <button class="btn btn-outline" id="exportBtn"><i class="fas fa-file-pdf"></i> PDF</button>
           </div>
 
           <div class="table-wrap">
@@ -2067,6 +2067,8 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="assets/html5-qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"></script>
   <script>
     const CONFIG = {
       adminCode: '1234',  // ← Change this to your admin code
@@ -3488,30 +3490,122 @@
     const closeScanBtn = document.getElementById('closeScanBtn');
     if (closeScanBtn) closeScanBtn.addEventListener('click', stopCameraScan);
 
-    // CSV
+    // PDF EXPORT
     document.getElementById('exportBtn').addEventListener('click', () => {
       if (allData.length === 0) { adminToast('No data to export', 'warning'); return; }
-      let csv = 'data:text/csv;charset=utf-8,Name,Phone,Department,Year,Roll No,Tickets,Amount,Code,Payment Status,Entry Type,Note,UPI Trans ID,Verified Trans ID,Has Screenshot,Registered At,Attended\n';
-      allData.forEach(r => {
-        const names = getNames(r);
-        const deptVal = (r.ticketHolders && r.ticketHolders.length)
-          ? [...new Set(r.ticketHolders.map(t => t.dept||'—'))].join(', ')
-          : (r.dept || '—');
-        const yearVal = (r.ticketHolders && r.ticketHolders.length)
-          ? [...new Set(r.ticketHolders.map(t => t.year||'—'))].join(', ')
-          : (r.year || '—');
-        const rollVal = (r.ticketHolders && r.ticketHolders.length)
-          ? r.ticketHolders.map(t => t.roll||'—').join(', ')
-          : (r.roll || '—');
-        const entryType = (r.isPrivateEntry || r.entryType === 'private') ? 'Private / Spot' : 'Online';
-        const note = (r.privateNote || '').replace(/"/g, '""');
-        csv += `"${names}","${r.phone||''}","${deptVal}","${yearVal}","${rollVal}",${r.tickets||1},${r.amount !== undefined ? r.amount : ((r.tickets||1)*10)},"${r.primaryCode}","${r.paymentStatus||'pending'}","${entryType}","${note}","${r.upiTransId||''}","${r.verifiedTransId||''}","${r.paymentScreenshot ? 'Yes' : 'No'}","${new Date(r.timestamp).toLocaleString()}",${r.attended ? 'Yes' : 'No'}\r\n`;
+      if (typeof window.jspdf === 'undefined') { adminToast('PDF library still loading, try again', 'warning'); return; }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+      const pageW = doc.internal.pageSize.getWidth();
+      const margin = 14;
+      let y = margin;
+
+      doc.setDrawColor(248, 68, 100);
+      doc.setFillColor(248, 68, 100);
+      doc.rect(0, 0, pageW, 32, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text('CeniNova — Happy Screening', margin, 15);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Pazhassiraja College  |  Booking Report  |  ' + new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }), margin, 23);
+
+      const totalRev = allData.reduce((s, r) => {
+        if ((r.paymentStatus || 'pending') === 'pending') return s;
+        return s + (r.amount !== undefined ? r.amount : (r.tickets || 1) * 10);
+      }, 0);
+      const paidN = allData.filter(r => r.paymentStatus === 'paid' || r.paymentStatus === 'verified').length;
+      const attendedN = allData.filter(r => !!r.attended).length;
+
+      y = 38;
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      const stats = [
+        ['Bookings', String(allData.length)],
+        ['Tickets Sold', String(allData.reduce((s, r) => s + (r.tickets || 1), 0))],
+        ['Revenue', '\u20B9' + totalRev],
+        ['Paid', String(paidN)],
+        ['Attended', String(attendedN)]
+      ];
+      const statBoxW = (pageW - margin * 2 - 12) / stats.length;
+      stats.forEach((st, i) => {
+        const sx = margin + i * (statBoxW + 3);
+        doc.setFillColor(245, 245, 247);
+        doc.roundedRect(sx, y, statBoxW, 14, 2, 2, 'F');
+        doc.setTextColor(100, 100, 110);
+        doc.setFontSize(7);
+        doc.text(st[0].toUpperCase(), sx + 4, y + 5);
+        doc.setTextColor(30, 30, 40);
+        doc.setFontSize(12);
+        doc.text(st[1], sx + 4, y + 11);
       });
-      const link = document.createElement('a');
-      link.setAttribute('href', encodeURI(csv));
-      link.setAttribute('download', 'movie_bookings.csv');
-      document.body.appendChild(link); link.click(); document.body.removeChild(link);
-      adminToast('CSV exported successfully!');
+
+      y += 20;
+      const rows = allData.map(r => {
+        const names = getNames(r);
+        const dept = (r.ticketHolders && r.ticketHolders.length)
+          ? [...new Set(r.ticketHolders.map(t => t.dept || '-'))].join(', ')
+          : (r.dept || '-');
+        const year = (r.ticketHolders && r.ticketHolders.length)
+          ? [...new Set(r.ticketHolders.map(t => t.year || '-'))].join(', ')
+          : (String(r.year || '-'));
+        const ps = r.paymentStatus || 'pending';
+        const payTxt = ps === 'paid' ? 'Paid' : ps === 'verified' ? 'Verified' : 'Pending';
+        const att = r.attended ? 'Yes' : 'No';
+        const entry = (r.isPrivateEntry || r.entryType === 'private') ? 'Private' : 'Online';
+        const amt = r.amount !== undefined ? r.amount : ((r.tickets || 1) * 10);
+        return [names, r.phone || '-', dept, year, String(r.tickets || 1), '\u20B9' + amt, r.primaryCode || '-', payTxt, entry, att];
+      });
+
+      doc.autoTable({
+        startY: y,
+        margin: { left: margin, right: margin },
+        head: [['Name', 'Phone', 'Dept', 'Year', 'Tix', 'Amount', 'Code', 'Payment', 'Type', 'Entry']],
+        body: rows,
+        styles: { fontSize: 7.5, cellPadding: 2.5, textColor: [30, 30, 40], lineColor: [230, 232, 236], lineWidth: 0.2 },
+        headStyles: { fillColor: [31, 37, 51], textColor: [255, 255, 255], fontStyle: 'bold', fontSize: 7.5, cellPadding: 3 },
+        alternateRowStyles: { fillColor: [250, 251, 252] },
+        columnStyles: {
+          0: { cellWidth: 36 },
+          1: { cellWidth: 22 },
+          2: { cellWidth: 34 },
+          3: { cellWidth: 14 },
+          4: { cellWidth: 10, halign: 'center' },
+          5: { cellWidth: 18, halign: 'right' },
+          6: { cellWidth: 22, fontStyle: 'bold' },
+          7: { cellWidth: 18 },
+          8: { cellWidth: 16 },
+          9: { cellWidth: 14, halign: 'center' }
+        },
+        didParseCell: function(data) {
+          if (data.section === 'body' && data.column.index === 7) {
+            const v = data.cell.raw;
+            if (v === 'Paid' || v === 'Verified') { data.cell.styles.textColor = [5, 150, 105]; data.cell.styles.fontStyle = 'bold'; }
+            else if (v === 'Pending') { data.cell.styles.textColor = [180, 83, 9]; }
+          }
+          if (data.section === 'body' && data.column.index === 9) {
+            if (data.cell.raw === 'Yes') { data.cell.styles.textColor = [5, 150, 105]; data.cell.styles.fontStyle = 'bold'; }
+          }
+          if (data.section === 'body' && data.column.index === 8) {
+            if (data.cell.raw === 'Private') { data.cell.styles.textColor = [109, 40, 217]; data.cell.styles.fontStyle = 'bold'; }
+          }
+        },
+        didDrawPage: function(hookData) {
+          const pW = doc.internal.pageSize.getWidth();
+          const pH = doc.internal.pageSize.getHeight();
+          doc.setFontSize(7);
+          doc.setTextColor(160, 160, 170);
+          doc.setFont('helvetica', 'normal');
+          doc.text('CeniNova — Happy Screening Report', margin, pH - 6);
+          doc.text('Page ' + doc.internal.getCurrentPageInfo().pageNumber, pW - margin - 10, pH - 6, { align: 'right' });
+          doc.setDrawColor(230, 232, 236);
+          doc.line(margin, pH - 10, pW - margin, pH - 10);
+        }
+      });
+
+      doc.save('CeniNova_Bookings_' + new Date().toISOString().slice(0, 10) + '.pdf');
+      adminToast('PDF exported successfully!');
     });
 
     // Close overlays on backdrop
