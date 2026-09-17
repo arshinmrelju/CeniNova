@@ -359,7 +359,7 @@
 
     .filter-bar {
       display: grid;
-      grid-template-columns: 1fr auto auto auto auto auto;
+      grid-template-columns: 1fr auto auto auto auto auto auto;
       gap: 10px;
       margin-bottom: 12px;
       align-items: center;
@@ -395,6 +395,7 @@
       border-color: #bbb;
     }
     #entryTypeFilter { width: 125px; }
+    #deptFilter { width: 200px; }
     #methodFilter { width: 130px; }
     #yearFilter { width: 100px; }
     #paymentFilter { width: 140px; }
@@ -1704,6 +1705,9 @@
               <option value="private">Private Only</option>
               <option value="online">Online Only</option>
             </select>
+            <select id="deptFilter">
+              <option value="">All Departments</option>
+            </select>
             <select id="methodFilter">
               <option value="">All Methods</option>
               <option value="cash">Cash</option>
@@ -2159,6 +2163,22 @@
       { group: 'Special / Other', items: ['Faculty / Staff Member', 'VIP / Special Guest', 'Management / Guest', 'Other Department'] }
     ];
 
+    function populateDeptFilter() {
+      const sel = document.getElementById('deptFilter');
+      if (!sel || sel.dataset.populated) return;
+      let h = '<option value="">All Departments</option>';
+      DEPARTMENTS.forEach(g => {
+        h += `<optgroup label="${g.group}">`;
+        g.items.forEach(d => {
+          h += `<option value="${d}">${d}</option>`;
+        });
+        h += '</optgroup>';
+      });
+      sel.innerHTML = h;
+      sel.dataset.populated = '1';
+    }
+    populateDeptFilter();
+
     // DOM
     const loginForm = document.getElementById('loginForm');
     const adminPanel = document.getElementById('adminPanel');
@@ -2171,6 +2191,7 @@
     const attendedCount = document.getElementById('attendedCount');
     const searchInput = document.getElementById('searchInput');
     const entryTypeFilter = document.getElementById('entryTypeFilter');
+    const deptFilter = document.getElementById('deptFilter');
     const methodFilter = document.getElementById('methodFilter');
     const paymentFilter = document.getElementById('paymentFilter');
     const attendanceFilter = document.getElementById('attendanceFilter');
@@ -2442,6 +2463,7 @@
     function render() {
       const s = searchInput.value.toLowerCase().trim();
       const etf = entryTypeFilter ? entryTypeFilter.value : '';
+      const deptF = deptFilter ? deptFilter.value : '';
       const mf = methodFilter ? methodFilter.value : '';
       const pf = paymentFilter.value;
       const af = attendanceFilter.value;
@@ -2451,12 +2473,15 @@
         const m = getNames(d).toLowerCase().includes(s) || (d.phone||'').includes(s) || (d.primaryCode||'').toLowerCase().includes(s);
         const isPrivate = !!(d.isPrivateEntry || d.entryType === 'private');
         const met = etf === 'private' ? isPrivate : (etf === 'online' ? !isPrivate : true);
+        const deptMatch = !deptF || ((d.ticketHolders && d.ticketHolders.length)
+          ? d.ticketHolders.some(t => t.dept === deptF)
+          : (d.dept === deptF));
         const isUpi = (d.payMethod === 'upi') || (!d.payMethod && !!d.paymentScreenshot);
         const mm = mf === 'upi' ? isUpi : (mf === 'cash' ? !isUpi : true);
         const mp = pf ? d.paymentStatus === pf : true;
         const ma = af === 'attended' ? !!d.attended : (af === 'absent' ? !d.attended : true);
         const my = yf ? (d.ticketHolders || [{year: d.year}]).some(h => String(h.year) === yf) : true;
-        return m && met && mm && mp && ma && my;
+        return m && met && deptMatch && mm && mp && ma && my;
       });
       f.sort((a, b) => b.timestamp - a.timestamp);
 
@@ -2474,7 +2499,7 @@
       attendedCount.textContent = f.filter(d => !!d.attended).length;
 
       if (f.length === 0) {
-        const isFilterActive = !!(s || etf || mf || pf || af || yf);
+        const isFilterActive = !!(s || etf || deptF || mf || pf || af || yf);
         const e = isFilterActive ? `<div style="padding:40px 20px;text-align:center;color:var(--text-light);">
           <div style="font-size:32px;margin-bottom:8px;opacity:0.4;"><i class="fas fa-search"></i></div>
           <div style="font-size:15px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">No matching bookings found</div>
@@ -3002,6 +3027,7 @@
 
     searchInput.addEventListener('input', debounce(render, 200));
     if (entryTypeFilter) entryTypeFilter.addEventListener('change', render);
+    if (deptFilter) deptFilter.addEventListener('change', render);
     if (methodFilter) methodFilter.addEventListener('change', render);
     paymentFilter.addEventListener('change', render);
     attendanceFilter.addEventListener('change', render);
