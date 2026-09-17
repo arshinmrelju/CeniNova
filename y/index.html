@@ -3174,7 +3174,7 @@
             <div class="pay-amt">₹<span id="pay-amount">10</span></div>
             <div id="upi-section" style="display:none;">
               <div id="upi-qr-container"></div>
-              <div class="upi-id-display" id="upi-id-display">Pay to: <strong id="upi-id-text">—</strong> <button
+              <div class="upi-id-display" id="upi-id-display">Pay to: <strong id="upi-id-text">sarthajanihalan@okicici</strong> <button
                   type="button" onclick="copyUPIId()"
                   style="margin-left:6px;padding:3px 8px;border-radius:4px;border:1px solid #ccc;background:#f9f9f9;font-size:11px;cursor:pointer;"><i
                     class="fas fa-copy"></i> Copy</button></div>
@@ -3695,7 +3695,7 @@
       screeningDate: '17 Sep, 2026',
       screeningTime: '2:00 PM',
       screeningVenue: 'Chithrashala',
-      upiId: 'arshinmrelju@okicici',
+      upiId: 'sarthajanihalan@okicici',
       upiName: 'English Dept',
       firebase: {
         apiKey: "AIzaSyCj0JINS_OP68aMRXEXTIEeqbjbcGOXH58",
@@ -3899,6 +3899,8 @@
     function generateUPIQR(amount, refId) {
       var container = document.getElementById('upi-qr-container');
       var apps = document.getElementById('upi-app-links');
+      var upiText = document.getElementById('upi-id-text');
+      if (upiText) upiText.textContent = BOOKING_CONFIG.upiId;
       container.innerHTML = ''; apps.innerHTML = '';
       var upiUrl = 'upi://pay?pa=' + encodeURIComponent(BOOKING_CONFIG.upiId) + '&pn=' + encodeURIComponent(BOOKING_CONFIG.upiName) + '&am=' + amount.toFixed(2) + '&cu=INR&tr=' + encodeURIComponent(refId);
       var qrImg = document.createElement('img');
