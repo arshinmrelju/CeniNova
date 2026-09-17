@@ -2577,7 +2577,7 @@
       return (d.dept || '—') + ' (Year ' + (d.year || '—') + ', Roll ' + (d.roll || '—') + ')';
     }
 
-    function render() {
+    function getFilteredData() {
       const s = searchInput.value.toLowerCase().trim();
       const etf = entryTypeFilter ? entryTypeFilter.value : '';
       const deptF = deptFilter ? deptFilter.value : '';
@@ -2601,6 +2601,29 @@
         return m && met && deptMatch && mm && mp && ma && my;
       });
       f.sort((a, b) => b.timestamp - a.timestamp);
+      return f;
+    }
+
+    function getFilterSummary() {
+      const etf = entryTypeFilter ? entryTypeFilter.value : '';
+      const deptF = deptFilter ? deptFilter.value : '';
+      const mf = methodFilter ? methodFilter.value : '';
+      const pf = paymentFilter.value;
+      const af = attendanceFilter.value;
+      const yf = yearFilter.value;
+      const s = searchInput.value.trim();
+      const parts = [];
+      if (s) parts.push('Search: "' + s + '"');
+      if (deptF) parts.push('Dept: ' + deptF);
+      if (etf) parts.push('Type: ' + etf);
+      if (mf) parts.push('Method: ' + mf);
+      if (pf) parts.push('Payment: ' + pf);
+      if (af) parts.push('Attendance: ' + (af === 'attended' ? 'Attended' : 'Not Attended'));
+      if (yf) parts.push('Year: ' + yf);
+      return parts.join('   |   ');
+    }
+
+    function render() {
 
       totalBookings.textContent = f.length;
       const resultCountEl = document.getElementById('resultCount');
@@ -2616,7 +2639,7 @@
       attendedCount.textContent = f.filter(d => !!d.attended).length;
 
       if (f.length === 0) {
-        const isFilterActive = !!(s || etf || deptF || mf || pf || af || yf);
+        const isFilterActive = !!(getFilterSummary());
         const e = isFilterActive ? `<div style="padding:40px 20px;text-align:center;color:var(--text-light);">
           <div style="font-size:32px;margin-bottom:8px;opacity:0.4;"><i class="fas fa-search"></i></div>
           <div style="font-size:15px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">No matching bookings found</div>
@@ -3705,7 +3728,8 @@
     });
 
     document.getElementById('exportBtn').addEventListener('click', async () => {
-      if (allData.length === 0) { adminToast('No data to export', 'warning'); return; }
+      const exportData = getFilteredData();
+      if (exportData.length === 0) { adminToast('No bookings match the current filters', 'warning'); return; }
       const btn = document.getElementById('exportBtn');
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Preparing PDF...';
@@ -3720,10 +3744,12 @@
         const pageW = doc.internal.pageSize.getWidth();
         const margin = 14;
         let y = margin;
+        const filterNote = getFilterSummary();
+        const bandH = filterNote ? 36 : 32;
 
         doc.setDrawColor(248, 68, 100);
         doc.setFillColor(248, 68, 100);
-        doc.rect(0, 0, pageW, 32, 'F');
+        doc.rect(0, 0, pageW, bandH, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(18);
@@ -3731,20 +3757,25 @@
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
         doc.text('Pazhassiraja College  |  Booking Report  |  ' + new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }), margin, 23);
+        if (filterNote) {
+          doc.setFontSize(8);
+          doc.setTextColor(255, 240, 214);
+          doc.text('Filters: ' + filterNote, margin, 31);
+        }
 
-        const totalRev = allData.reduce((s, r) => {
+        const totalRev = exportData.reduce((s, r) => {
           if ((r.paymentStatus || 'pending') === 'pending') return s;
           return s + (r.amount !== undefined ? r.amount : (r.tickets || 1) * 10);
         }, 0);
-        const paidN = allData.filter(r => r.paymentStatus === 'paid' || r.paymentStatus === 'verified').length;
-        const attendedN = allData.filter(r => !!r.attended).length;
+        const paidN = exportData.filter(r => r.paymentStatus === 'paid' || r.paymentStatus === 'verified').length;
+        const attendedN = exportData.filter(r => !!r.attended).length;
 
-        y = 38;
+        y = bandH + 6;
         doc.setFontSize(9);
         doc.setFont('helvetica', 'bold');
         const stats = [
-          ['Bookings', String(allData.length)],
-          ['Tickets Sold', String(allData.reduce((s, r) => s + (r.tickets || 1), 0))],
+          ['Bookings', String(exportData.length)],
+          ['Tickets Sold', String(exportData.reduce((s, r) => s + (r.tickets || 1), 0))],
           ['Revenue', '\u20B9' + totalRev],
           ['Paid', String(paidN)],
           ['Attended', String(attendedN)]
@@ -3763,7 +3794,7 @@
         });
 
         y += 20;
-        const rows = allData.map(r => {
+        const rows = exportData.map(r => {
           const names = getNames(r);
           const dept = (r.ticketHolders && r.ticketHolders.length)
             ? [...new Set(r.ticketHolders.map(t => t.dept || '-'))].join(', ')
