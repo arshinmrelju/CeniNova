@@ -237,6 +237,61 @@
       100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
+    /* BOOKING CONTROL BADGE */
+    .booking-control-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 10px 4px 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+    }
+    .booking-status-indicator {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+      transition: all 0.2s;
+    }
+    .booking-status-indicator.closed {
+      background: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    }
+    .booking-toggle-btn {
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .booking-toggle-btn.btn-close-action {
+      background: rgba(239, 68, 68, 0.1);
+      color: #dc2626;
+      border: 1px solid rgba(239, 68, 68, 0.25);
+    }
+    .booking-toggle-btn.btn-close-action:hover {
+      background: #dc2626;
+      color: #fff;
+    }
+    .booking-toggle-btn.btn-open-action {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+    .booking-toggle-btn.btn-open-action:hover {
+      background: #10b981;
+      color: #fff;
+    }
+
     /* STATS */
     .stats {
       display: grid;
@@ -1247,8 +1302,19 @@
           <div class="ah-title"><i class="fas fa-chart-line" style="color:var(--primary);"></i> Dashboard</div>
           <div class="ah-sub">CeniNova &bull; Happy Screening — Pazhassiraja College</div>
         </div>
-        <div class="live-status">
-          <span class="live-dot"></span> Live Sync
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div class="booking-control-badge" id="bookingControlBadge">
+            <div style="display:flex;align-items:center;gap:7px;">
+              <span class="booking-status-indicator" id="bookingStatusDot"></span>
+              <span style="font-size:12px;font-weight:700;color:var(--text);" id="bookingStatusLabel">Bookings Open</span>
+            </div>
+            <button type="button" class="booking-toggle-btn btn-close-action" id="bookingToggleBtn" onclick="toggleBookingStatus()">
+              <i class="fas fa-lock"></i> <span id="bookingToggleBtnText">Close Bookings</span>
+            </button>
+          </div>
+          <div class="live-status">
+            <span class="live-dot"></span> Live Sync
+          </div>
         </div>
       </div>
 
@@ -1662,6 +1728,98 @@
       adminToast('Logged out successfully');
     }
 
+    // BOOKING STATUS (OPEN / CLOSED)
+    let isBookingsOpen = true;
+    let bookingStatusUnsub = null;
+
+    function initBookingStatusListener() {
+      if (bookingStatusUnsub) return;
+      try {
+        bookingStatusUnsub = bookingsCol.doc('__settings__').onSnapshot(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            isBookingsOpen = data.bookingsOpen !== false;
+          } else {
+            isBookingsOpen = true;
+          }
+          updateBookingStatusUI();
+        }, err => {
+          console.warn('Booking settings snapshot error:', err);
+        });
+      } catch (e) {
+        console.warn('Error listening to booking settings:', e);
+      }
+    }
+
+    function updateBookingStatusUI() {
+      const dot = document.getElementById('bookingStatusDot');
+      const label = document.getElementById('bookingStatusLabel');
+      const btn = document.getElementById('bookingToggleBtn');
+      const btnText = document.getElementById('bookingToggleBtnText');
+      if (!dot || !label || !btn || !btnText) return;
+
+      if (isBookingsOpen) {
+        dot.className = 'booking-status-indicator';
+        label.textContent = 'Bookings Open';
+        label.style.color = '#059669';
+        btn.className = 'booking-toggle-btn btn-close-action';
+        btn.innerHTML = '<i class="fas fa-lock"></i> <span>Close Bookings</span>';
+      } else {
+        dot.className = 'booking-status-indicator closed';
+        label.textContent = 'Bookings Closed';
+        label.style.color = '#dc2626';
+        btn.className = 'booking-toggle-btn btn-open-action';
+        btn.innerHTML = '<i class="fas fa-lock-open"></i> <span>Open Bookings</span>';
+      }
+    }
+
+    async function toggleBookingStatus() {
+      const btn = document.getElementById('bookingToggleBtn');
+      if (isBookingsOpen) {
+        const ok = await showConfirm(
+          'Close Online Bookings?',
+          'Closing bookings will prevent students from booking new tickets on the website. Existing tickets and scanner will remain fully operational. You can reopen anytime.',
+          'danger',
+          'Close Bookings'
+        );
+        if (!ok) return;
+        if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Closing…'; }
+        bookingsCol.doc('__settings__').set({
+          bookingsOpen: false,
+          closedAt: Date.now()
+        }, { merge: true })
+        .then(() => {
+          adminToast('🔴 Online bookings are now CLOSED', 'warning');
+          if (btn) btn.disabled = false;
+        })
+        .catch(e => {
+          adminToast('Error closing bookings: ' + e.message, 'error');
+          if (btn) { btn.disabled = false; updateBookingStatusUI(); }
+        });
+      } else {
+        const ok = await showConfirm(
+          'Open Online Bookings?',
+          'Online bookings will be immediately enabled on the website for students.',
+          'info',
+          'Open Bookings'
+        );
+        if (!ok) return;
+        if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening…'; }
+        bookingsCol.doc('__settings__').set({
+          bookingsOpen: true,
+          openedAt: Date.now()
+        }, { merge: true })
+        .then(() => {
+          adminToast('🟢 Online bookings are now OPEN');
+          if (btn) btn.disabled = false;
+        })
+        .catch(e => {
+          adminToast('Error opening bookings: ' + e.message, 'error');
+          if (btn) { btn.disabled = false; updateBookingStatusUI(); }
+        });
+      }
+    }
+
     function showAdmin() {
       loginForm.style.display = 'none';
       adminPanel.style.display = 'block';
@@ -1669,6 +1827,7 @@
       if (navActions) navActions.style.display = 'flex';
       const btn = document.querySelector('.login-card .btn');
       if (btn) { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Unlock'; btn.disabled = false; }
+      initBookingStatusListener();
       loadData();
     }
 
@@ -1702,7 +1861,7 @@
       // 1. Direct get() for immediate response without waiting for WebSocket handshake
       try {
         const snap = await bookingsCol.get();
-        allData = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        allData = snap.docs.filter(doc => doc.id !== '__settings__').map(doc => ({ id: doc.id, ...doc.data() }));
         render();
       } catch (getErr) {
         console.warn('Direct get() warning, attempting REST fallback:', getErr);
@@ -1712,7 +1871,7 @@
       // 2. Real-time listener for live updates
       try {
         unsubscribe = bookingsCol.onSnapshot(snap => {
-          allData = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          allData = snap.docs.filter(doc => doc.id !== '__settings__').map(doc => ({ id: doc.id, ...doc.data() }));
           render();
         }, err => {
           console.warn('Firestore onSnapshot error, falling back to REST:', err);
@@ -1730,7 +1889,11 @@
         const res = await fetch('https://firestore.googleapis.com/v1/projects/ceninovaprc/databases/(default)/documents/movie_bookings');
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const json = await res.json();
-        const docs = json.documents || [];
+        const rawDocs = json.documents || [];
+        const docs = rawDocs.filter(doc => {
+          const id = doc.name ? doc.name.split('/').pop() : '';
+          return id !== '__settings__';
+        });
         allData = docs.map(doc => {
           const id = doc.name ? doc.name.split('/').pop() : 'booking';
           const f = doc.fields || {};

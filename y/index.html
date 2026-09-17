@@ -3120,6 +3120,21 @@
         <button class="modal-close" onclick="closeModal('booking-modal')"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
+        <!-- BOOKINGS CLOSED NOTICE -->
+        <div id="booking-closed-card" style="display:none;padding:24px 12px;text-align:center;">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(239,68,68,0.1);color:#ef4444;font-size:26px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-door-closed"></i>
+          </div>
+          <h3 style="font-size:20px;font-weight:800;color:var(--text);margin-bottom:8px;">Bookings Closed</h3>
+          <p style="font-size:14px;color:var(--text-secondary);max-width:320px;margin:0 auto 20px;line-height:1.5;">
+            Online ticket bookings for this screening are currently closed. If you already have a booking, you can view your ticket below.
+          </p>
+          <div style="display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;">
+            <button type="button" class="btn-primary" onclick="closeModal('booking-modal');openFindModal();" style="width:100%;"><i class="fas fa-search"></i> Find My Ticket</button>
+            <button type="button" class="btn-link" onclick="closeModal('booking-modal')">Close</button>
+          </div>
+        </div>
+
         <form id="booking-form">
           <div class="form-group">
             <label>Full Name</label>
@@ -3701,7 +3716,7 @@
     var bookingInitialized = false;
 
     var DEPARTMENTS = [
-      { group: 'Undergraduate', items: ['B.A Economics', 'B.A Econometrics and Data Management', 'B.A English Language and Literature', 'B.A History', 'B.Sc Microbiology', 'Bachelor of Travel and Tourism Management (BTTM)', 'B.A Journalism and Mass Communication', 'B.Sc Biochemistry'] },
+      { group: 'Undergraduate', items: ['BBA', 'B.A Economics', 'B.A Econometrics and Data Management', 'B.A English Language and Literature', 'B.A History', 'B.Sc Microbiology', 'Bachelor of Travel and Tourism Management (BTTM)', 'B.A Journalism and Mass Communication', 'B.Sc Biochemistry'] },
       { group: 'Postgraduate', items: ['M.A Journalism & Mass Communication', 'M Com', 'M.A Economics', 'Master of Travel and Tourism Management (MTTM)', 'M.Sc Microbiology', 'M.Sc Biochemistry'] }
     ];
 
@@ -3713,6 +3728,56 @@
       el.classList.add('show');
       clearTimeout(el._t);
       el._t = setTimeout(function () { el.classList.remove('show'); }, 2600);
+    }
+
+    var isBookingsOpen = true;
+    var bookingStatusUnsub = null;
+
+    function listenBookingStatus() {
+      if (!bookingsCol || bookingStatusUnsub) return;
+      try {
+        bookingStatusUnsub = bookingsCol.doc('__settings__').onSnapshot(function (doc) {
+          if (doc.exists) {
+            var data = doc.data();
+            isBookingsOpen = data.bookingsOpen !== false;
+          } else {
+            isBookingsOpen = true;
+          }
+          applyBookingStatusUI();
+        }, function (err) {
+          console.warn('Booking settings listener error:', err);
+        });
+      } catch (e) {
+        console.warn('Error setting up booking status listener:', e);
+      }
+    }
+
+    function applyBookingStatusUI() {
+      var formEl = document.getElementById('booking-form');
+      var closedEl = document.getElementById('booking-closed-card');
+      var modalTitle = document.querySelector('#booking-modal .modal-title');
+      if (isBookingsOpen) {
+        if (formEl) formEl.style.display = 'block';
+        if (closedEl) closedEl.style.display = 'none';
+        if (modalTitle) modalTitle.textContent = 'Book Ticket';
+      } else {
+        if (formEl) formEl.style.display = 'none';
+        if (closedEl) closedEl.style.display = 'block';
+        if (modalTitle) modalTitle.textContent = 'Bookings Closed';
+      }
+
+      // Update Nav CTA and Hero CTA
+      document.querySelectorAll('.nav-cta, .btn-book').forEach(function (el) {
+        if (isBookingsOpen) {
+          if (el.classList.contains('nav-cta')) {
+            el.innerHTML = '<i class="fas fa-film"></i> Book Now';
+          }
+        } else {
+          if (el.classList.contains('nav-cta')) {
+            el.innerHTML = '<i class="fas fa-lock"></i> Bookings Closed';
+          }
+        }
+      });
     }
 
     function initBookingFirebase() {
@@ -3732,6 +3797,7 @@
           bookingsCol = db.collection('movie_bookings');
           auth.signInAnonymously().catch(function () { });
           bookingInitialized = true;
+          listenBookingStatus();
         }
       } catch (e) { console.warn('Firebase init error:', e); }
     }
@@ -4002,6 +4068,13 @@
     document.getElementById('booking-form').addEventListener('submit', function (e) {
       e.preventDefault();
       initBookingFirebase();
+
+      if (!isBookingsOpen) {
+        showToast('Online bookings are currently closed.', 'warning');
+        applyBookingStatusUI();
+        return;
+      }
+
       var btn = document.getElementById('btn-confirm');
       var name = document.getElementById('user-name').value.trim();
       var dept = document.getElementById('user-dept').value;
@@ -4384,6 +4457,13 @@
     document.getElementById('drop-zone').addEventListener('click', function () { document.getElementById('screenshot-input').click(); });
     document.getElementById('screenshot-input').addEventListener('change', function () { if (this.files && this.files[0]) handleScreenshotFile(this.files[0]); });
     document.getElementById('btn-remove-screenshot').addEventListener('click', function () { resetUploadUI(); });
+
+    // Auto-init booking Firebase to listen for booking open/close status
+    window.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () {
+        initBookingFirebase();
+      }, 500);
+    });
   </script>
 </body>
 
