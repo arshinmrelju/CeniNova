@@ -292,6 +292,40 @@
       color: #fff;
     }
 
+    /* PRIVATE ENTRY HEADER BUTTON */
+    .btn-private-entry {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #7c3aed, #6366f1);
+      color: #fff;
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.25);
+      transition: all 0.2s ease;
+      font-family: var(--font);
+    }
+    .btn-private-entry:hover {
+      background: linear-gradient(135deg, #6d28d9, #4f46e5);
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.38);
+      transform: translateY(-1px);
+    }
+    .filter-bar-row2 .btn-private {
+      background: linear-gradient(135deg, #7c3aed, #6366f1);
+      color: #fff;
+      border: none;
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
+    }
+    .filter-bar-row2 .btn-private:hover {
+      background: linear-gradient(135deg, #6d28d9, #4f46e5);
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+      color: #fff;
+    }
+
     /* STATS */
     .stats {
       display: grid;
@@ -325,7 +359,7 @@
 
     .filter-bar {
       display: grid;
-      grid-template-columns: 1fr auto auto auto auto;
+      grid-template-columns: 1fr auto auto auto auto auto;
       gap: 10px;
       margin-bottom: 12px;
       align-items: center;
@@ -360,6 +394,7 @@
     .filter-bar select:hover, .filter-bar input:hover, .filter-bar-row2 input:hover {
       border-color: #bbb;
     }
+    #entryTypeFilter { width: 125px; }
     #methodFilter { width: 130px; }
     #yearFilter { width: 100px; }
     #paymentFilter { width: 140px; }
@@ -437,6 +472,15 @@
     .pill-pending { background: #fff3cd; color: #856404; }
     .pill-attended { background: #d4edda; color: #155724; }
     .pill-absent { background: #f8d7da; color: #721c24; }
+    .pill-private {
+      background: rgba(124, 58, 237, 0.12);
+      color: #6d28d9;
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
 
     .actions { display: flex; gap: 4px; flex-wrap: wrap; }
     .actions .btn-icon {
@@ -1240,6 +1284,294 @@
     .confirm-box .c-btn.danger:hover { background: #b91c1c; }
     .confirm-box .c-btn.primary { background: var(--primary); color: #fff; }
     .confirm-box .c-btn.primary:hover { background: var(--primary-dark); }
+
+    /* PRIVATE ENTRY MODAL & FORM */
+    .pe-card {
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      width: min(580px, 95vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 26px 28px;
+      position: relative;
+      animation: fadeSlideUp 0.25s ease both;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .pe-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pe-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(99,102,241,0.15));
+      color: #7c3aed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .pe-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .pe-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .pe-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+    .pe-close:hover {
+      background: var(--bg);
+      color: var(--text);
+    }
+    .pe-notice {
+      background: rgba(124, 58, 237, 0.08);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #5b21b6;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+    .pe-notice i { font-size: 16px; color: #7c3aed; flex-shrink: 0; }
+    .pe-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 16px;
+    }
+    .pe-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .pe-field.full {
+      grid-column: 1 / -1;
+    }
+    .pe-field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pe-field label i {
+      color: #7c3aed;
+      font-size: 11px;
+    }
+    .pe-field label .req { color: var(--primary); }
+    .pe-field label .opt { color: var(--text-light); font-weight: 500; font-size: 11px; }
+    .pe-field input, .pe-field select {
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: var(--font);
+      background: var(--card);
+      color: var(--text);
+      transition: all 0.15s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .pe-field input:focus, .pe-field select:focus {
+      outline: none;
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+    }
+    .pe-qty-wrap {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--card);
+    }
+    .pe-qty-btn {
+      width: 38px;
+      height: 38px;
+      background: #f8fafc;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s;
+    }
+    .pe-qty-btn:hover { background: #e2e8f0; }
+    .pe-qty-wrap input {
+      border: none !important;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      width: 100%;
+      box-shadow: none !important;
+      padding: 8px 4px;
+    }
+    .pe-amount-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .pe-currency-symbol {
+      position: absolute;
+      left: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      pointer-events: none;
+      font-size: 14px;
+    }
+    .pe-amount-input-wrap input {
+      padding-left: 28px;
+      padding-right: 56px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .pe-free-btn {
+      position: absolute;
+      right: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: all 0.15s;
+    }
+    .pe-free-btn:hover, .pe-free-btn.active {
+      background: #7c3aed;
+      color: #fff;
+      border-color: #7c3aed;
+    }
+    .pe-radio-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 2px;
+    }
+    .pe-radio-lbl {
+      flex: 1;
+      cursor: pointer;
+      margin: 0;
+    }
+    .pe-radio-lbl input { display: none; }
+    .pe-radio-chip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: #fdfdfd;
+      transition: all 0.15s;
+    }
+    .pe-radio-lbl input:checked + .pe-radio-chip.paid {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.1);
+      color: #047857;
+      font-weight: 700;
+    }
+    .pe-radio-lbl input:checked + .pe-radio-chip.pending {
+      border-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.1);
+      color: #b45309;
+      font-weight: 700;
+    }
+    .pe-checkbox-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .pe-checkbox-wrap input {
+      width: 18px;
+      height: 18px;
+      accent-color: #7c3aed;
+      cursor: pointer;
+    }
+    .pe-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .pe-btn-cancel {
+      padding: 11px 22px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.15s;
+    }
+    .pe-btn-cancel:hover { background: #f3f4f6; }
+    .pe-btn-submit {
+      padding: 11px 24px;
+      border-radius: 8px;
+      border: none;
+      background: linear-gradient(135deg, #7c3aed, #6366f1);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+      transition: all 0.15s;
+    }
+    .pe-btn-submit:hover:not(:disabled) {
+      background: linear-gradient(135deg, #6d28d9, #4f46e5);
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+      transform: translateY(-1px);
+    }
+    .pe-btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    @media (max-width: 600px) {
+      .pe-form-grid { grid-template-columns: 1fr; }
+      .pe-field.full { grid-column: auto; }
+      .pe-card { padding: 20px 16px; }
+    }
   </style>
 </head>
 <body>
@@ -1312,6 +1644,9 @@
               <i class="fas fa-lock"></i> <span id="bookingToggleBtnText">Close Bookings</span>
             </button>
           </div>
+          <button type="button" class="btn-private-entry" id="btnPrivateEntryHeader" onclick="openPrivateEntryModal()" title="Create direct entry without opening public registrations">
+            <i class="fas fa-user-plus"></i> <span>Private Entry</span>
+          </button>
           <div class="live-status">
             <span class="live-dot"></span> Live Sync
           </div>
@@ -1364,6 +1699,11 @@
           </div>
           <div class="filter-bar">
             <input type="text" id="searchInput" placeholder="Search name, phone or code...">
+            <select id="entryTypeFilter">
+              <option value="">All Types</option>
+              <option value="private">Private Only</option>
+              <option value="online">Online Only</option>
+            </select>
             <select id="methodFilter">
               <option value="">All Methods</option>
               <option value="cash">Cash</option>
@@ -1389,9 +1729,10 @@
             </select>
           </div>
           <div class="filter-bar-row2">
-            <input type="text" id="scanInput" placeholder="Type ticket code & Enter for entry">
+            <input type="text" id="scanInput" placeholder="Type ticket code & Enter for entry" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="characters">
             <button class="btn btn-primary" id="scanCamBtn"><i class="fas fa-camera"></i> Camera Scan</button>
             <span class="scan-status" id="scanStatus"></span>
+            <button type="button" class="btn btn-private" onclick="openPrivateEntryModal()"><i class="fas fa-user-plus"></i> Private Entry</button>
             <button class="btn btn-outline" id="exportBtn"><i class="fas fa-download"></i> CSV</button>
           </div>
 
@@ -1440,6 +1781,7 @@
               <div class="tkt-row"><i class="fas fa-check-circle" style="width:18px;"></i><div><div class="lbl">Payment Status</div><div class="val" id="tkt-pay">—</div></div></div>
               <div class="tkt-row"><i class="fas fa-wallet" style="width:18px;"></i><div><div class="lbl">Payment Method</div><div class="val" id="tkt-paymethod">—</div></div></div>
               <div class="tkt-row" id="screenshot-row" style="display:none;"><i class="fas fa-image" style="width:18px;"></i><div><div class="lbl">Screenshot</div><div class="val"><a href="#" id="tkt-screenshot-link" onclick="viewScreenshot(this.href);return false;" style="color:var(--primary);font-size:12px;">View Payment Screenshot</a></div></div></div>
+              <div class="tkt-row" id="private-note-row" style="display:none;"><i class="fas fa-shield-alt" style="width:18px;"></i><div><div class="lbl">Entry Type</div><div class="val" id="tkt-entrytype">—</div></div></div>
             </div>
               <svg id="tkt-barcode" style="display:none;"></svg>
               <img id="tkt-qr" alt="Ticket QR" width="120" height="120" decoding="async" style="max-width:120px;margin:6px auto 0;display:block;border-radius:6px;background:#fff;padding:4px;">
@@ -1586,6 +1928,138 @@
       </div>
     </div>
 
+    <!-- PRIVATE ENTRY MODAL -->
+    <div class="overlay" id="privateEntryModal">
+      <div class="pe-card">
+        <div class="pe-header">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pe-icon-wrap"><i class="fas fa-user-shield"></i></div>
+            <div>
+              <div class="pe-title">Private / Spot Entry</div>
+              <div class="pe-sub">Direct entry without opening public online registrations</div>
+            </div>
+          </div>
+          <button type="button" class="pe-close" onclick="closePrivateEntryModal()" aria-label="Close"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="pe-notice">
+          <i class="fas fa-shield-alt"></i>
+          <span><strong>Admin Direct Mode:</strong> This creates an authorized booking directly in the database. Public online registrations remain <span id="peNoticeRegStatus" style="font-weight:700;text-decoration:underline;">Closed</span>.</span>
+        </div>
+
+        <form id="privateEntryForm" onsubmit="submitPrivateEntry(event)">
+          <div class="pe-form-grid">
+            <!-- Full Name -->
+            <div class="pe-field full">
+              <label for="pe-name"><i class="fas fa-user"></i> Attendee Full Name <span class="req">*</span></label>
+              <input type="text" id="pe-name" placeholder="Student / Guest / VIP Name" required autofocus>
+            </div>
+
+            <!-- Phone -->
+            <div class="pe-field full">
+              <label for="pe-phone"><i class="fas fa-phone"></i> Phone Number <span class="opt">(Optional)</span></label>
+              <input type="tel" id="pe-phone" placeholder="10-digit phone number" maxlength="15">
+            </div>
+
+            <!-- Department -->
+            <div class="pe-field">
+              <label for="pe-dept"><i class="fas fa-building-columns"></i> Department / Dept <span class="req">*</span></label>
+              <select id="pe-dept" required>
+                <option value="">Select Department</option>
+              </select>
+            </div>
+
+            <!-- Year / Category -->
+            <div class="pe-field">
+              <label for="pe-year"><i class="fas fa-graduation-cap"></i> Year / Category <span class="req">*</span></label>
+              <select id="pe-year" required>
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+                <option value="Faculty">Faculty / Staff</option>
+                <option value="Guest">VIP / Guest</option>
+                <option value="Alumni">Alumni</option>
+              </select>
+            </div>
+
+            <!-- Roll Number -->
+            <div class="pe-field">
+              <label for="pe-roll"><i class="fas fa-id-badge"></i> Roll No. <span class="opt">(Optional)</span></label>
+              <input type="text" id="pe-roll" placeholder="Roll No." value="1">
+            </div>
+
+            <!-- Tickets Quantity -->
+            <div class="pe-field">
+              <label for="pe-qty"><i class="fas fa-ticket-alt"></i> Ticket Quantity <span class="req">*</span></label>
+              <div class="pe-qty-wrap">
+                <button type="button" class="pe-qty-btn" onclick="stepPrivateQty(-1)">−</button>
+                <input type="number" id="pe-qty" min="1" max="20" value="1" oninput="updatePrivateAmount()" required>
+                <button type="button" class="pe-qty-btn" onclick="stepPrivateQty(1)">+</button>
+              </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="pe-field">
+              <label for="pe-pay-method"><i class="fas fa-wallet"></i> Payment Method</label>
+              <select id="pe-pay-method" onchange="onPrivatePayMethodChange()">
+                <option value="cash">Cash Payment</option>
+                <option value="upi">UPI Payment</option>
+                <option value="complimentary">Complimentary (Free Pass)</option>
+              </select>
+            </div>
+
+            <!-- Total Amount -->
+            <div class="pe-field">
+              <label for="pe-amount"><i class="fas fa-rupee-sign"></i> Total Amount</label>
+              <div class="pe-amount-input-wrap">
+                <span class="pe-currency-symbol">₹</span>
+                <input type="number" id="pe-amount" min="0" value="10">
+                <button type="button" class="pe-free-btn" id="peFreeBtn" onclick="togglePrivateFree()">Free Pass</button>
+              </div>
+            </div>
+
+            <!-- Payment Status -->
+            <div class="pe-field">
+              <label><i class="fas fa-circle-check"></i> Payment Status</label>
+              <div class="pe-radio-group">
+                <label class="pe-radio-lbl">
+                  <input type="radio" name="pe-payment-status" value="paid" checked>
+                  <span class="pe-radio-chip paid"><i class="fas fa-check-circle"></i> Paid / Collected</span>
+                </label>
+                <label class="pe-radio-lbl">
+                  <input type="radio" name="pe-payment-status" value="pending">
+                  <span class="pe-radio-chip pending"><i class="fas fa-clock"></i> Pending</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Immediate Attendance Check-in -->
+            <div class="pe-field">
+              <label><i class="fas fa-door-open"></i> Gate Entry Status</label>
+              <label class="pe-checkbox-wrap">
+                <input type="checkbox" id="pe-attended" checked>
+                <span class="pe-checkbox-text"><strong>Mark Attended Now</strong> (Immediate entry at door)</span>
+              </label>
+            </div>
+
+            <!-- Internal Note -->
+            <div class="pe-field full">
+              <label for="pe-note"><i class="fas fa-comment-alt"></i> Reason / Note <span class="opt">(Optional)</span></label>
+              <input type="text" id="pe-note" placeholder="e.g. Spot counter booking, Department Guest, Cash received">
+            </div>
+          </div>
+
+          <div class="pe-actions">
+            <button type="button" class="pe-btn-cancel" onclick="closePrivateEntryModal()">Cancel</button>
+            <button type="submit" class="pe-btn-submit" id="peSubmitBtn">
+              <i class="fas fa-check-circle"></i> <span>Create Entry & Generate Ticket</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -1677,6 +2151,12 @@
       return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), ms); };
     }
 
+    const DEPARTMENTS = [
+      { group: 'Undergraduate', items: ['BBA', 'B.A Economics', 'B.A Econometrics and Data Management', 'B.A English Language and Literature', 'B.A History', 'B.Sc Microbiology', 'Bachelor of Travel and Tourism Management (BTTM)', 'B.A Journalism and Mass Communication', 'B.Sc Biochemistry'] },
+      { group: 'Postgraduate', items: ['M.A Journalism & Mass Communication', 'M Com', 'M.A Economics', 'Master of Travel and Tourism Management (MTTM)', 'M.Sc Microbiology', 'M.Sc Biochemistry'] },
+      { group: 'Special / Other', items: ['Faculty / Staff Member', 'VIP / Special Guest', 'Management / Guest', 'Other Department'] }
+    ];
+
     // DOM
     const loginForm = document.getElementById('loginForm');
     const adminPanel = document.getElementById('adminPanel');
@@ -1688,11 +2168,13 @@
     const paidCount = document.getElementById('paidCount');
     const attendedCount = document.getElementById('attendedCount');
     const searchInput = document.getElementById('searchInput');
+    const entryTypeFilter = document.getElementById('entryTypeFilter');
     const methodFilter = document.getElementById('methodFilter');
     const paymentFilter = document.getElementById('paymentFilter');
     const attendanceFilter = document.getElementById('attendanceFilter');
     const yearFilter = document.getElementById('yearFilter');
     const ticketModal = document.getElementById('ticketModal');
+    const privateEntryModal = document.getElementById('privateEntryModal');
 
     // Check session on load
     if (sessionStorage.getItem('admin_authenticated') === 'true') {
@@ -1957,6 +2439,7 @@
 
     function render() {
       const s = searchInput.value.toLowerCase().trim();
+      const etf = entryTypeFilter ? entryTypeFilter.value : '';
       const mf = methodFilter ? methodFilter.value : '';
       const pf = paymentFilter.value;
       const af = attendanceFilter.value;
@@ -1964,12 +2447,14 @@
 
       const f = allData.filter(d => {
         const m = getNames(d).toLowerCase().includes(s) || (d.phone||'').includes(s) || (d.primaryCode||'').toLowerCase().includes(s);
+        const isPrivate = !!(d.isPrivateEntry || d.entryType === 'private');
+        const met = etf === 'private' ? isPrivate : (etf === 'online' ? !isPrivate : true);
         const isUpi = (d.payMethod === 'upi') || (!d.payMethod && !!d.paymentScreenshot);
         const mm = mf === 'upi' ? isUpi : (mf === 'cash' ? !isUpi : true);
         const mp = pf ? d.paymentStatus === pf : true;
         const ma = af === 'attended' ? !!d.attended : (af === 'absent' ? !d.attended : true);
         const my = yf ? (d.ticketHolders || [{year: d.year}]).some(h => String(h.year) === yf) : true;
-        return m && mm && mp && ma && my;
+        return m && met && mm && mp && ma && my;
       });
       f.sort((a, b) => b.timestamp - a.timestamp);
 
@@ -1987,7 +2472,7 @@
       attendedCount.textContent = f.filter(d => !!d.attended).length;
 
       if (f.length === 0) {
-        const isFilterActive = !!(s || mf || pf || af || yf);
+        const isFilterActive = !!(s || etf || mf || pf || af || yf);
         const e = isFilterActive ? `<div style="padding:40px 20px;text-align:center;color:var(--text-light);">
           <div style="font-size:32px;margin-bottom:8px;opacity:0.4;"><i class="fas fa-search"></i></div>
           <div style="font-size:15px;font-weight:600;color:var(--text-secondary);margin-bottom:4px;">No matching bookings found</div>
@@ -1995,7 +2480,7 @@
         </div>` : `<div style="padding:40px 20px;text-align:center;color:var(--text-light);">
           <div style="font-size:36px;margin-bottom:10px;color:var(--primary);opacity:0.6;"><i class="fas fa-ticket-alt"></i></div>
           <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;">No Bookings in Database Yet</div>
-          <div style="font-size:13px;color:var(--text-secondary);max-width:420px;margin:0 auto;">Database is connected! When students book tickets on the site, they will appear here automatically.</div>
+          <div style="font-size:13px;color:var(--text-secondary);max-width:420px;margin:0 auto;">Database is connected! When students book tickets on the site or private entries are created, they will appear here automatically.</div>
         </div>`;
         tableBody.innerHTML = `<tr><td colspan="11">${e}</td></tr>`;
         cardsView.innerHTML = e;
@@ -2003,6 +2488,8 @@
       }
 
       tableBody.innerHTML = f.map(d => {
+        const isPrivate = !!(d.isPrivateEntry || d.entryType === 'private');
+        const privateBadge = isPrivate ? ' <span class="pill pill-private" title="Private / Spot Entry"><i class="fas fa-shield-alt"></i> Private</span>' : '';
         const ps = d.paymentStatus || 'pending';
         const payCls = ps === 'paid' ? 'pill-paid' : ps === 'verified' ? 'pill-verified' : 'pill-pending';
         const payTxt = ps === 'paid' ? 'Paid' : ps === 'verified' ? 'Verified' : 'Pending';
@@ -2021,7 +2508,7 @@
         const codeVal = d.primaryCode || d.code || (d.ticketCodes && d.ticketCodes[0]) || '—';
         const isUpi = (d.payMethod === 'upi') || (!d.payMethod && !!d.paymentScreenshot);
         return `<tr>
-          <td style="font-weight:600;max-width:160px;word-break:break-word;">${getNames(d)}</td>
+          <td style="font-weight:600;max-width:160px;word-break:break-word;">${getNames(d)}${privateBadge}</td>
           <td>${d.phone || '-'}</td>
           <td style="font-size:12px;max-width:110px;word-break:break-word;">${deptVal}</td>
           <td style="text-align:center;">${yearVal}</td>
@@ -2046,6 +2533,8 @@
       }).join('');
 
       cardsView.innerHTML = f.map(d => {
+        const isPrivate = !!(d.isPrivateEntry || d.entryType === 'private');
+        const privateBadge = isPrivate ? ' <span class="pill pill-private"><i class="fas fa-shield-alt"></i> Private</span>' : '';
         const ps = d.paymentStatus || 'pending';
         const payTxt = ps === 'paid' ? 'Paid' : ps === 'verified' ? 'Verified' : 'Pending';
         const codeVal = d.primaryCode || d.code || (d.ticketCodes && d.ticketCodes[0]) || '—';
@@ -2053,7 +2542,7 @@
         return `<div class="m-card">
           <div class="m-row">
             <div>
-              <div class="m-name">${getNames(d)}</div>
+              <div class="m-name">${getNames(d)}${privateBadge}</div>
               <div class="m-meta">${d.phone||'-'} • ${d.tickets||1} tickets • ₹${d.amount !== undefined ? d.amount : ((d.tickets||1)*10)}</div>
               <div class="m-meta" style="color:#2563eb;font-weight:600;">
                 <i class="fas fa-university" style="margin-right:4px;"></i>${(d.ticketHolders&&d.ticketHolders.length) ? d.ticketHolders.map(t=>(t.dept||'—')+' · Yr '+(t.year||'—')+' · Roll '+(t.roll||'—')).join(' | ') : (d.dept||'—')+' · Yr '+(d.year||'—')+' · Roll '+(d.roll||'—')}
@@ -2093,7 +2582,7 @@
       const ps = d.paymentStatus||'pending';
       document.getElementById('tkt-pay').textContent = ps === 'verified' ? '[Verified]' : ps === 'paid' ? '[Paid]' : '[Pending]';
       const pm = d.payMethod;
-      document.getElementById('tkt-paymethod').textContent = pm === 'upi' ? 'UPI' : (pm === 'cash' ? 'Cash' : '—');
+      document.getElementById('tkt-paymethod').textContent = pm === 'upi' ? 'UPI' : (pm === 'cash' ? 'Cash' : (pm === 'complimentary' ? 'Complimentary' : '—'));
       const sRow = document.getElementById('screenshot-row');
       if (d.paymentScreenshot) {
         sRow.style.display = '';
@@ -2101,6 +2590,19 @@
       } else {
         sRow.style.display = 'none';
       }
+
+      // Private Entry row in Ticket Modal
+      const pnRow = document.getElementById('private-note-row');
+      const pnVal = document.getElementById('tkt-entrytype');
+      if (pnRow && pnVal) {
+        if (d.isPrivateEntry || d.entryType === 'private') {
+          pnRow.style.display = '';
+          pnVal.textContent = 'Private / Spot Entry' + (d.privateNote ? (' (' + d.privateNote + ')') : '');
+        } else {
+          pnRow.style.display = 'none';
+        }
+      }
+
       try {
         var qrEl = document.getElementById('tkt-qr');
         if (qrEl) {
@@ -2188,7 +2690,316 @@
       }
     }
 
+    // PRIVATE ENTRY SYSTEM
+    let peDeptPopulated = false;
+
+    function populatePrivateDeptSelect() {
+      const dSel = document.getElementById('pe-dept');
+      if (!dSel || peDeptPopulated) return;
+      let h = '<option value="">Select Department</option>';
+      DEPARTMENTS.forEach(g => {
+        h += `<optgroup label="${g.group}">`;
+        g.items.forEach(d => {
+          h += `<option value="${d}">${d}</option>`;
+        });
+        h += '</optgroup>';
+      });
+      dSel.innerHTML = h;
+      peDeptPopulated = true;
+    }
+
+    function refreshCustomSelect(selId) {
+      const sel = document.getElementById(selId);
+      if (!sel) return;
+      // Remove old custom wrapper if exists
+      const oldWrap = sel.nextSibling;
+      if (oldWrap && oldWrap.classList && oldWrap.classList.contains('cs-wrap')) {
+        oldWrap.remove();
+      }
+      // Reset the custom select flag so it can be re-initialized
+      delete sel.dataset.cs;
+      sel.style.display = '';
+      // Re-initialize
+      customSelect(sel);
+    }
+
+    function openPrivateEntryModal() {
+      populatePrivateDeptSelect();
+      const modal = document.getElementById('privateEntryModal');
+      const form = document.getElementById('privateEntryForm');
+      if (form) form.reset();
+
+      // Set default values on native selects first
+      document.getElementById('pe-qty').value = '1';
+      document.getElementById('pe-amount').value = '10';
+      document.getElementById('pe-roll').value = '1';
+      document.getElementById('pe-year').value = '1';
+      document.getElementById('pe-attended').checked = true;
+      const paidRadio = document.querySelector('input[name="pe-payment-status"][value="paid"]');
+      if (paidRadio) paidRadio.checked = true;
+      document.getElementById('pe-pay-method').value = 'cash';
+      const freeBtn = document.getElementById('peFreeBtn');
+      if (freeBtn) freeBtn.classList.remove('active');
+
+      // Rebuild custom dropdowns so populated dept options appear
+      refreshCustomSelect('pe-dept');
+      refreshCustomSelect('pe-year');
+      refreshCustomSelect('pe-pay-method');
+
+      // Update notice regarding booking status
+      const noticeStatus = document.getElementById('peNoticeRegStatus');
+      if (noticeStatus) {
+        if (isBookingsOpen) {
+          noticeStatus.textContent = 'Open';
+          noticeStatus.style.color = '#059669';
+        } else {
+          noticeStatus.textContent = 'Closed (Bypassed)';
+          noticeStatus.style.color = '#7c3aed';
+        }
+      }
+
+      modal.classList.add('active');
+      setTimeout(() => {
+        const nameInput = document.getElementById('pe-name');
+        if (nameInput) nameInput.focus();
+      }, 100);
+    }
+
+    function closePrivateEntryModal() {
+      const modal = document.getElementById('privateEntryModal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function stepPrivateQty(delta) {
+      const qtyInput = document.getElementById('pe-qty');
+      let val = parseInt(qtyInput.value) || 1;
+      val = Math.max(1, Math.min(20, val + delta));
+      qtyInput.value = val;
+      updatePrivateAmount();
+    }
+
+    function updatePrivateAmount() {
+      const pm = document.getElementById('pe-pay-method').value;
+      const amtInput = document.getElementById('pe-amount');
+      const freeBtn = document.getElementById('peFreeBtn');
+      if (pm === 'complimentary' || (freeBtn && freeBtn.classList.contains('active'))) {
+        amtInput.value = '0';
+        return;
+      }
+      const qty = parseInt(document.getElementById('pe-qty').value) || 1;
+      amtInput.value = String(qty * 10);
+    }
+
+    function togglePrivateFree() {
+      const freeBtn = document.getElementById('peFreeBtn');
+      const amtInput = document.getElementById('pe-amount');
+      const pmSelect = document.getElementById('pe-pay-method');
+      const isFree = freeBtn.classList.toggle('active');
+      if (isFree) {
+        amtInput.value = '0';
+        if (pmSelect.value === 'cash') pmSelect.value = 'complimentary';
+        const paidRadio = document.querySelector('input[name="pe-payment-status"][value="paid"]');
+        if (paidRadio) paidRadio.checked = true;
+      } else {
+        const qty = parseInt(document.getElementById('pe-qty').value) || 1;
+        amtInput.value = String(qty * 10);
+        if (pmSelect.value === 'complimentary') pmSelect.value = 'cash';
+      }
+    }
+
+    function onPrivatePayMethodChange() {
+      const pm = document.getElementById('pe-pay-method').value;
+      const freeBtn = document.getElementById('peFreeBtn');
+      const amtInput = document.getElementById('pe-amount');
+      if (pm === 'complimentary') {
+        if (freeBtn) freeBtn.classList.add('active');
+        amtInput.value = '0';
+        const paidRadio = document.querySelector('input[name="pe-payment-status"][value="paid"]');
+        if (paidRadio) paidRadio.checked = true;
+      } else {
+        if (freeBtn) freeBtn.classList.remove('active');
+        const qty = parseInt(document.getElementById('pe-qty').value) || 1;
+        amtInput.value = String(qty * 10);
+      }
+    }
+
+    function generateCode() {
+      let code;
+      let attempts = 0;
+      do {
+        code = 'ED-' + Math.floor(1000 + Math.random() * 9000);
+        attempts++;
+      } while (findByCode(code) && attempts < 100);
+      return code;
+    }
+
+    async function saveBookingToFirestoreREST(data) {
+      try {
+        const fields = {
+          name: { stringValue: String(data.name || '') },
+          phone: { stringValue: String(data.phone || '') },
+          dept: { stringValue: String(data.dept || '') },
+          year: { integerValue: String(data.year || 1) },
+          roll: { integerValue: String(data.roll || 1) },
+          tickets: { integerValue: String(data.tickets || 1) },
+          amount: { integerValue: String(data.amount || 0) },
+          primaryCode: { stringValue: String(data.primaryCode || '') },
+          ticketCodes: {
+            arrayValue: {
+              values: (data.ticketCodes || []).map(c => ({ stringValue: String(c) }))
+            }
+          },
+          payMethod: { stringValue: String(data.payMethod || 'cash') },
+          paymentStatus: { stringValue: String(data.paymentStatus || 'paid') },
+          attended: { booleanValue: !!data.attended },
+          isPrivateEntry: { booleanValue: true },
+          entryType: { stringValue: 'private' },
+          privateNote: { stringValue: String(data.privateNote || '') },
+          createdAt: { stringValue: String(data.createdAt || new Date().toISOString()) },
+          timestamp: { integerValue: String(data.timestamp || Date.now()) }
+        };
+        if (data.attendedAt) {
+          fields.attendedAt = { integerValue: String(data.attendedAt) };
+        }
+        if (data.paidAt) {
+          fields.paidAt = { integerValue: String(data.paidAt) };
+        }
+        if (data.ticketHolders && data.ticketHolders.length) {
+          fields.ticketHolders = {
+            arrayValue: {
+              values: data.ticketHolders.map(th => ({
+                mapValue: {
+                  fields: {
+                    name: { stringValue: String(th.name || '') },
+                    dept: { stringValue: String(th.dept || '') },
+                    year: { integerValue: String(th.year || 1) },
+                    roll: { integerValue: String(th.roll || 1) },
+                    code: { stringValue: String(th.code || '') }
+                  }
+                }
+              }))
+            }
+          };
+        }
+        const res = await fetch('https://firestore.googleapis.com/v1/projects/' + CONFIG.firebase.projectId + '/databases/(default)/documents/movie_bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fields })
+        });
+        if (!res.ok) return null;
+        const json = await res.json();
+        return json.name ? json.name.split('/').pop() : 'doc_' + Date.now();
+      } catch (e) {
+        console.warn('REST save error:', e);
+        return null;
+      }
+    }
+
+    async function submitPrivateEntry(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('peSubmitBtn');
+      const name = document.getElementById('pe-name').value.trim();
+      const phone = document.getElementById('pe-phone').value.trim();
+      const dept = document.getElementById('pe-dept').value;
+      const year = document.getElementById('pe-year').value;
+      const roll = document.getElementById('pe-roll').value.trim() || '1';
+      const qty = parseInt(document.getElementById('pe-qty').value) || 1;
+      const amount = parseInt(document.getElementById('pe-amount').value) || 0;
+      const payMethod = document.getElementById('pe-pay-method').value;
+      const paymentStatus = document.querySelector('input[name="pe-payment-status"]:checked').value;
+      const isAttended = document.getElementById('pe-attended').checked;
+      const note = document.getElementById('pe-note').value.trim();
+
+      if (!name) {
+        adminToast('Please enter attendee name', 'warning');
+        document.getElementById('pe-name').focus();
+        return;
+      }
+      if (!dept) {
+        adminToast('Please select department', 'warning');
+        document.getElementById('pe-dept').focus();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Entry...';
+
+      const primaryCode = generateCode();
+      const ticketCodes = [primaryCode];
+      for (let i = 1; i < qty; i++) {
+        ticketCodes.push(generateCode());
+      }
+
+      const timestamp = Date.now();
+      const ticketHolders = ticketCodes.map((code, idx) => ({
+        name: idx === 0 ? name : `${name} (Guest ${idx + 1})`,
+        dept: dept,
+        year: isNaN(Number(year)) ? 1 : Number(year),
+        roll: Number(roll) || 1,
+        code: code
+      }));
+
+      const bookingData = {
+        name: name,
+        phone: phone,
+        dept: dept,
+        year: isNaN(Number(year)) ? 1 : Number(year),
+        roll: Number(roll) || 1,
+        tickets: qty,
+        amount: amount,
+        primaryCode: primaryCode,
+        ticketCodes: ticketCodes,
+        ticketHolders: ticketHolders,
+        payMethod: payMethod,
+        paymentStatus: paymentStatus,
+        attended: isAttended,
+        attendedAt: isAttended ? timestamp : null,
+        paidAt: (paymentStatus === 'paid' || paymentStatus === 'verified') ? timestamp : null,
+        isPrivateEntry: true,
+        entryType: 'private',
+        privateNote: note,
+        createdAt: new Date(timestamp).toISOString(),
+        timestamp: timestamp
+      };
+
+      try {
+        let newDocId = null;
+        try {
+          const docRef = await bookingsCol.add(bookingData);
+          newDocId = docRef.id;
+        } catch (sdkErr) {
+          console.warn('Firestore SDK add failed, trying REST fallback:', sdkErr);
+          newDocId = await saveBookingToFirestoreREST(bookingData);
+        }
+
+        if (!newDocId) {
+          newDocId = 'private_' + timestamp;
+        }
+
+        // Add to local data immediately if snapshot hasn't fired yet
+        if (!allData.some(x => x.primaryCode === primaryCode)) {
+          allData.unshift({ id: newDocId, ...bookingData });
+          render();
+        }
+
+        closePrivateEntryModal();
+        adminToast('✓ Private entry created for ' + name);
+
+        // Highlight and immediately display ticket card
+        highlightRow(newDocId);
+        viewTicket(newDocId);
+
+      } catch (err) {
+        console.error('Error creating private entry:', err);
+        adminToast('Failed to create entry: ' + err.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span>Create Entry & Generate Ticket</span>';
+      }
+    }
+
     searchInput.addEventListener('input', debounce(render, 200));
+    if (entryTypeFilter) entryTypeFilter.addEventListener('change', render);
     if (methodFilter) methodFilter.addEventListener('change', render);
     paymentFilter.addEventListener('change', render);
     attendanceFilter.addEventListener('change', render);
@@ -2334,7 +3145,8 @@
       // Show relevant section
       document.getElementById('scUpiSection').style.display     = isUpi  ? 'block' : 'none';
       document.getElementById('scCashSection').style.display    = isCash ? 'block' : 'none';
-      document.getElementById('scPendingSection').style.display = (!isUpi && !isCash) ? 'block' : 'none';
+      const scPendingSection = document.getElementById('scPendingSection');
+      if (scPendingSection) scPendingSection.style.display = (!isUpi && !isCash) ? 'block' : 'none';
 
       // UPI screenshot
       if (isUpi) {
@@ -2679,7 +3491,7 @@
     // CSV
     document.getElementById('exportBtn').addEventListener('click', () => {
       if (allData.length === 0) { adminToast('No data to export', 'warning'); return; }
-      let csv = 'data:text/csv;charset=utf-8,Name,Phone,Department,Year,Roll No,Tickets,Amount,Code,Payment Status,UPI Trans ID,Verified Trans ID,Has Screenshot,Registered At,Attended\n';
+      let csv = 'data:text/csv;charset=utf-8,Name,Phone,Department,Year,Roll No,Tickets,Amount,Code,Payment Status,Entry Type,Note,UPI Trans ID,Verified Trans ID,Has Screenshot,Registered At,Attended\n';
       allData.forEach(r => {
         const names = getNames(r);
         const deptVal = (r.ticketHolders && r.ticketHolders.length)
@@ -2691,7 +3503,9 @@
         const rollVal = (r.ticketHolders && r.ticketHolders.length)
           ? r.ticketHolders.map(t => t.roll||'—').join(', ')
           : (r.roll || '—');
-        csv += `"${names}","${r.phone||''}","${deptVal}","${yearVal}","${rollVal}",${r.tickets||1},${r.amount||((r.tickets||1)*15)},"${r.primaryCode}","${r.paymentStatus||'pending'}","${r.upiTransId||''}","${r.verifiedTransId||''}","${r.paymentScreenshot ? 'Yes' : 'No'}","${new Date(r.timestamp).toLocaleString()}",${r.attended ? 'Yes' : 'No'}\r\n`;
+        const entryType = (r.isPrivateEntry || r.entryType === 'private') ? 'Private / Spot' : 'Online';
+        const note = (r.privateNote || '').replace(/"/g, '""');
+        csv += `"${names}","${r.phone||''}","${deptVal}","${yearVal}","${rollVal}",${r.tickets||1},${r.amount !== undefined ? r.amount : ((r.tickets||1)*10)},"${r.primaryCode}","${r.paymentStatus||'pending'}","${entryType}","${note}","${r.upiTransId||''}","${r.verifiedTransId||''}","${r.paymentScreenshot ? 'Yes' : 'No'}","${new Date(r.timestamp).toLocaleString()}",${r.attended ? 'Yes' : 'No'}\r\n`;
       });
       const link = document.createElement('a');
       link.setAttribute('href', encodeURI(csv));
