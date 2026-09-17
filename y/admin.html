@@ -1735,7 +1735,7 @@
     function initBookingStatusListener() {
       if (bookingStatusUnsub) return;
       try {
-        bookingStatusUnsub = bookingsCol.doc('__settings__').onSnapshot(doc => {
+        bookingStatusUnsub = bookingsCol.doc('booking_settings').onSnapshot(doc => {
           if (doc.exists) {
             const data = doc.data();
             isBookingsOpen = data.bookingsOpen !== false;
@@ -1784,7 +1784,7 @@
         );
         if (!ok) return;
         if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Closing…'; }
-        bookingsCol.doc('__settings__').set({
+        bookingsCol.doc('booking_settings').set({
           bookingsOpen: false,
           closedAt: Date.now()
         }, { merge: true })
@@ -1805,7 +1805,7 @@
         );
         if (!ok) return;
         if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening…'; }
-        bookingsCol.doc('__settings__').set({
+        bookingsCol.doc('booking_settings').set({
           bookingsOpen: true,
           openedAt: Date.now()
         }, { merge: true })
@@ -1861,7 +1861,7 @@
       // 1. Direct get() for immediate response without waiting for WebSocket handshake
       try {
         const snap = await bookingsCol.get();
-        allData = snap.docs.filter(doc => doc.id !== '__settings__').map(doc => ({ id: doc.id, ...doc.data() }));
+        allData = snap.docs.filter(doc => doc.id !== 'booking_settings').map(doc => ({ id: doc.id, ...doc.data() }));
         render();
       } catch (getErr) {
         console.warn('Direct get() warning, attempting REST fallback:', getErr);
@@ -1871,7 +1871,7 @@
       // 2. Real-time listener for live updates
       try {
         unsubscribe = bookingsCol.onSnapshot(snap => {
-          allData = snap.docs.filter(doc => doc.id !== '__settings__').map(doc => ({ id: doc.id, ...doc.data() }));
+          allData = snap.docs.filter(doc => doc.id !== 'booking_settings').map(doc => ({ id: doc.id, ...doc.data() }));
           render();
         }, err => {
           console.warn('Firestore onSnapshot error, falling back to REST:', err);
@@ -1892,7 +1892,7 @@
         const rawDocs = json.documents || [];
         const docs = rawDocs.filter(doc => {
           const id = doc.name ? doc.name.split('/').pop() : '';
-          return id !== '__settings__';
+          return id !== 'booking_settings';
         });
         allData = docs.map(doc => {
           const id = doc.name ? doc.name.split('/').pop() : 'booking';
