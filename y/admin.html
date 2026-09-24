@@ -2185,7 +2185,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="assets/html5-qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
@@ -2205,13 +2204,6 @@
     };
 
     firebase.initializeApp(CONFIG.firebase);
-    const db = firebase.firestore();
-    try {
-      db.settings({ experimentalForceLongPolling: true });
-    } catch (e) {
-      console.warn('Firestore settings error:', e);
-    }
-    const bookingsCol = db.collection('movie_bookings');
     let allData = [];
 
     // Anonymous auth for DB access
@@ -2272,6 +2264,127 @@
     function debounce(fn, ms) {
       let t;
       return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), ms); };
+    }
+
+    // TIME-OUT HELPER — prevents SDK/network calls from hanging the UI forever
+    function withTimeout(promise, ms) {
+      return new Promise((resolve, reject) => {
+        const timer = setTimeout(() => reject(new Error('Timed out after ' + ms + 'ms')), ms);
+        promise.then(
+          v => { clearTimeout(timer); resolve(v); },
+          e => { clearTimeout(timer); reject(e); }
+        );
+      });
+    }
+
+    // ── REST-ONLY FIRESTORE LAYER (no SDK / no WebSockets → fast + reliable) ──
+    const FB_BASE = 'https://firestore.googleapis.com/v1/projects/ceninovaprc/databases/(default)/documents/movie_bookings';
+
+    function toRestValue(v) {
+      if (v === null || v === undefined) return { nullValue: null };
+      if (typeof v === 'boolean') return { booleanValue: v };
+      if (typeof v === 'number') return (Number.isInteger(v)) ? { integerValue: String(v) } : { doubleValue: v };
+      if (Array.isArray(v)) return { arrayValue: { values: v.map(toRestValue) } };
+      if (typeof v === 'object') {
+        if (v instanceof Date) return { timestampValue: v.toISOString() };
+        const fields = {};
+        for (const k in v) fields[k] = toRestValue(v[k]);
+        return { mapValue: { fields } };
+      }
+      return { stringValue: String(v) };
+    }
+
+    function toRestFields(obj) {
+      const fields = {};
+      for (const k in obj) fields[k] = toRestValue(obj[k]);
+      return fields;
+    }
+
+    async function authHeaders() {
+      const headers = { 'Content-Type': 'application/json' };
+      try {
+        const user = firebase.auth().currentUser;
+        if (user) {
+          const token = await user.getIdToken();
+          if (token) headers['Authorization'] = 'Bearer ' + token;
+        }
+      } catch (e) {}
+      return headers;
+    }
+
+    async function firestoreFetch(path, options) {
+      const run = (async () => {
+        const opts = options || {};
+        opts.headers = opts.headers || {};
+        const h = await authHeaders();
+        for (const k in h) opts.headers[k] = h[k];
+        const res = await fetch(FB_BASE + path, opts);
+        if (!res.ok) {
+          let detail = '';
+          try { detail = (await res.text()).slice(0, 150); } catch (e) {}
+          throw new Error('HTTP ' + res.status + ' ' + detail);
+        }
+        return res.json();
+      })();
+      return withTimeout(run, 15000);
+    }
+
+    function restPost(docId, data) {
+      const q = docId ? '?documentId=' + encodeURIComponent(docId) : '';
+      return firestoreFetch(q, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fields: toRestFields(data) }) });
+    }
+
+    async function restUpdate(docId, data) {
+      const mask = Object.keys(data).map(k => 'updateMask.fieldPaths=' + encodeURIComponent('fields.' + k)).join('&');
+      await firestoreFetch('/' + encodeURIComponent(docId) + '?' + mask, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fields: toRestFields(data) })
+      });
+    }
+
+    async function restDelete(docId) {
+      await firestoreFetch('/' + encodeURIComponent(docId), { method: 'DELETE' });
+    }
+
+    // Apply a change to the local dataset after a successful write (keeps UI instant)
+    function applyLocalUpdate(id, patch) {
+      const d = allData.find(x => x.id === id);
+      if (d) Object.assign(d, patch);
+    }
+
+    // Convert a REST wire document back into the plain object used by render()
+    function restDocToObj(doc) {
+      const id = doc.name ? doc.name.split('/').pop() : 'booking';
+      const f = doc.fields || {};
+      const obj = { id };
+      for (const k in f) {
+        const val = f[k];
+        if (val.stringValue !== undefined) obj[k] = val.stringValue;
+        else if (val.integerValue !== undefined) obj[k] = Number(val.integerValue);
+        else if (val.doubleValue !== undefined) obj[k] = Number(val.doubleValue);
+        else if (val.booleanValue !== undefined) obj[k] = val.booleanValue;
+        else if (val.timestampValue !== undefined) obj[k] = val.timestampValue;
+        else if (val.nullValue !== undefined) obj[k] = null;
+        else if (val.arrayValue && val.arrayValue.values) {
+          obj[k] = val.arrayValue.values.map(v => {
+            if (v.mapValue && v.mapValue.fields) {
+              const sub = {};
+              for (const sk in v.mapValue.fields) {
+                const sv = v.mapValue.fields[sk];
+                sub[sk] = sv.stringValue || (sv.integerValue !== undefined ? Number(sv.integerValue) : (sv.doubleValue !== undefined ? Number(sv.doubleValue) : ''));
+              }
+              return sub;
+            }
+            if (v.stringValue !== undefined) return v.stringValue;
+            if (v.integerValue !== undefined) return Number(v.integerValue);
+            if (v.doubleValue !== undefined) return Number(v.doubleValue);
+            if (v.booleanValue !== undefined) return v.booleanValue;
+            return '';
+          });
+        }
+      }
+      return obj;
     }
 
     const DEPARTMENTS = [
@@ -2345,6 +2458,11 @@
     }
 
     function logout() {
+      if (pollTimer) { clearTimeout(pollTimer); pollTimer = null; }
+      clearTimeout(watchdog);
+      pollDelay = 30000;
+      lastSig = null;
+      loadingData = false;
       sessionStorage.removeItem('admin_authenticated');
       showLogin();
       adminToast('Logged out successfully');
@@ -2352,26 +2470,6 @@
 
     // BOOKING STATUS (OPEN / CLOSED)
     let isBookingsOpen = true;
-    let bookingStatusUnsub = null;
-
-    function initBookingStatusListener() {
-      if (bookingStatusUnsub) return;
-      try {
-        bookingStatusUnsub = bookingsCol.doc('booking_settings').onSnapshot(doc => {
-          if (doc.exists) {
-            const data = doc.data();
-            isBookingsOpen = data.bookingsOpen !== false;
-          } else {
-            isBookingsOpen = true;
-          }
-          updateBookingStatusUI();
-        }, err => {
-          console.warn('Booking settings snapshot error:', err);
-        });
-      } catch (e) {
-        console.warn('Error listening to booking settings:', e);
-      }
-    }
 
     function updateBookingStatusUI() {
       const dot = document.getElementById('bookingStatusDot');
@@ -2406,18 +2504,17 @@
         );
         if (!ok) return;
         if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Closing…'; }
-        bookingsCol.doc('booking_settings').set({
-          bookingsOpen: false,
-          closedAt: Date.now()
-        }, { merge: true })
-        .then(() => {
+        try {
+          isBookingsOpen = false;
+          updateBookingStatusUI();
+          await restUpdate('booking_settings', { bookingsOpen: false, closedAt: Date.now() });
           adminToast('🔴 Online bookings are now CLOSED', 'warning');
           if (btn) btn.disabled = false;
-        })
-        .catch(e => {
+        } catch (e) {
           adminToast('Error closing bookings: ' + e.message, 'error');
+          isBookingsOpen = true;
           if (btn) { btn.disabled = false; updateBookingStatusUI(); }
-        });
+        }
       } else {
         const ok = await showConfirm(
           'Open Online Bookings?',
@@ -2427,18 +2524,17 @@
         );
         if (!ok) return;
         if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Opening…'; }
-        bookingsCol.doc('booking_settings').set({
-          bookingsOpen: true,
-          openedAt: Date.now()
-        }, { merge: true })
-        .then(() => {
+        try {
+          isBookingsOpen = true;
+          updateBookingStatusUI();
+          await restUpdate('booking_settings', { bookingsOpen: true, openedAt: Date.now() });
           adminToast('🟢 Online bookings are now OPEN');
           if (btn) btn.disabled = false;
-        })
-        .catch(e => {
+        } catch (e) {
           adminToast('Error opening bookings: ' + e.message, 'error');
+          isBookingsOpen = false;
           if (btn) { btn.disabled = false; updateBookingStatusUI(); }
-        });
+        }
       }
     }
 
@@ -2449,7 +2545,6 @@
       if (navActions) navActions.style.display = 'flex';
       const btn = document.querySelector('.login-card .btn');
       if (btn) { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Unlock'; btn.disabled = false; }
-      initBookingStatusListener();
       loadData();
     }
 
@@ -2465,95 +2560,149 @@
       if (e.key === 'Enter') login();
     });
 
-    let unsubscribe = null;
     let loadingTimer = null;
+    let loadingData = false;
+    let watchdog = null;
+    let pollTimer = null;
+    let pollDelay = 30000;
+    let lastSig = null;
 
     async function loadData() {
-      if (unsubscribe) {
-        try { unsubscribe(); } catch(e) {}
-        unsubscribe = null;
-      }
-      if (!allData || !allData.length) {
-        tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:36px;color:var(--text-secondary);">
-          <i class="fas fa-spinner fa-spin" style="font-size:22px;margin-bottom:10px;display:block;color:var(--primary);"></i>
-          Loading bookings from Firestore...
-        </td></tr>`;
-      }
-
-      // 1. Direct get() for immediate response without waiting for WebSocket handshake
+      if (loadingData) return; // dedupe concurrent calls (onAuthStateChanged + showAdmin)
+      loadingData = true;
+      clearTimeout(watchdog);
       try {
-        const snap = await bookingsCol.get();
-        allData = snap.docs.filter(doc => doc.id !== 'booking_settings').map(doc => ({ id: doc.id, ...doc.data() }));
-        render();
-      } catch (getErr) {
-        console.warn('Direct get() warning, attempting REST fallback:', getErr);
-        fetchFirestoreREST();
+        if (!allData || !allData.length) {
+          tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center;padding:36px;color:var(--text-secondary);">
+            <i class="fas fa-spinner fa-spin" style="font-size:22px;margin-bottom:10px;display:block;color:var(--primary);"></i>
+            Loading bookings...
+          </td></tr>`;
+          // Watchdog: never leave the spinner stuck — explain & keep retrying
+          watchdog = setTimeout(() => {
+            if (!allData || !allData.length) {
+              tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center;color:var(--primary);padding:28px;">
+                <i class="fas fa-exclamation-triangle" style="font-size:24px;margin-bottom:8px;display:block;"></i>
+                <div style="font-weight:700;margin-bottom:6px;">Still connecting to Firestore…</div>
+                <div style="font-size:13px;color:var(--text-secondary);max-width:520px;margin:0 auto 14px;">Bookings are taking longer than usual to load. If this continues, the project may have reached its daily Firestore limit — it auto-retries and will reload once available.</div>
+                <button onclick="loadData()" class="btn" style="padding:8px 22px;width:auto;display:inline-block;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;"><i class="fas fa-sync-alt" style="margin-right:6px;"></i> Retry now</button>
+              </td></tr>`;
+            }
+          }, 11000);
+        }
+        await fetchFirestoreREST();
+        clearTimeout(watchdog);
+      } finally {
+        loadingData = false;
       }
+      adjustPollDelay();
+      schedulePoll();
+    }
 
-      // 2. Real-time listener for live updates
-      try {
-        unsubscribe = bookingsCol.onSnapshot(snap => {
-          allData = snap.docs.filter(doc => doc.id !== 'booking_settings').map(doc => ({ id: doc.id, ...doc.data() }));
-          render();
-        }, err => {
-          console.warn('Firestore onSnapshot error, falling back to REST:', err);
-          fetchFirestoreREST();
-        });
-      } catch (snapErr) {
-        console.warn('onSnapshot attach error:', snapErr);
-        fetchFirestoreREST();
+    // Self-rescheduling poll — doubles its delay (up to 5 min) when nothing
+    // changes, resets to 30s when new data arrives. Minimal read usage.
+    function schedulePoll() {
+      if (pollTimer) clearTimeout(pollTimer);
+      pollTimer = setTimeout(async () => {
+        pollTimer = null;
+        if (document.hidden) { schedulePoll(); return; } // don't wake up hidden tabs
+        await fetchFirestoreREST();
+        adjustPollDelay();
+        schedulePoll();
+      }, pollDelay);
+    }
+
+    function adjustPollDelay() {
+      const sig = dataSig();
+      if (sig === lastSig) {
+        pollDelay = Math.min(pollDelay * 2, 300000);
+      } else {
+        lastSig = sig;
+        pollDelay = 30000;
       }
     }
 
-    // Direct REST API fallback in case WebSocket/streams are blocked by browser/network
+    function dataSig() {
+      let s = isBookingsOpen ? 'O' : 'C';
+      for (const d of allData) s += d.id + ':' + (d.timestamp || d.paymentStatus || '') + (d.attended ? '#1' : '#0') + ';';
+      return s;
+    }
+
+    // Pure REST load — ONE plain-HTTPS GET that returns bookings AND the
+    // open/closed settings doc together. Cannot hang and fails silently when
+    // we already have data (no scary error page).
+    function isQuotaError(err) {
+      const m = (err && err.message) || '';
+      return /429|RESOURCE_EXHAUSTED|quota|Exceeded daily/i.test(m);
+    }
+    function quotaNoticeHTML(extra) {
+      return `<tr><td colspan="11" style="text-align:center;color:var(--primary);padding:28px;">
+        <i class="fas fa-exclamation-triangle" style="font-size:24px;margin-bottom:8px;display:block;"></i>
+        <div style="font-weight:700;margin-bottom:6px;">Firestore quota reached for today</div>
+        <div style="font-size:13px;color:var(--text-secondary);max-width:520px;margin:0 auto 14px;">The project's daily Firestore limit is exhausted, so booking data is temporarily unavailable. It will automatically reload when the quota resets (midnight Pacific). ${extra || ''}</div>
+        <button onclick="loadData()" class="btn" style="padding:8px 22px;width:auto;display:inline-block;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;"><i class="fas fa-sync-alt" style="margin-right:6px;"></i> Retry now</button>
+      </td></tr>`;
+    }
+    function leakQuotaMessage(err) {
+      if (isQuotaError(err)) {
+        tableBody.innerHTML = quotaNoticeHTML('Retrying automatically in the background.');
+        return;
+      }
+      tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center;color:var(--primary);padding:28px;">
+        <i class="fas fa-exclamation-circle" style="font-size:24px;margin-bottom:8px;display:block;"></i>
+        <div style="font-weight:700;margin-bottom:6px;">Error connecting to Firestore:</div>
+        <div style="font-size:13px;color:var(--text-secondary);max-width:500px;margin:0 auto 14px;">${err.message} — will retry automatically in ${Math.round(pollDelay / 1000)}s.</div>
+        <button onclick="loadData()" class="btn" style="padding:8px 22px;width:auto;display:inline-block;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;"><i class="fas fa-sync-alt" style="margin-right:6px;"></i> Retry now</button>
+      </td></tr>`;
+    }
+    // Refresh immediately when the admin comes back to the tab
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (pollTimer) { clearTimeout(pollTimer); pollTimer = null; }
+        return;
+      }
+      if (sessionStorage.getItem('admin_authenticated') === 'true') {
+        if (!pollTimer) { // only refresh + reschedule if not mid-cycle
+          fetchFirestoreREST().then(ok => { if (ok) adjustPollDelay(); });
+        }
+        schedulePoll();
+      }
+    });
+
+    // Pure REST load — GETs every booking via Firestore REST pagination.
+    // Follows nextPageToken until all documents are fetched, so bookings
+    // past the first page (which truncates when docs carry large
+    // paymentScreenshot base64 fields) are NOT left out.
     async function fetchFirestoreREST() {
       try {
-        const res = await fetch('https://firestore.googleapis.com/v1/projects/ceninovaprc/databases/(default)/documents/movie_bookings');
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const json = await res.json();
-        const rawDocs = json.documents || [];
-        const docs = rawDocs.filter(doc => {
+        let rawDocs = [];
+        let pageToken = null;
+        do {
+          const q = '?pageSize=300' + (pageToken ? '&pageToken=' + encodeURIComponent(pageToken) : '');
+          const json = await firestoreFetch(q);
+          if (json.documents) rawDocs = rawDocs.concat(json.documents);
+          pageToken = json.nextPageToken || null;
+        } while (pageToken);
+        let foundSettings = false;
+        allData = [];
+        for (const doc of rawDocs) {
           const id = doc.name ? doc.name.split('/').pop() : '';
-          return id !== 'booking_settings';
-        });
-        allData = docs.map(doc => {
-          const id = doc.name ? doc.name.split('/').pop() : 'booking';
-          const f = doc.fields || {};
-          const obj = { id };
-          for (const k in f) {
-            const val = f[k];
-            if (val.stringValue !== undefined) obj[k] = val.stringValue;
-            else if (val.integerValue !== undefined) obj[k] = Number(val.integerValue);
-            else if (val.doubleValue !== undefined) obj[k] = Number(val.doubleValue);
-            else if (val.booleanValue !== undefined) obj[k] = val.booleanValue;
-            else if (val.timestampValue !== undefined) obj[k] = val.timestampValue;
-            else if (val.arrayValue && val.arrayValue.values) {
-              obj[k] = val.arrayValue.values.map(v => {
-                if (v.mapValue && v.mapValue.fields) {
-                  const sub = {};
-                  for (const sk in v.mapValue.fields) {
-                    const sv = v.mapValue.fields[sk];
-                    sub[sk] = sv.stringValue || (sv.integerValue !== undefined ? Number(sv.integerValue) : '');
-                  }
-                  return sub;
-                }
-                return v.stringValue || v.integerValue || '';
-              });
-            }
+          if (id === 'booking_settings') {
+            const s = doc.fields || {};
+            isBookingsOpen = s.bookingsOpen === undefined ? true : (s.bookingsOpen.booleanValue !== false);
+            foundSettings = true;
+            continue;
           }
-          return obj;
-        });
-        render();
-      } catch (err) {
-        console.error('Firestore REST fallback failed:', err);
-        if (!allData || !allData.length) {
-          tableBody.innerHTML = `<tr><td colspan="11" style="text-align:center;color:var(--primary);padding:28px;">
-            <i class="fas fa-exclamation-circle" style="font-size:24px;margin-bottom:8px;display:block;"></i>
-            <div style="font-weight:700;margin-bottom:6px;">Error connecting to Firestore:</div>
-            <div style="font-size:13px;color:var(--text-secondary);max-width:500px;margin:0 auto 14px;">${err.message}</div>
-            <button onclick="loadData()" class="btn" style="padding:8px 22px;width:auto;display:inline-block;background:var(--primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;"><i class="fas fa-sync-alt" style="margin-right:6px;"></i> Retry</button>
-          </td></tr>`;
+          allData.push(restDocToObj(doc));
         }
+        if (!foundSettings) isBookingsOpen = true;
+        updateBookingStatusUI();
+        render();
+        return true;
+      } catch (err) {
+        console.error('Firestore REST load failed:', err);
+        // Don't destroy the current data on a transient failure (e.g. quota)
+        if (!allData || !allData.length) leakQuotaMessage(err);
+        return false;
       }
     }
 
@@ -2624,6 +2773,7 @@
     }
 
     function render() {
+      const f = getFilteredData();
 
       totalBookings.textContent = f.length;
       const resultCountEl = document.getElementById('resultCount');
@@ -2797,9 +2947,12 @@
       if (!d) return;
       const ok = await showConfirm('Mark as Paid', 'Mark PAID for ' + getNames(d) + '?', 'info', 'Mark Paid');
       if (ok) {
-        bookingsCol.doc(key).update({ paymentStatus: 'paid', paidAt: Date.now() })
-          .then(() => { adminToast('Marked as paid: ' + getNames(d)); highlightRow(key); })
-          .catch(e => adminToast('Error: ' + e.message, 'error'));
+        try {
+          await restUpdate(key, { paymentStatus: 'paid', paidAt: Date.now() });
+          applyLocalUpdate(key, { paymentStatus: 'paid', paidAt: Date.now() });
+          render();
+          adminToast('Marked as paid: ' + getNames(d)); highlightRow(key);
+        } catch (e) { adminToast('Error: ' + e.message, 'error'); }
       }
     }
     async function verifyPayment(key) {
@@ -2807,9 +2960,12 @@
       if (!d) return;
       const ok = await showConfirm('Verify Payment', 'Verify payment for ' + getNames(d) + '?', 'info', 'Verify');
       if (ok) {
-        bookingsCol.doc(key).update({ paymentStatus: 'verified', verifiedAt: Date.now() })
-          .then(() => { adminToast('Verified: ' + getNames(d)); highlightRow(key); })
-          .catch(e => adminToast('Error: ' + e.message, 'error'));
+        try {
+          await restUpdate(key, { paymentStatus: 'verified', verifiedAt: Date.now() });
+          applyLocalUpdate(key, { paymentStatus: 'verified', verifiedAt: Date.now() });
+          render();
+          adminToast('Verified: ' + getNames(d)); highlightRow(key);
+        } catch (e) { adminToast('Error: ' + e.message, 'error'); }
       }
     }
     async function deleteBooking(key) {
@@ -2817,9 +2973,12 @@
       if (!d) return;
       const ok = await showConfirm('Delete Booking', 'Permanently delete booking for ' + getNames(d) + '? This cannot be undone.', 'danger', 'Delete');
       if (ok) {
-        bookingsCol.doc(key).delete()
-          .then(() => adminToast('Deleted: ' + getNames(d)))
-          .catch(e => adminToast('Error: ' + e.message, 'error'));
+        try {
+          await restDelete(key);
+          allData = allData.filter(x => x.id !== key);
+          adminToast('Deleted: ' + getNames(d));
+          render();
+        } catch (e) { adminToast('Error: ' + e.message, 'error'); }
       }
     }
 
@@ -2851,9 +3010,12 @@
       const msg = nv ? 'Mark ' + getNames(d) + ' as attended?' : 'Remove attendance for ' + getNames(d) + '?';
       const ok = await showConfirm(label, msg, nv ? 'info' : 'danger', nv ? 'Mark Entry' : 'Unmark');
       if (ok) {
-        bookingsCol.doc(key).update({ attended: nv, attendedAt: nv ? Date.now() : null })
-          .then(() => { adminToast(nv ? 'Entry marked' : 'Entry unmarked'); highlightRow(key); })
-          .catch(e => adminToast('Error: ' + e.message, 'error'));
+        try {
+          await restUpdate(key, { attended: nv, attendedAt: nv ? Date.now() : null });
+          applyLocalUpdate(key, { attended: nv, attendedAt: nv ? Date.now() : null });
+          render();
+          adminToast(nv ? 'Entry marked' : 'Entry unmarked'); highlightRow(key);
+        } catch (e) { adminToast('Error: ' + e.message, 'error'); }
       }
     }
 
@@ -3000,68 +3162,6 @@
       return code;
     }
 
-    async function saveBookingToFirestoreREST(data) {
-      try {
-        const fields = {
-          name: { stringValue: String(data.name || '') },
-          phone: { stringValue: String(data.phone || '') },
-          dept: { stringValue: String(data.dept || '') },
-          year: { integerValue: String(data.year || 1) },
-          roll: { integerValue: String(data.roll || 1) },
-          tickets: { integerValue: String(data.tickets || 1) },
-          amount: { integerValue: String(data.amount || 0) },
-          primaryCode: { stringValue: String(data.primaryCode || '') },
-          ticketCodes: {
-            arrayValue: {
-              values: (data.ticketCodes || []).map(c => ({ stringValue: String(c) }))
-            }
-          },
-          payMethod: { stringValue: String(data.payMethod || 'cash') },
-          paymentStatus: { stringValue: String(data.paymentStatus || 'paid') },
-          attended: { booleanValue: !!data.attended },
-          isPrivateEntry: { booleanValue: true },
-          entryType: { stringValue: 'private' },
-          privateNote: { stringValue: String(data.privateNote || '') },
-          createdAt: { stringValue: String(data.createdAt || new Date().toISOString()) },
-          timestamp: { integerValue: String(data.timestamp || Date.now()) }
-        };
-        if (data.attendedAt) {
-          fields.attendedAt = { integerValue: String(data.attendedAt) };
-        }
-        if (data.paidAt) {
-          fields.paidAt = { integerValue: String(data.paidAt) };
-        }
-        if (data.ticketHolders && data.ticketHolders.length) {
-          fields.ticketHolders = {
-            arrayValue: {
-              values: data.ticketHolders.map(th => ({
-                mapValue: {
-                  fields: {
-                    name: { stringValue: String(th.name || '') },
-                    dept: { stringValue: String(th.dept || '') },
-                    year: { integerValue: String(th.year || 1) },
-                    roll: { integerValue: String(th.roll || 1) },
-                    code: { stringValue: String(th.code || '') }
-                  }
-                }
-              }))
-            }
-          };
-        }
-        const res = await fetch('https://firestore.googleapis.com/v1/projects/' + CONFIG.firebase.projectId + '/databases/(default)/documents/movie_bookings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ fields })
-        });
-        if (!res.ok) return null;
-        const json = await res.json();
-        return json.name ? json.name.split('/').pop() : 'doc_' + Date.now();
-      } catch (e) {
-        console.warn('REST save error:', e);
-        return null;
-      }
-    }
-
     async function submitPrivateEntry(e) {
       e.preventDefault();
       const submitBtn = document.getElementById('peSubmitBtn');
@@ -3132,11 +3232,10 @@
       try {
         let newDocId = null;
         try {
-          const docRef = await bookingsCol.add(bookingData);
-          newDocId = docRef.id;
+          const docRef = await restPost(null, bookingData);
+          newDocId = docRef.name ? docRef.name.split('/').pop() : null;
         } catch (sdkErr) {
-          console.warn('Firestore SDK add failed, trying REST fallback:', sdkErr);
-          newDocId = await saveBookingToFirestoreREST(bookingData);
+          console.warn('Firestore REST add failed:', sdkErr);
         }
 
         if (!newDocId) {
@@ -3411,11 +3510,12 @@
       const btn = document.getElementById('scSavePaidOnlyBtn');
       if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving to Admin…'; }
 
-      bookingsCol.doc(user.id).update(updateData)
+      restUpdate(user.id, updateData)
         .then(() => {
           const name = getNames(user);
           user.paymentStatus = updateData.paymentStatus;
           scannerSelectedPaid = true;
+          applyLocalUpdate(user.id, updateData);
           adminToast('✓ Saved as Paid in admin: ' + name);
           if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Saved as Paid in Admin'; }
           updateScannerPaidUI();
@@ -3473,9 +3573,11 @@
 
       pendingConfirmUser = null;
 
-      bookingsCol.doc(user.id).update(updateData)
+      restUpdate(user.id, updateData)
         .then(() => {
           closeScanConfirm(true);
+          applyLocalUpdate(user.id, updateData);
+          render();
           const msg = updateData.paymentStatus ? ('✓ Marked Paid & Entry Allowed: ' + name) : ('✓ Entry approved: ' + name);
           showStatus(msg, false);
           adminToast(msg);
